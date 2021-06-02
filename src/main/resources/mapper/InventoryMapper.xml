@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.InventoryDao">
+    <resultMap id="inventoryMap" type="me.cuiyijie.joyea.domain.Inventory">
+        <id property="materialId" column="U8MATERIALID"/>
+        <id property="accountNo" column="U8ACCOUNTNO"/>
+        <id property="materialName" column="U8MATERIALNAME"/>
+        <id property="amt" column="U8AMT"/>
+        <id property="price" column="U8PRICE"/>
+        <id property="amount" column="U8AMOUNT"/>
+        <id property="easAmt" column="U8EASAMT"/>
+        <id property="easAmount" column="U8EASAMOUNT"/>
+    </resultMap>
+    <select id="findAll" resultMap="inventoryMap">
+        select * from AU8INVENTORY where rownum &lt; 20
+    </select>
+</mapper>
