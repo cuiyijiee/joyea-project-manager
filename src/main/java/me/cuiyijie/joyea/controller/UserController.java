@@ -23,8 +23,8 @@ public class UserController {
         JoyeaAccessToken accessToken = userService.getAccessTokenByTicket(request.getTicket());
         JoyeaUserProfile userProfile = userService.getUserInfoByToken(accessToken.getAccessToken());
 
-        response.setCode("0");
         response.setObj(userProfile);
+        response.setCode("0");
 
         return response;
     }

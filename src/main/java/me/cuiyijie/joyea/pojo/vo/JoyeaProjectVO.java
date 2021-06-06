@@ -19,6 +19,9 @@ public class JoyeaProjectVO {
     //销售订单序号
     private String saleOrderSeq;
 
+    //生产单号ID
+    private String manufactureId;
+
     //生产编号
     private String manufactureNumber;
 

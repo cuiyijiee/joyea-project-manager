@@ -34,7 +34,8 @@
     </select>
 
     <select id="selectProject" resultType="me.cuiyijie.joyea.pojo.vo.JoyeaProjectVO">
-        SELECT DISTINCT a.fnumber AS "projectNumber",
+        SELECT DISTINCT c.FID AS "manufactureId",
+        a.fnumber AS "projectNumber",
         a.CFPROJECTNAME AS "projectName",
         b.FNUMBER AS "saleOrderNumber",
         c.FRelatingEntrySeq AS "saleOrderSeq",
@@ -54,6 +55,9 @@
         LEFT JOIN ct_prj_task f ON e.cfassemblytaskid = f.fid
         LEFT JOIN CT_PRJ_TASKCATEGORY g ON F.CFTASKCATEGORYID = g.fid
         WHERE c.FOLDBASESTATUS != '-3'
+        <if test="projectNumber != null and projectNumber != ''">
+            AND a.FNUMBER LIKE CONCAT('%',CONCAT(#{projectNumber},'%'))
+        </if>
         <if test="manufactureNumber != null and manufactureNumber != ''">
             AND c.FNUMBER LIKE CONCAT('%',CONCAT(#{manufactureNumber},'%'))
         </if>

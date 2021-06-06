@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.JoyeaManufactureTaskDao">
+    <select id="selectByManufactureOrder" parameterType="java.lang.String"
+            resultType="me.cuiyijie.joyea.domain.JoyeaManufactureTask">
+        SELECT cpt.CFMANUFACTUREORDER AS "manufactureOrder",
+               cpt.CFTASKID           AS "taskId",
+               cpt.CFOPERATIONNAME    AS "operationName",
+               cpt.CFSTATUS           AS "status",
+               cpt.CFOPERATIONNO      AS "operationNo",
+               cptask.CFWORKPERSONID  AS "workPersonId",
+               tbp.FNAME_L2           AS "workPersonName",
+               cpt.CFOLDBEGINTIME     AS "startTime",
+               cpt.CFOLDENDTIME       AS "endTime"
+        FROM CT_PRE_TASKBMO cpt
+                 INNER JOIN CT_PRJ_TASK cptask ON cptask.FID = cpt.CFTASKID
+                 INNER JOIN T_BD_PERSON tbp ON tbp.FID = cptask.cfworkpersonid
+        WHERE cpt.CFManufactureOrder = #{manufactureId,jdbcType=VARCHAR}
+    </select>
+</mapper>

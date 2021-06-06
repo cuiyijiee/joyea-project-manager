@@ -8,6 +8,8 @@ public class TransBaseProjectRequest {
     private Integer pageNum = 1;
     private Integer pageSize = 10;
 
+    //项目编号
+    private String projectNumber;
     /**
      * 生产单号
      */

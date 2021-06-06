@@ -6,6 +6,8 @@ import me.cuiyijie.joyea.dao.ProjectDao;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseProjectRequest;
 import me.cuiyijie.joyea.pojo.vo.JoyeaProjectVO;
+import me.cuiyijie.joyea.service.JoyeaManufactureTaskService;
+import me.cuiyijie.joyea.service.impl.JoyeaManufactureTaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +27,16 @@ public class ProjectController {
     @Autowired
     ProjectDao projectDao;
 
+    @Autowired
+    JoyeaManufactureTaskService joyeaManufactureTaskService;
+
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse getProjectList(@RequestBody TransBaseProjectRequest request) {
-        PageHelper.startPage(request.getPageNum(), request.getPageSize());
+
         Map<String, Object> requestParams = new HashMap<>();
+        if (StringUtils.hasLength(request.getProjectNumber())) {
+            requestParams.put("projectNumber", request.getProjectNumber());
+        }
         if (StringUtils.hasLength(request.getMaterialNumber())) {
             requestParams.put("materialNumber", request.getMaterialNumber());
         }
@@ -46,6 +54,8 @@ public class ProjectController {
             Date endTime = new Date(Long.parseLong(request.getTaskEndTime()));
             requestParams.put("taskEndTime", endTime);
         }
+
+        PageHelper.startPage(request.getPageNum(), request.getPageSize());
         List<JoyeaProjectVO> result = projectDao.selectProject(requestParams);
         return new TransBasePageResponse(new PageInfo<>(result));
     }
