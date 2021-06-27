@@ -1,8 +1,6 @@
 package me.cuiyijie.joyea;
 
-import me.cuiyijie.joyea.domain.JoyeaAccessToken;
-import me.cuiyijie.joyea.domain.JoyeaUserProfile;
-import me.cuiyijie.joyea.service.UserService;
+import me.cuiyijie.joyea.service.IUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class JoyeaProjectManagerApplicationTests {
 
     @Autowired
-    UserService userService;
+    IUserService userService;
 
     @Test
     void contextLoads() {

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class JoyeaManufactureTask {
+public class JoyeaOperation {
 
     //任务ID
     private String taskId;
@@ -16,8 +16,11 @@ public class JoyeaManufactureTask {
     //状态
     private String status;
 
-    //操作ID
+    //工序编号
     private String operationNo;
+
+    //工序ID
+    private String operationId;
 
     //订单编号
     private String manufactureOrder;
@@ -33,5 +36,8 @@ public class JoyeaManufactureTask {
 
     //完工时间
     private Date endTime;
+
+    //工序顺序
+    private String seq;
 
 }

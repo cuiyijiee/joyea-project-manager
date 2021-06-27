@@ -3,7 +3,7 @@ package me.cuiyijie.joyea.service.impl;
 import me.cuiyijie.joyea.domain.JoyeaAccessToken;
 import me.cuiyijie.joyea.domain.JoyeaUserProfile;
 import me.cuiyijie.joyea.domain.JoyeaUserProfileResp;
-import me.cuiyijie.joyea.service.UserService;
+import me.cuiyijie.joyea.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
     @Value("${joyea.oauth2.token.url}")
     private String accessTokenUrl;

@@ -4,7 +4,7 @@ import me.cuiyijie.joyea.domain.JoyeaAccessToken;
 import me.cuiyijie.joyea.domain.JoyeaUserProfile;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.TransBaseUserRequest;
-import me.cuiyijie.joyea.service.UserService;
+import me.cuiyijie.joyea.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    IUserService userService;
 
     @RequestMapping(value = "authorize", method = RequestMethod.POST)
     public TransBaseResponse authorize(@RequestBody TransBaseUserRequest request) {

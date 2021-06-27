@@ -4,7 +4,7 @@ import me.cuiyijie.joyea.domain.JoyeaAccessToken;
 import me.cuiyijie.joyea.domain.JoyeaUserProfile;
 
 
-public interface UserService {
+public interface IUserService {
 
 
     JoyeaAccessToken getAccessTokenByTicket(String ticket);
