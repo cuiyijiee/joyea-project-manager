@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.service.impl;
 
-import me.cuiyijie.joyea.dao.JoyeaManufactureTaskDao;
+import me.cuiyijie.joyea.dao.joyea.JoyeaManufactureTaskDao;
 import me.cuiyijie.joyea.domain.JoyeaManufactureTask;
 import me.cuiyijie.joyea.service.JoyeaManufactureTaskService;
 import org.springframework.beans.factory.annotation.Autowired;

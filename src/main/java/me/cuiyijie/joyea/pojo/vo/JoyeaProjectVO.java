@@ -28,6 +28,9 @@ public class JoyeaProjectVO {
     //产品编号
     private String materialNumber;
 
+    //产品ID
+    private String materialId;
+
     //产品名称
     private String materialName;
 
