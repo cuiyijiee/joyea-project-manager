@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>joyea</contextName>
+    <!--输出到控制台 ConsoleAppender-->
+    <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/info.log</file>
+        <encoder>
+            <pattern>[%level] [%d{yy-MM-dd HH:mm:ss}]: %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./log/info.log.%d{yy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%level] [%d{yy-MM-dd HH:mm:ss}]: %m%n</pattern>
+        </encoder>
+    </appender>
+    <!--指定最基础的日志输出级别-->
+    <root level="INFO">
+        <appender-ref ref="ALL"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
