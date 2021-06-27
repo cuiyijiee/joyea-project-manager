@@ -2,7 +2,7 @@ package me.cuiyijie.joyea.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import me.cuiyijie.joyea.dao.ProjectDao;
+import me.cuiyijie.joyea.dao.joyea.ProjectDao;
 import me.cuiyijie.joyea.domain.JoyeaProject;
 import me.cuiyijie.joyea.service.JoyeaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;

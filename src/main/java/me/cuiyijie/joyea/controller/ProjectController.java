@@ -2,12 +2,11 @@ package me.cuiyijie.joyea.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import me.cuiyijie.joyea.dao.ProjectDao;
+import me.cuiyijie.joyea.dao.joyea.ProjectDao;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseProjectRequest;
 import me.cuiyijie.joyea.pojo.vo.JoyeaProjectVO;
 import me.cuiyijie.joyea.service.JoyeaManufactureTaskService;
-import me.cuiyijie.joyea.service.impl.JoyeaManufactureTaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;

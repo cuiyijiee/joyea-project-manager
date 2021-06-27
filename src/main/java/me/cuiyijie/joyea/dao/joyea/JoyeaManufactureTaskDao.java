@@ -1,4 +1,4 @@
-package me.cuiyijie.joyea.dao;
+package me.cuiyijie.joyea.dao.joyea;
 
 import me.cuiyijie.joyea.domain.JoyeaManufactureTask;
 import org.apache.ibatis.annotations.Mapper;

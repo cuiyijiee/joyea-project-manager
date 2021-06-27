@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.service.impl;
 
-import me.cuiyijie.joyea.dao.InventoryDao;
+import me.cuiyijie.joyea.dao.joyea.InventoryDao;
 import me.cuiyijie.joyea.domain.Inventory;
 import me.cuiyijie.joyea.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
