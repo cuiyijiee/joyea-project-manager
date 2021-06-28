@@ -1,9 +1,7 @@
 package me.cuiyijie.joyea.controller;
 
 import me.cuiyijie.joyea.domain.JoyeaCheckItem;
-import me.cuiyijie.joyea.domain.JoyeaOperation;
-import me.cuiyijie.joyea.pojo.TransBaseCheckItemRequest;
-import me.cuiyijie.joyea.pojo.TransBaseOperationRequest;
+import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.IJoyeaCheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ public class JoyeaCheckItemController {
     private IJoyeaCheckItemService joyeaCheckItemService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public TransBaseResponse listByManufactureOrderId(@RequestBody TransBaseCheckItemRequest request) {
+    public TransBaseResponse listByManufactureOrderId(@RequestBody TransCheckItemRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
         if (!StringUtils.hasLength(request.getOperationId()) || !StringUtils.hasLength(request.getOperationNo())){

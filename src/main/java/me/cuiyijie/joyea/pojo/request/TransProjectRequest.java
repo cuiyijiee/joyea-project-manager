@@ -1,9 +1,9 @@
-package me.cuiyijie.joyea.pojo;
+package me.cuiyijie.joyea.pojo.request;
 
 import lombok.Data;
 
 @Data
-public class TransBaseProjectRequest {
+public class TransProjectRequest {
 
     private Integer pageNum = 1;
     private Integer pageSize = 10;

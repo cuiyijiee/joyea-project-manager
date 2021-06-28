@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.controller;
 
 import me.cuiyijie.joyea.domain.JoyeaOperation;
-import me.cuiyijie.joyea.pojo.TransBaseOperationRequest;
+import me.cuiyijie.joyea.pojo.request.TransOperationRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.IJoyeaOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class JoyeaOperationController {
     private IJoyeaOperationService joyeaManufactureTaskService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public TransBaseResponse listByManufactureOrderId(@RequestBody TransBaseOperationRequest request) {
+    public TransBaseResponse listByManufactureOrderId(@RequestBody TransOperationRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
         List<JoyeaOperation> operations = joyeaManufactureTaskService.findByManufacturerOrderId(request.getManufactureId());

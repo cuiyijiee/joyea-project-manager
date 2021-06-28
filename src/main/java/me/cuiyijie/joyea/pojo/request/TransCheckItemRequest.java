@@ -1,9 +1,9 @@
-package me.cuiyijie.joyea.pojo;
+package me.cuiyijie.joyea.pojo.request;
 
 import lombok.Data;
 
 @Data
-public class TransBaseCheckItemRequest {
+public class TransCheckItemRequest {
 
     private String operationId;
     private String operationNo;

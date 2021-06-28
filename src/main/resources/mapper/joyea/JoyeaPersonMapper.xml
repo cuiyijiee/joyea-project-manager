@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.joyea.JoyeaPersonDao">
+    <select id="list" parameterType="map"
+            resultType="me.cuiyijie.joyea.domain.JoyeaPerson">
+        SELECT tbp.FID AS "id",
+        tbp.FNUMBER AS "number",
+        tbp.FNAME_L2 AS "name",
+        tbp.FEMAIL AS "email",
+        tbp.FGENDER AS "gender",
+        tbp.FBIRTHDAY AS "birthday",
+        tbp.FADDRESS_L2 AS "address",
+        tbp.FCELL AS "mobile",
+        tbp.FIDCARDNO AS "idCard",
+        tbp.CFJYJOBNUMBER AS "jobNumber"
+        FROM T_BD_PERSON tbp
+        WHERE tbp.CFJYJOBNUMBER IS NOT NULL
+        <if test="joyeaPerson.name != null">
+            AND tbp.FNAME_L2 like '%${joyeaPerson.name}%'
+        </if>
+    </select>
+</mapper>

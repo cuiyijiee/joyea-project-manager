@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import me.cuiyijie.joyea.dao.joyea.ProjectDao;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.TransBaseProjectRequest;
+import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
 import me.cuiyijie.joyea.pojo.vo.JoyeaProjectVO;
 import me.cuiyijie.joyea.service.IJoyeaOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class JoyeaProjectController {
     IJoyeaOperationService joyeaManufactureTaskService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public TransBasePageResponse getProjectList(@RequestBody TransBaseProjectRequest request) {
+    public TransBasePageResponse getProjectList(@RequestBody TransProjectRequest request) {
 
         Map<String, Object> requestParams = new HashMap<>();
         if (StringUtils.hasLength(request.getProjectNumber())) {
