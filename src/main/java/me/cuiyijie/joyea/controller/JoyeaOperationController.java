@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.domain.JoyeaOperation;
 import me.cuiyijie.joyea.pojo.request.TransOperationRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("operation")
+@Api(tags = "EAS工序模块")
 public class JoyeaOperationController {
 
     @Autowired

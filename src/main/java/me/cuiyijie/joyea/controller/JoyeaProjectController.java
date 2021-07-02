@@ -2,6 +2,10 @@ package me.cuiyijie.joyea.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.dao.joyea.ProjectDao;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
@@ -21,6 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("project")
+@Api(tags = "EAS项目模块")
 public class JoyeaProjectController {
 
     @Autowired
@@ -29,6 +34,10 @@ public class JoyeaProjectController {
     @Autowired
     IJoyeaOperationService joyeaManufactureTaskService;
 
+    @ApiOperation(value = "获取用户信息", notes = "通过泛微返回ticket获取用户信息")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "projectNumber", value = "项目名称", required = false, paramType = "form")
+    )
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse getProjectList(@RequestBody TransProjectRequest request) {
 

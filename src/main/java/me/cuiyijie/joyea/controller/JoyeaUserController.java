@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.domain.JoyeaPerson;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransJoyeaPersonRequest;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("joyeaUser")
+@Api(tags = "EAS用户模块")
 public class JoyeaUserController {
 
     @Autowired

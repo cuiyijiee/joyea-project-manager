@@ -1,20 +1,26 @@
 package me.cuiyijie.joyea.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import me.cuiyijie.joyea.domain.JoyeaAccessToken;
 import me.cuiyijie.joyea.domain.JoyeaUserProfile;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
-import me.cuiyijie.joyea.pojo.request.TransUserRequest;
 import me.cuiyijie.joyea.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("user")
+@Api(tags = "系统用户模块")
 public class UserController {
 
     @Autowired
     IUserService userService;
 
+    @ApiOperation(value = "获取用户信息", notes = "通过泛微返回ticket获取用户信息")
     @RequestMapping(value = "authorize", method = RequestMethod.POST)
     public TransBaseResponse authorize(@RequestBody TransUserRequest request) {
 
@@ -27,5 +33,12 @@ public class UserController {
         response.setCode("0");
 
         return response;
+    }
+
+    @Data
+    @ApiModel
+    class TransUserRequest{
+        @ApiModelProperty(value = "泛微返回的ticket字段")
+        private String ticket;
     }
 }

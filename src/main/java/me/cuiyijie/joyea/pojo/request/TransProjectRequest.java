@@ -20,13 +20,19 @@ public class TransProjectRequest {
      */
     private String materialNumber;
 
-    //主任务开始时间
+    /**
+     * 主任务开始时间
+     */
     private String taskStartTime;
 
-    //主任务结束时间
+    /**
+     * 主任务结束时间
+     */
     private String taskEndTime;
 
-    //任务类型
+    /**
+     * 任务类型
+     */
     private String taskCategory;
 
 }

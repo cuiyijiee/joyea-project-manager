@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.domain.JoyeaCheckItem;
 import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("checkItem")
+@Api(tags = "EAS点检项模块")
 public class JoyeaCheckItemController {
 
     @Autowired
