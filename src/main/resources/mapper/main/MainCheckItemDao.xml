@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.MainCheckItemDao">
+
+    <insert id="insert">
+        INSERT INTO check_item(id, check_standard, check_type_id, check_type_name, seq, operation_id, operation_no,
+                               main_check_person_id, main_check_person_name, minor_check_person_id,
+                               minor_check_person_name)
+        VALUES (#{checkItem.id},
+                #{checkItem.checkStandard},
+                #{checkItem.checkTypeId},
+                #{checkItem.checkTypeName},
+                #{checkItem.seq},
+                #{checkItem.operationId},
+                #{checkItem.operationNo},
+                #{checkItem.mainCheckPersonId},
+                #{checkItem.mainCheckPersonName},
+                #{checkItem.minorCheckPersonId},
+                #{checkItem.minorCheckPersonName})
+    </insert>
+
+    <insert id="insertMany">
+        INSERT INTO check_item(id, check_standard, check_type_id, check_type_name, seq, operation_id, operation_no,
+        main_check_person_id, main_check_person_name, minor_check_person_id,
+        minor_check_person_name)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.checkStandard},
+            #{item.checkTypeId},
+            #{item.checkTypeName},
+            #{item.seq},
+            #{item.operationId},
+            #{item.operationNo},
+            #{item.mainCheckPersonId},
+            #{item.mainCheckPersonName},
+            #{item.minorCheckPersonId},
+            #{item.minorCheckPersonName}
+            )
+        </foreach>
+    </insert>
+
+    <select id="list" resultType="me.cuiyijie.joyea.domain.JoyeaCheckItem">
+        SELECT ci.id                      AS id,
+               ci.check_standard          AS checkStandard,
+               ci.check_type_id           AS checkTypeId,
+               ci.check_type_name         AS checkTypeName,
+               ci.seq                     AS seq,
+               ci.operation_id            AS operationId,
+               ci.operation_no            AS operationNo,
+               ci.main_check_person_id    AS mainCheckPersonId,
+               ci.main_check_person_name  AS mainCheckPersonName,
+               ci.minor_check_person_id   AS minorCheckPersonId,
+               ci.minor_check_person_name AS minorCheckPersonName
+        FROM check_item AS ci
+        WHERE ci.operation_id = #{checkItem.operationId}
+          AND ci.operation_no = #{checkItem.operationNo}
+        ORDER BY ci.seq
+    </select>
+
+    <update id="update">
+        UPDATE check_item
+        SET
+        <if test="checkItem.checkStandard != null and checkItem.checkStandard != ''">
+            check_standard = #{checkItem.checkStandard},
+        </if>
+        <if test="checkItem.checkTypeId != null and checkItem.checkTypeId != ''">
+            check_type_id = #{checkItem.check_type_id},
+        </if>
+        <if test="checkItem.checkTypeName != null and checkItem.checkTypeName != ''">
+            check_type_name = #{checkItem.check_type_name},
+        </if>
+        <if test="checkItem.seq != null and checkItem.seq != ''">
+            seq = #{checkItem.seq},
+        </if>
+        <if test="checkItem.mainCheckPersonId != null and checkItem.mainCheckPersonId != ''">
+            main_check_person_id = #{checkItem.mainCheckPersonId},
+        </if>
+        <if test="checkItem.mainCheckPersonName != null and checkItem.mainCheckPersonName != ''">
+            main_check_person_name = #{checkItem.mainCheckPersonName},
+        </if>
+        <if test="checkItem.minorCheckPersonId != null and checkItem.minorCheckPersonId != ''">
+            minor_check_person_id = #{checkItem.minorCheckPersonId},
+        </if>
+        <if test="checkItem.minorCheckPersonName != null and checkItem.minorCheckPersonName != ''">
+            minor_check_person_name = #{checkItem.minorCheckPersonName}
+        </if>
+        WHERE ID = {checkItem.id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM check_item
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

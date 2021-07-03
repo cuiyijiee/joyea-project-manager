@@ -1,5 +1,10 @@
 package me.cuiyijie.joyea.util;
 
+import me.cuiyijie.joyea.config.Constants;
+import me.cuiyijie.joyea.exception.UserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +22,8 @@ import java.util.Map;
 @ControllerAdvice
 public class MyExceptionHandler {
 
+    private final Logger logger = LoggerFactory.getLogger(MyExceptionHandler.class);
+
     /**
      * 全局异常处理，反正异常返回统一格式的map
      *
@@ -24,10 +31,16 @@ public class MyExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)//指定拦截的异常
-    public Object errorHandler(HttpServletRequest request, HttpServletResponse response, Exception ex) throws Exception {
+    public Object errorHandler(HttpServletRequest request, HttpServletResponse response, Exception exception) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("code", 1001);
-        map.put("msg", ex.getMessage());
+        if (exception instanceof UserException) {
+            map.put("code", Constants.USER_AUTHENTICATION_EXPIRED_CODE);
+            map.put("msg", "用户信息失效");
+        } else {
+            map.put("code", Constants.UNKNOWN_ERROR_CODE);
+            map.put("msg", String.format("发生未知错误：%s", exception.getMessage()));
+        }
+        logger.error("全局捕捉到异常：", exception);
         return map;
     }
 }

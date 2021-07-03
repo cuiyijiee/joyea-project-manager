@@ -1,7 +1,10 @@
 package me.cuiyijie.joyea.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.domain.JoyeaOperation;
+import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransOperationRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.IJoyeaOperationService;
@@ -23,12 +26,10 @@ public class JoyeaOperationController {
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse listByManufactureOrderId(@RequestBody TransOperationRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
 
+        PageHelper.startPage(request.getPageNum(),request.getPageSize());
         List<JoyeaOperation> operations = joyeaManufactureTaskService.findByManufacturerOrderId(request.getManufactureId());
 
-        response.setList(operations);
-        response.setCode("0");
-        return response;
+        return new TransBasePageResponse(new PageInfo<>(operations));
     }
 }

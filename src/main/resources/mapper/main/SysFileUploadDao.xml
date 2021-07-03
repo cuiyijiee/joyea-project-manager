@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.SysFileUploadDao">
+
+    <insert id="insert">
+
+        INSERT INTO sys_file_upload (origin_file_name, file_save_id, file_suffix, created_time)
+        VALUES (
+                #{item.originFileName},
+                #{item.fileSaveId},
+                #{item.fileSuffix},
+                #{item.createdTime}
+               )
+    </insert>
+
+</mapper>

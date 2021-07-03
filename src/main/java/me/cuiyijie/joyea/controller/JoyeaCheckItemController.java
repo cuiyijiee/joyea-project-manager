@@ -5,6 +5,7 @@ import me.cuiyijie.joyea.domain.JoyeaCheckItem;
 import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.IJoyeaCheckItemService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("checkItem")
@@ -26,7 +28,7 @@ public class JoyeaCheckItemController {
     public TransBaseResponse listByManufactureOrderId(@RequestBody TransCheckItemRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        if (!StringUtils.hasLength(request.getOperationId()) || !StringUtils.hasLength(request.getOperationNo())){
+        if (!StringUtils.hasLength(request.getOperationId()) || !StringUtils.hasLength(request.getOperationNo())) {
             response.setCode("-1");
             response.setMsg("请求参数operationId或operationNo为空");
             return response;
@@ -36,6 +38,61 @@ public class JoyeaCheckItemController {
 
         response.setList(operations);
         response.setCode("0");
+        return response;
+    }
+
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public TransBaseResponse addCheckItem(@RequestBody TransCheckItemRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        JoyeaCheckItem joyeaCheckItem = new JoyeaCheckItem();
+        BeanUtils.copyProperties(request, joyeaCheckItem);
+
+        Integer result = joyeaCheckItemService.add(joyeaCheckItem);
+
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public TransBaseResponse update(TransCheckItemRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        JoyeaCheckItem joyeaCheckItem = new JoyeaCheckItem();
+        BeanUtils.copyProperties(request, joyeaCheckItem);
+
+
+        Integer result = joyeaCheckItemService.update(joyeaCheckItem);
+
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public TransBaseResponse delete(TransCheckItemRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        JoyeaCheckItem joyeaCheckItem = new JoyeaCheckItem();
+        BeanUtils.copyProperties(request, joyeaCheckItem);
+
+        Integer result = joyeaCheckItemService.delete(joyeaCheckItem);
+
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+
         return response;
     }
 
