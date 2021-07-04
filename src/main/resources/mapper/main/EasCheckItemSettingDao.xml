@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.EasCheckItemSettingDao">
+
+    <insert id="insert">
+        INSERT INTO eas_check_item_setting(operation_id, operation_no, is_sync_check_item)
+        VALUES (#{item.operationId},
+                #{item.operationNo},
+                #{item.isSyncCheckItem})
+    </insert>
+
+    <update id="update">
+        UPDATE eas_check_item_setting
+        SET is_sync_check_item = #{item.isSyncCheckItem}
+        WHERE operation_id = #{item.operationId}
+          AND operation_no = #{item.operationNo}
+    </update>
+
+    <select id="select" resultType="me.cuiyijie.joyea.domain.EasCheckItemSetting">
+        SELECT ecis.id                 AS ID,
+               ecis.operation_id       AS operationId,
+               ecis.operation_no       AS operationNo,
+               ecis.is_sync_check_item AS isSyncCheckItem
+        FROM eas_check_item_setting AS ecis
+        WHERE ecis.operation_id = #{operationId}
+          AND ecis.operation_no = #{operationNo}
+    </select>
+
+</mapper>

@@ -1,8 +1,13 @@
 package me.cuiyijie.joyea.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import me.cuiyijie.joyea.dao.joyea.JoyeaCheckItemDao;
 import me.cuiyijie.joyea.dao.main.MainCheckItemDao;
+import me.cuiyijie.joyea.domain.EasCheckItemSetting;
 import me.cuiyijie.joyea.domain.JoyeaCheckItem;
+import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
+import me.cuiyijie.joyea.service.IEasCheckItemSettingService;
 import me.cuiyijie.joyea.service.IJoyeaCheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,22 +23,46 @@ public class JoyeaCheckItemServiceImpl implements IJoyeaCheckItemService {
     @Autowired
     private MainCheckItemDao mainCheckItemDao;
 
-    @Override
-    public List<JoyeaCheckItem> findByOperationIdAndNo(String operationId, String operationNo) {
-        JoyeaCheckItem selectParams = new JoyeaCheckItem();
-        selectParams.setOperationId(operationId);
-        selectParams.setOperationNo(operationNo);
-        List<JoyeaCheckItem> resultCheckItems = mainCheckItemDao.list(selectParams);
-        if (resultCheckItems.size() == 0) {
-            resultCheckItems = joyeaCheckItemDao.selectByOperationIdAndOperationNo(operationId, operationNo);
-            //mainCheckItemDao.insertMany(resultCheckItems);
+    @Autowired
+    private IEasCheckItemSettingService easCheckItemSettingService;
 
-            resultCheckItems.stream().forEach(item -> {
-                mainCheckItemDao.insert(item);
+    @Override
+    public PageInfo<JoyeaCheckItem> findByOperationIdAndNo(TransCheckItemRequest transCheckItemRequest) {
+
+        EasCheckItemSetting easCheckItemSetting = easCheckItemSettingService.select(transCheckItemRequest.getOperationId(), transCheckItemRequest.getOperationNo());
+        if (easCheckItemSetting == null || !easCheckItemSetting.isSyncCheckItem()) {
+
+            List<JoyeaCheckItem> originCheckItems = joyeaCheckItemDao.selectByOperationIdAndOperationNo(transCheckItemRequest.getOperationId(), transCheckItemRequest.getOperationNo());
+            //mainCheckItemDao.insertMany(originCheckItems);
+
+            originCheckItems.forEach(item -> {
+                List<JoyeaCheckItem> existedItem = mainCheckItemDao.list(item);
+                if(existedItem.size() <= 0){
+                    mainCheckItemDao.insert(item);
+                }
             });
 
+            EasCheckItemSetting insertOrUpdate = new EasCheckItemSetting();
+            insertOrUpdate.setOperationId(transCheckItemRequest.getOperationId());
+            insertOrUpdate.setOperationNo(transCheckItemRequest.getOperationNo());
+            insertOrUpdate.setSyncCheckItem(true);
+
+            if (easCheckItemSetting == null) {
+                easCheckItemSettingService.insert(insertOrUpdate);
+            }else{
+                easCheckItemSettingService.update(insertOrUpdate);
+            }
+
         }
-        return resultCheckItems;
+
+        JoyeaCheckItem selectParams = new JoyeaCheckItem();
+        selectParams.setOperationId(transCheckItemRequest.getOperationId());
+        selectParams.setOperationNo(transCheckItemRequest.getOperationNo());
+
+        PageHelper.startPage(transCheckItemRequest.getPageNum(), transCheckItemRequest.getPageSize());
+
+        List<JoyeaCheckItem> resultCheckItems = mainCheckItemDao.list(selectParams);
+        return new PageInfo<>(resultCheckItems);
     }
 
     @Override

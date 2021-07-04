@@ -1,7 +1,9 @@
 package me.cuiyijie.joyea.controller;
 
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.domain.JoyeaCheckItem;
+import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.IJoyeaCheckItemService;
@@ -33,12 +35,8 @@ public class JoyeaCheckItemController {
             response.setMsg("请求参数operationId或operationNo为空");
             return response;
         }
-
-        List<JoyeaCheckItem> operations = joyeaCheckItemService.findByOperationIdAndNo(request.getOperationId(), request.getOperationNo());
-
-        response.setList(operations);
-        response.setCode("0");
-        return response;
+        PageInfo<JoyeaCheckItem> operations = joyeaCheckItemService.findByOperationIdAndNo(request);
+        return new TransBasePageResponse(operations);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -47,6 +45,7 @@ public class JoyeaCheckItemController {
 
         JoyeaCheckItem joyeaCheckItem = new JoyeaCheckItem();
         BeanUtils.copyProperties(request, joyeaCheckItem);
+        joyeaCheckItem.setId(UUID.randomUUID().toString());
 
         Integer result = joyeaCheckItemService.add(joyeaCheckItem);
 

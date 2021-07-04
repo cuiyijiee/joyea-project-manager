@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class JoyeaQualityCheckTypeService implements IJoyeaQualityCheckTypeService {
+public class JoyeaQualityCheckTypeServiceImpl implements IJoyeaQualityCheckTypeService {
 
     @Autowired
     private JoyeaQualityCheckTypeDao joyeaQualityCheckTypeDao;

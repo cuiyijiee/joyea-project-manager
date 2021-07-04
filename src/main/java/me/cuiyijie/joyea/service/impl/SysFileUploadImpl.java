@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysFileUpload implements ISysFileUploadService {
+public class SysFileUploadImpl implements ISysFileUploadService {
 
     @Autowired
     private SysFileUploadDao sysFileUploadDao;

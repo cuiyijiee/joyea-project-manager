@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFormColumnNameDao">
+
+    <select id="selectByOperationId" resultType="me.cuiyijie.joyea.domain.CheckItemFormColumnName">
+        SELECT id            AS id,
+               check_item_id AS checkItemId,
+               seq           AS seq,
+               column_name   AS columnName
+        FROM check_item_form_column_name
+        ORDER BY seq
+    </select>
+
+</mapper>
