@@ -85,7 +85,7 @@
                ci.mutual_check_person_id    AS mutualCheckPersonId,
                ci.mutual_check_person_name  AS mutualCheckPersonName,
                ci.mutual_check_type         AS mutualCheckType,
-               ci.mutual_check_result       AS mutualCheckResult,
+               ci.mutual_check_result       AS mutualCheckResult
         FROM check_item AS ci
         WHERE ci.operation_id = #{checkItem.operationId}
           AND ci.operation_no = #{checkItem.operationNo}
@@ -96,58 +96,58 @@
         UPDATE check_item
         <set>
             <if test="checkItem.checkStandard != null and checkItem.checkStandard != ''">
-                check_standard = #{checkItem.checkStandard}
+                check_standard = #{checkItem.checkStandard},
             </if>
             <if test="checkItem.checkTypeId != null and checkItem.checkTypeId != ''">
-                check_type_id = #{checkItem.check_type_id}
+                check_type_id = #{checkItem.checkTypeId},
             </if>
             <if test="checkItem.checkTypeName != null and checkItem.checkTypeName != ''">
-                check_type_name = #{checkItem.check_type_name}
+                check_type_name = #{checkItem.checkTypeName},
             </if>
             <if test="checkItem.seq != null and checkItem.seq != ''">
-                seq = #{checkItem.seq}
+                seq = #{checkItem.seq},
             </if>
 
             <if test="checkItem.selfCheckPersonId != null and checkItem.selfCheckPersonId != ''">
-                self_check_person_id = #{checkItem.selfCheckPersonId}
+                self_check_person_id = #{checkItem.selfCheckPersonId},
             </if>
             <if test="checkItem.selfCheckPersonName != null and checkItem.selfCheckPersonName != ''">
-                self_check_person_name = #{checkItem.selfCheckPersonName}
+                self_check_person_name = #{checkItem.selfCheckPersonName},
             </if>
             <if test="checkItem.selfCheckType != null and checkItem.selfCheckType != ''">
-                self_check_type = #{checkItem.selfCheckType}
+                self_check_type = #{checkItem.selfCheckType},
             </if>
             <if test="checkItem.selfCheckResult != null">
-                self_check_result = #{checkItem.selfCheckResult}
+                self_check_result = #{checkItem.selfCheckResult},
             </if>
 
             <if test="checkItem.specialCheckPersonId != null and checkItem.specialCheckPersonId != ''">
-                special_check_person_id = #{checkItem.specialCheckPersonId}
+                special_check_person_id = #{checkItem.specialCheckPersonId},
             </if>
             <if test="checkItem.specialCheckPersonName != null and checkItem.specialCheckPersonName != ''">
-                special_check_person_name = #{checkItem.specialCheckPersonName}
+                special_check_person_name = #{checkItem.specialCheckPersonName},
             </if>
             <if test="checkItem.specialCheckType != null and checkItem.specialCheckType != ''">
-                special_check_type = #{checkItem.specialCheckType}
+                special_check_type = #{checkItem.specialCheckType},
             </if>
             <if test="checkItem.specialCheckResult != null">
-                special_check_result = #{checkItem.specialCheckResult}
+                special_check_result = #{checkItem.specialCheckResult},
             </if>
 
             <if test="checkItem.mutualCheckPersonId != null and checkItem.mutualCheckPersonId != ''">
-                mutual_check_person_id = #{checkItem.mutualCheckPersonId}
+                mutual_check_person_id = #{checkItem.mutualCheckPersonId},
             </if>
             <if test="checkItem.mutualCheckPersonName != null and checkItem.mutualCheckPersonName != ''">
-                mutual_check_person_name = #{checkItem.mutualCheckPersonName}
+                mutual_check_person_name = #{checkItem.mutualCheckPersonName},
             </if>
             <if test="checkItem.mutualCheckType != null and checkItem.mutualCheckType != ''">
-                mutual_check_type = #{checkItem.mutualCheckType}
+                mutual_check_type = #{checkItem.mutualCheckType},
             </if>
             <if test="checkItem.mutualCheckResult != null">
-                mutual_check_result = #{checkItem.mutualCheckResult}
+                mutual_check_result = #{checkItem.mutualCheckResult},
             </if>
         </set>
-        WHERE ID = {checkItem.id}
+        WHERE ID = #{checkItem.id}
     </update>
 
     <delete id="delete">

@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +28,7 @@ public class FileUploadController {
     private String baseUploadPath;
 
     @Autowired
-    private ISysFileUploadService sysFileUploadService;
+    private ISysFileUploadService iSysFileUploadService;
 
     @PostMapping(value = "/upload")
     @ResponseBody
@@ -57,7 +56,7 @@ public class FileUploadController {
             sysFileUpload.setFileSaveId(fileSaveId);
             sysFileUpload.setFileSuffix(fileSuffix);
             sysFileUpload.setOriginFileName(multipartFile.getOriginalFilename());
-            sysFileUploadService.insert(sysFileUpload);
+            iSysFileUploadService.insert(sysFileUpload);
 
             transBaseResponse.setCode(Constants.SUCCESS_CODE);
             transBaseResponse.setObj(fileSaveId);

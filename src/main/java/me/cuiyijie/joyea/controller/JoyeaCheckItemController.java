@@ -2,10 +2,12 @@ package me.cuiyijie.joyea.controller;
 
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import me.cuiyijie.joyea.domain.CheckItemFormSetting;
 import me.cuiyijie.joyea.domain.JoyeaCheckItem;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
+import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
 import me.cuiyijie.joyea.service.IJoyeaCheckItemService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class JoyeaCheckItemController {
 
     @Autowired
     private IJoyeaCheckItemService joyeaCheckItemService;
+
+    @Autowired
+    private ICheckItemFormSettingService checkItemFormSettingService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse listByManufactureOrderId(@RequestBody TransCheckItemRequest request) {
@@ -59,7 +64,7 @@ public class JoyeaCheckItemController {
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public TransBaseResponse update(TransCheckItemRequest request) {
+    public TransBaseResponse update(@RequestBody TransCheckItemRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
         JoyeaCheckItem joyeaCheckItem = new JoyeaCheckItem();
@@ -78,7 +83,7 @@ public class JoyeaCheckItemController {
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public TransBaseResponse delete(TransCheckItemRequest request) {
+    public TransBaseResponse delete(@RequestBody TransCheckItemRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
         JoyeaCheckItem joyeaCheckItem = new JoyeaCheckItem();
@@ -92,6 +97,16 @@ public class JoyeaCheckItemController {
             response.setCode("-1");
         }
 
+        return response;
+    }
+
+    @RequestMapping(value = "form/setting", method = RequestMethod.POST)
+    public TransBaseResponse getCheckItemSetting(@RequestBody TransCheckItemRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        List<CheckItemFormSetting> checkItemFormSettingList = checkItemFormSettingService.listAll(request.getId());
+        response.setList(checkItemFormSettingList);
+        response.setCode("0");
         return response;
     }
 

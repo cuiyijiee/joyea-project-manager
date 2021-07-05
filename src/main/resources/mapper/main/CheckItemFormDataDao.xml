@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFormDataDao">
+
+    <select id="selectBy" resultType="me.cuiyijie.joyea.domain.CheckItemFormData">
+        SELECT cifs.id            AS columnId,
+               cifs.column_name   AS columnName,
+               cifd.id            AS id,
+               cifd.check_item_id AS checkItemId,
+               cifs.seq           AS seq,
+               cifd.row_index     AS rowIndex,
+               cifd.column_value  AS columnValue
+        FROM check_item_form_setting AS cifs
+                 LEFT JOIN check_item_form_data AS cifd
+                           ON cifd.setting_id = cifs.id AND cifd.row_index = #{item.rowIndex}
+        WHERE cifs.check_item_id = #{item.checkItemId}
+    </select>
+
+</mapper>
