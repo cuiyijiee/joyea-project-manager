@@ -13,4 +13,8 @@ public class SysFileUpload {
     private String fileSuffix;
     private LocalDateTime createdTime = LocalDateTime.now();
 
+    public String getFullName(){
+        return String.format("%s.%s",fileSaveId,fileSuffix);
+    }
+
 }

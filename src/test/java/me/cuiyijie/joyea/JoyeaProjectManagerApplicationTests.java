@@ -3,10 +3,7 @@ package me.cuiyijie.joyea;
 import me.cuiyijie.joyea.dao.joyea.JoyeaPersonDao;
 import me.cuiyijie.joyea.dao.main.CheckItemFormDataDao;
 import me.cuiyijie.joyea.domain.CheckItemFormData;
-import me.cuiyijie.joyea.domain.CheckItemFormSetting;
-import me.cuiyijie.joyea.domain.JoyeaPerson;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
-import me.cuiyijie.joyea.service.IUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,7 +42,7 @@ class JoyeaProjectManagerApplicationTests {
         CheckItemFormData checkItemFormData = new CheckItemFormData();
         checkItemFormData.setCheckItemId("1");
         checkItemFormData.setRowIndex(1);
-        List<CheckItemFormData> checkItemFormDataList = checkItemFormDataDao.selectBy(checkItemFormData);
+        List<CheckItemFormData> checkItemFormDataList = checkItemFormDataDao.selectAllBy(checkItemFormData);
         checkItemFormDataList.stream().forEach(item -> {
             System.out.println(item);
         });

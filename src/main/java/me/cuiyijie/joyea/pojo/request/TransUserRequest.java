@@ -4,5 +4,8 @@ import lombok.Data;
 
 @Data
 public class TransUserRequest {
+
     private String ticket;
+    private boolean isTest;
+
 }

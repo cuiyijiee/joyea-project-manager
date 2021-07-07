@@ -31,7 +31,6 @@ public class FileUploadController {
     private ISysFileUploadService iSysFileUploadService;
 
     @PostMapping(value = "/upload")
-    @ResponseBody
     public TransBaseResponse upload(@RequestParam("file") MultipartFile multipartFile) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         if (multipartFile.isEmpty()) {

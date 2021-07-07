@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFileDao">
+
+    <insert id="insert" useGeneratedKeys="true">
+        INSERT INTO check_item_file(check_item_id, file_id)
+        VALUES (#{checkItemId},
+                #{fileId})
+    </insert>
+
+    <select id="selectByCheckItemId" resultType="me.cuiyijie.joyea.domain.SysFileUpload">
+        SELECT cif.id   AS id,
+               sfu.origin_file_name AS originFileName,
+               sfu.file_save_id     AS fileSaveId,
+               sfu.file_suffix      AS fileSuffix
+        FROM check_item_file AS cif
+                 LEFT JOIN sys_file_upload AS sfu ON cif.file_id = sfu.file_save_id
+        WHERE cif.check_item_id = #{checkItemId}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM check_item_file
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

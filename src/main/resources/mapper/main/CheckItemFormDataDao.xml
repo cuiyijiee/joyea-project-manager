@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFormDataDao">
 
-    <select id="selectBy" resultType="me.cuiyijie.joyea.domain.CheckItemFormData">
+    <select id="selectAllBy" resultType="me.cuiyijie.joyea.domain.CheckItemFormData">
         SELECT cifs.id            AS columnId,
                cifs.column_name   AS columnName,
                cifd.id            AS id,
@@ -12,8 +12,45 @@
                cifd.column_value  AS columnValue
         FROM check_item_form_setting AS cifs
                  LEFT JOIN check_item_form_data AS cifd
-                           ON cifd.setting_id = cifs.id AND cifd.row_index = #{item.rowIndex}
-        WHERE cifs.check_item_id = #{item.checkItemId}
+                           ON cifd.column_id = cifs.id
+        <if test="item.rowIndex != -1">
+            AND cifd.row_index = #{item.rowIndex}
+        </if>
+        WHERE cifd.check_item_id = #{item.checkItemId}
     </select>
+
+    <select id="selectBy" resultType="me.cuiyijie.joyea.domain.CheckItemFormData">
+        SELECT cifs.id            AS columnId,
+               cifs.column_name   AS columnName,
+               cifd.id            AS id,
+               cifd.check_item_id AS checkItemId,
+               cifs.seq           AS seq,
+               cifd.row_index     AS rowIndex,
+               cifd.column_value  AS columnValue
+        FROM check_item_form_data AS cifd
+                 LEFT JOIN check_item_form_setting AS cifs
+                           ON cifd.column_id = cifs.id
+        WHERE cifd.check_item_id = #{item.checkItemId}
+          AND cifd.row_index = #{item.rowIndex}
+          AND cifd.column_id = #{item.columnId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO check_item_form_data(check_item_id, column_id, row_index, column_value)
+        VALUES (#{item.checkItemId},
+                #{item.columnId},
+                #{item.rowIndex},
+                #{item.columnValue})
+    </insert>
+
+    <update id="update">
+        UPDATE check_item_form_data
+        <set>
+            column_value = #{item.columnValue}
+        </set>
+        WHERE check_item_id = #{item.checkItemId}
+        AND row_index = #{item.rowIndex}
+        AND column_id = #{item.columnId}
+    </update>
 
 </mapper>

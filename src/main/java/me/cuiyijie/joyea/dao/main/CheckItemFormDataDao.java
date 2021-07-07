@@ -9,6 +9,12 @@ import java.util.List;
 @Repository
 public interface CheckItemFormDataDao {
 
-    List<CheckItemFormData> selectBy(@Param("item") CheckItemFormData checkItemFormData);
+    List<CheckItemFormData> selectAllBy(@Param("item") CheckItemFormData checkItemFormData);
+
+    CheckItemFormData selectBy(@Param("item") CheckItemFormData checkItemFormData);
+
+    Integer insert(@Param("item") CheckItemFormData checkItemFormData);
+
+    Integer update(@Param("item") CheckItemFormData checkItemFormData);
 
 }

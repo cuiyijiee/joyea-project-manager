@@ -10,7 +10,7 @@ public class CheckItemFormData {
     private String checkItemId; //点检项Id
     private Integer seq; //列所在index（第几列）
     private String columnName; //列名称
-    private String columnId; //列ID
+    private Integer columnId; //列ID
     private Integer rowIndex; //行数index
     private String columnValue; //单元格数据
 

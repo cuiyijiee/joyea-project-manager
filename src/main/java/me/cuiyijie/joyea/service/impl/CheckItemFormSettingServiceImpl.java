@@ -18,4 +18,5 @@ public class CheckItemFormSettingServiceImpl implements ICheckItemFormSettingSer
     public List<CheckItemFormSetting> listAll(String checkItemId) {
         return checkItemFormColumnNameDao.selectByCheckItemId(checkItemId);
     }
+
 }
