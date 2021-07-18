@@ -3,20 +3,22 @@
 <mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFormDataDao">
 
     <select id="selectAllBy" resultType="me.cuiyijie.joyea.domain.CheckItemFormData">
-        SELECT cifs.id            AS columnId,
-               cifs.column_name   AS columnName,
-               cifd.id            AS id,
-               cifd.check_item_id AS checkItemId,
-               cifs.seq           AS seq,
-               cifd.row_index     AS rowIndex,
-               cifd.column_value  AS columnValue
+        SELECT cifs.id AS columnId,
+        cifs.column_name AS columnName,
+        cifd.id AS id,
+        cifd.check_item_id AS checkItemId,
+        cifs.seq AS seq,
+        cifd.row_index AS rowIndex,
+        cifd.column_value AS columnValue,
+        cifd.data_type AS dataType
         FROM check_item_form_setting AS cifs
-                 LEFT JOIN check_item_form_data AS cifd
-                           ON cifd.column_id = cifs.id
+        LEFT JOIN check_item_form_data AS cifd
+        ON cifd.column_id = cifs.id
         <if test="item.rowIndex != -1">
             AND cifd.row_index = #{item.rowIndex}
         </if>
         WHERE cifd.check_item_id = #{item.checkItemId}
+        AND cifd.data_type = #{item.dataType}
     </select>
 
     <select id="selectBy" resultType="me.cuiyijie.joyea.domain.CheckItemFormData">
@@ -26,21 +28,24 @@
                cifd.check_item_id AS checkItemId,
                cifs.seq           AS seq,
                cifd.row_index     AS rowIndex,
-               cifd.column_value  AS columnValue
+               cifd.column_value  AS columnValue,
+               cifd.data_type     AS dataType
         FROM check_item_form_data AS cifd
                  LEFT JOIN check_item_form_setting AS cifs
                            ON cifd.column_id = cifs.id
         WHERE cifd.check_item_id = #{item.checkItemId}
           AND cifd.row_index = #{item.rowIndex}
           AND cifd.column_id = #{item.columnId}
+          AND cifd.data_type = #{item.dataType}
     </select>
 
     <insert id="insert">
-        INSERT INTO check_item_form_data(check_item_id, column_id, row_index, column_value)
+        INSERT INTO check_item_form_data(check_item_id, column_id, row_index, column_value, data_type)
         VALUES (#{item.checkItemId},
                 #{item.columnId},
                 #{item.rowIndex},
-                #{item.columnValue})
+                #{item.columnValue},
+                #{item.dataType})
     </insert>
 
     <update id="update">
@@ -51,6 +56,7 @@
         WHERE check_item_id = #{item.checkItemId}
         AND row_index = #{item.rowIndex}
         AND column_id = #{item.columnId}
+        AND data_type = #{item.dataType}
     </update>
 
 </mapper>

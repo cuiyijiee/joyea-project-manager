@@ -148,7 +148,7 @@ public class JoyeaCheckItemController {
     public TransBaseResponse getCheckItemFormData(@RequestBody TransCheckItemDataRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), request.getRowIndex());
+        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), request.getRowIndex(),request.getDataType());
 
         response.setCode("0");
         response.setList(result);
@@ -178,7 +178,7 @@ public class JoyeaCheckItemController {
     public TransBaseResponse getAllFile(@RequestBody TransCheckItemFileRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        List<SysFileUpload> result = checkItemFileService.selectByCheckItemId(request.getCheckItemId());
+        List<SysFileUpload> result = checkItemFileService.selectByCheckItemId(request.getCheckItemId(),request.getFileType());
 
         response.setList(result);
         response.setCode("0");

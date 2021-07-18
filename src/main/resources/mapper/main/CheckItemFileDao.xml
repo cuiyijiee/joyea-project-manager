@@ -3,23 +3,28 @@
 <mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFileDao">
 
     <insert id="insert" useGeneratedKeys="true">
-        INSERT INTO check_item_file(check_item_id, file_id)
+        INSERT INTO check_item_file(check_item_id, file_id, file_type)
         VALUES (#{checkItemId},
-                #{fileId})
+                #{fileId}, #{fileType})
     </insert>
 
     <select id="selectByCheckItemId" resultType="me.cuiyijie.joyea.domain.SysFileUpload">
-        SELECT cif.id   AS id,
-               sfu.origin_file_name AS originFileName,
-               sfu.file_save_id     AS fileSaveId,
-               sfu.file_suffix      AS fileSuffix
+        SELECT cif.id AS id,
+        cif.file_type AS fileType,
+        sfu.origin_file_name AS originFileName,
+        sfu.file_save_id AS fileSaveId,
+        sfu.file_suffix AS fileSuffix
         FROM check_item_file AS cif
-                 LEFT JOIN sys_file_upload AS sfu ON cif.file_id = sfu.file_save_id
+        LEFT JOIN sys_file_upload AS sfu ON cif.file_id = sfu.file_save_id
         WHERE cif.check_item_id = #{checkItemId}
+        <if test="fileType != null">
+            AND file_type = #{fileType}
+        </if>
     </select>
 
     <delete id="delete">
-        DELETE FROM check_item_file
+        DELETE
+        FROM check_item_file
         WHERE id = #{id}
     </delete>
 

@@ -11,6 +11,7 @@ public class SysFileUpload {
     private String originFileName;
     private String fileSaveId;
     private String fileSuffix;
+    private Integer fileType;
     private LocalDateTime createdTime = LocalDateTime.now();
 
     public String getFullName(){

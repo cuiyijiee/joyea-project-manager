@@ -7,6 +7,7 @@ import me.cuiyijie.joyea.service.ICheckItemFormDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
             selection.setRowIndex(request.getRowIndex());
             selection.setCheckItemId(request.getCheckItem());
             selection.setColumnId(toUpdateData.getId());
+            selection.setDataType(request.getDataType());
             CheckItemFormData checkItemFormData = checkItemFormDataDao.selectBy(selection);
 
             if (checkItemFormData == null) {
@@ -33,6 +35,7 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
                 insertion.setRowIndex(request.getRowIndex());
                 insertion.setColumnId(toUpdateData.getId());
                 insertion.setColumnValue(toUpdateData.getValue());
+                insertion.setDataType(request.getDataType());
 
                 checkItemFormDataDao.insert(insertion);
             } else {
@@ -42,6 +45,7 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
                 updation.setRowIndex(request.getRowIndex());
                 updation.setColumnId(toUpdateData.getId());
                 updation.setColumnValue(toUpdateData.getValue());
+                updation.setDataType(request.getDataType());
 
                 checkItemFormDataDao.update(updation);
             }
@@ -49,11 +53,12 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
     }
 
     @Override
-    public List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex) {
+    public List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex, Integer dataType) {
 
         CheckItemFormData selection = new CheckItemFormData();
         selection.setCheckItemId(checkItemId);
         selection.setRowIndex(rowIndex);
+        selection.setDataType(dataType);
 
         return checkItemFormDataDao.selectAllBy(selection);
     }

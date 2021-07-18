@@ -9,5 +9,5 @@ public interface ICheckItemFormDataService {
 
     void updateAllFormData(TransCheckItemFormRequest request);
 
-    List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex);
+    List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex,Integer dataType);
 }

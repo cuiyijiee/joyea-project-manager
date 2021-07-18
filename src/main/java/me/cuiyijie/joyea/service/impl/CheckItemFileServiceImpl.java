@@ -20,8 +20,8 @@ public class CheckItemFileServiceImpl implements ICheckItemFileService {
     }
 
     @Override
-    public List<SysFileUpload> selectByCheckItemId(String checkItemId) {
-        return checkItemFileDao.selectByCheckItemId(checkItemId);
+    public List<SysFileUpload> selectByCheckItemId(String checkItemId, Integer fileType) {
+        return checkItemFileDao.selectByCheckItemId(checkItemId,fileType);
     }
 
     @Override

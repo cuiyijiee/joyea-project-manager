@@ -11,7 +11,7 @@ public interface CheckItemFileDao {
 
     Integer insert(@Param("checkItemId") String checkItemId, @Param("fileId") String fileId);
 
-    List<SysFileUpload> selectByCheckItemId(@Param("checkItemId") String checkItemId);
+    List<SysFileUpload> selectByCheckItemId(@Param("checkItemId") String checkItemId, @Param("fileType") Integer fileType);
 
     Integer delete(@Param("id") Integer id);
 

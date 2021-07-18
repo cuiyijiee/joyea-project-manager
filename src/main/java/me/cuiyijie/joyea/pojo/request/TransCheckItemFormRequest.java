@@ -10,6 +10,7 @@ public class TransCheckItemFormRequest {
 
     private String checkItem;
     private Integer rowIndex;
+    private Integer dataType;
 
     private List<FormData> data;
 

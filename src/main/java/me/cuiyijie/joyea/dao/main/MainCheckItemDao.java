@@ -17,6 +17,8 @@ public interface MainCheckItemDao {
 
     List<JoyeaCheckItem> list(@Param("checkItem")JoyeaCheckItem joyeaCheckItem);
 
+    JoyeaCheckItem findById(@Param("id") String id);
+
     Integer delete(@Param("id")String id);
 
 }

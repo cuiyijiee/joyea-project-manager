@@ -9,9 +9,11 @@ import me.cuiyijie.joyea.domain.JoyeaCheckItem;
 import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
 import me.cuiyijie.joyea.service.IEasCheckItemSettingService;
 import me.cuiyijie.joyea.service.IJoyeaCheckItemService;
+import me.cuiyijie.joyea.service.INextPlusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +24,9 @@ public class JoyeaCheckItemServiceImpl implements IJoyeaCheckItemService {
 
     @Autowired
     private MainCheckItemDao mainCheckItemDao;
+
+    @Autowired
+    private INextPlusService nextPlusService;
 
     @Autowired
     private IEasCheckItemSettingService easCheckItemSettingService;
@@ -37,7 +42,7 @@ public class JoyeaCheckItemServiceImpl implements IJoyeaCheckItemService {
 
             originCheckItems.forEach(item -> {
                 List<JoyeaCheckItem> existedItem = mainCheckItemDao.list(item);
-                if(existedItem.size() <= 0){
+                if (existedItem.size() <= 0) {
                     mainCheckItemDao.insert(item);
                 }
             });
@@ -49,7 +54,7 @@ public class JoyeaCheckItemServiceImpl implements IJoyeaCheckItemService {
 
             if (easCheckItemSetting == null) {
                 easCheckItemSettingService.insert(insertOrUpdate);
-            }else{
+            } else {
                 easCheckItemSettingService.update(insertOrUpdate);
             }
 
@@ -72,6 +77,22 @@ public class JoyeaCheckItemServiceImpl implements IJoyeaCheckItemService {
 
     @Override
     public Integer update(JoyeaCheckItem joyeaCheckItem) {
+
+        List<String> toNotificationIds = new ArrayList<>();
+        JoyeaCheckItem checkItem = mainCheckItemDao.findById(joyeaCheckItem.getId());
+
+        if (!checkItem.getSelfCheckPersonId().equals(joyeaCheckItem.getSelfCheckPersonId())) {
+            toNotificationIds.add(joyeaCheckItem.getSelfCheckPersonId());
+        }
+        if (!checkItem.getMutualCheckPersonId().equals(joyeaCheckItem.getMutualCheckPersonId())) {
+            toNotificationIds.add(joyeaCheckItem.getMutualCheckPersonId());
+        }
+        if (!checkItem.getSpecialCheckPersonId().equals(joyeaCheckItem.getSpecialCheckPersonId())) {
+            toNotificationIds.add(joyeaCheckItem.getSpecialCheckPersonId());
+        }
+
+        nextPlusService.sendNotify(toNotificationIds, "您有一张质量点检表待处理!");
+
         return mainCheckItemDao.update(joyeaCheckItem);
     }
 

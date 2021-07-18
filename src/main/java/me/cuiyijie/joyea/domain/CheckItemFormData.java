@@ -13,5 +13,6 @@ public class CheckItemFormData {
     private Integer columnId; //列ID
     private Integer rowIndex; //行数index
     private String columnValue; //单元格数据
+    private Integer dataType; //表格类型：1-自检，2-互检，3-专检
 
 }

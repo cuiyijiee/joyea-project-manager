@@ -8,5 +8,6 @@ public class TransCheckItemFileRequest {
     private Integer id;
     private String checkItemId;
     private String fileId;
+    private Integer fileType;
 
 }

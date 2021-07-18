@@ -7,5 +7,6 @@ public class TransCheckItemDataRequest {
 
     private String checkItemId;
     private Integer rowIndex;
+    private Integer dataType;
 
 }
