@@ -17,4 +17,6 @@ public interface CheckItemFormDataDao {
 
     Integer update(@Param("item") CheckItemFormData checkItemFormData);
 
+    Integer deleteRowData(@Param("checkItemId")String checkItemId,@Param("dataType")Integer dataType,@Param("rowIndex") Integer rowIndex);
+
 }

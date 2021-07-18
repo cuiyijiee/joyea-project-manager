@@ -9,10 +9,7 @@ import me.cuiyijie.joyea.domain.JoyeaCheckItem;
 import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
-import me.cuiyijie.joyea.pojo.request.TransCheckItemDataRequest;
-import me.cuiyijie.joyea.pojo.request.TransCheckItemFileRequest;
-import me.cuiyijie.joyea.pojo.request.TransCheckItemFormRequest;
-import me.cuiyijie.joyea.pojo.request.TransCheckItemRequest;
+import me.cuiyijie.joyea.pojo.request.*;
 import me.cuiyijie.joyea.service.ICheckItemFileService;
 import me.cuiyijie.joyea.service.ICheckItemFormDataService;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
@@ -133,7 +130,7 @@ public class JoyeaCheckItemController {
         TransBaseResponse response = new TransBaseResponse();
 
         try {
-            checkItemFormDataService.updateAllFormData(request);
+            checkItemFormDataService.updateRowData(request);
             response.setCode("0");
         } catch (Exception exception) {
             response.setCode("-1");
@@ -144,11 +141,35 @@ public class JoyeaCheckItemController {
         return response;
     }
 
+    @RequestMapping(value = "form/data/updateAll", method = RequestMethod.POST)
+    public TransBaseResponse updateCheckItemFormAllData(@RequestBody TransCheckItemFormUpdateAllRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+        try {
+            checkItemFormDataService.updateAllRowData(request);
+            response.setCode("0");
+        } catch (Exception exception) {
+            response.setCode("-1");
+            response.setMsg("更新操作发生错误：" + exception.getMessage());
+            LOGGER.error("更新发生错误：", exception);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "form/data/delete", method = RequestMethod.POST)
+    public TransBaseResponse deleteCheckItemFormRowData(@RequestBody TransCheckItemFormRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        checkItemFormDataService.deleteRowData(request.getCheckItem(), request.getDataType(), request.getRowIndex());
+        response.setCode("0");
+
+        return response;
+    }
+
     @RequestMapping(value = "form/data", method = RequestMethod.POST)
     public TransBaseResponse getCheckItemFormData(@RequestBody TransCheckItemDataRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), request.getRowIndex(),request.getDataType());
+        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), request.getRowIndex(), request.getDataType());
 
         response.setCode("0");
         response.setList(result);
@@ -178,7 +199,7 @@ public class JoyeaCheckItemController {
     public TransBaseResponse getAllFile(@RequestBody TransCheckItemFileRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        List<SysFileUpload> result = checkItemFileService.selectByCheckItemId(request.getCheckItemId(),request.getFileType());
+        List<SysFileUpload> result = checkItemFileService.selectByCheckItemId(request.getCheckItemId(), request.getFileType());
 
         response.setList(result);
         response.setCode("0");

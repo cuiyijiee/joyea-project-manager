@@ -3,11 +3,11 @@ package me.cuiyijie.joyea.service.impl;
 import me.cuiyijie.joyea.dao.main.CheckItemFormDataDao;
 import me.cuiyijie.joyea.domain.CheckItemFormData;
 import me.cuiyijie.joyea.pojo.request.TransCheckItemFormRequest;
+import me.cuiyijie.joyea.pojo.request.TransCheckItemFormUpdateAllRequest;
 import me.cuiyijie.joyea.service.ICheckItemFormDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,7 +17,7 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
     private CheckItemFormDataDao checkItemFormDataDao;
 
     @Override
-    public void updateAllFormData(TransCheckItemFormRequest request) {
+    public void updateRowData(TransCheckItemFormRequest request) {
         for (int index = 0; index < request.getData().size(); index++) {
             TransCheckItemFormRequest.FormData toUpdateData = request.getData().get(index);
             CheckItemFormData selection = new CheckItemFormData();
@@ -53,6 +53,26 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
     }
 
     @Override
+    public void updateAllRowData(TransCheckItemFormUpdateAllRequest request) {
+
+        List<TransCheckItemFormUpdateAllRequest.RowData> rowDatas = request.getRowData();
+        if (rowDatas != null && rowDatas.size() > 0) {
+            for (int index = 0; index < rowDatas.size(); index++) {
+
+                TransCheckItemFormUpdateAllRequest.RowData rowData = rowDatas.get(index);
+
+                TransCheckItemFormRequest transCheckItemFormRequest = new TransCheckItemFormRequest();
+                transCheckItemFormRequest.setCheckItem(request.getCheckItem());
+                transCheckItemFormRequest.setDataType(request.getDataType());
+                transCheckItemFormRequest.setRowIndex(rowData.getRowIndex());
+                transCheckItemFormRequest.setData(rowData.getData());
+
+                updateRowData(transCheckItemFormRequest);
+            }
+        }
+    }
+
+    @Override
     public List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex, Integer dataType) {
 
         CheckItemFormData selection = new CheckItemFormData();
@@ -61,5 +81,10 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
         selection.setDataType(dataType);
 
         return checkItemFormDataDao.selectAllBy(selection);
+    }
+
+    @Override
+    public Integer deleteRowData(String checkItemId, Integer dataType, Integer rowIndex) {
+        return checkItemFormDataDao.deleteRowData(checkItemId,dataType,rowIndex);
     }
 }

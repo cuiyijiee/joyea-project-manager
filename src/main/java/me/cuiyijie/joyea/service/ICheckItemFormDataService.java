@@ -2,12 +2,17 @@ package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.domain.CheckItemFormData;
 import me.cuiyijie.joyea.pojo.request.TransCheckItemFormRequest;
+import me.cuiyijie.joyea.pojo.request.TransCheckItemFormUpdateAllRequest;
 
 import java.util.List;
 
 public interface ICheckItemFormDataService {
 
-    void updateAllFormData(TransCheckItemFormRequest request);
+    void updateRowData(TransCheckItemFormRequest request);
 
-    List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex,Integer dataType);
+    void updateAllRowData(TransCheckItemFormUpdateAllRequest request);
+
+    List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex, Integer dataType);
+
+    Integer deleteRowData(String checkItemId, Integer dataType, Integer rowIndex);
 }

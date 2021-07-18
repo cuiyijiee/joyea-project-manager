@@ -59,4 +59,12 @@
         AND data_type = #{item.dataType}
     </update>
 
+    <delete id="deleteRowData">
+        DELETE
+        FROM check_item_form_data AS cifd
+        WHERE cifd.check_item_id = #{checkItemId}
+          AND cifd.data_type = #{dataType}
+          AND cifd.rowIndex = #{rowIndex}
+    </delete>
+
 </mapper>
