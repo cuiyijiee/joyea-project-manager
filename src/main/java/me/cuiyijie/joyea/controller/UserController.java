@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.domain.JoyeaAccessToken;
 import me.cuiyijie.joyea.domain.JoyeaUserProfile;
 import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
@@ -34,16 +35,6 @@ public class UserController {
     @Autowired
     RestTemplate restTemplate;
 
-    @Value("${joyea.oauth2.nextplus.clientId}")
-    private String nextPlusClientId;
-
-    @Value("${joyea.oauth2.nextplus.clientSecret}")
-    private String nextPlusClientSecret;
-
-    private final static String NEXT_PLUS_ACCESS_TOKEN_URL = "https://open.nextxx.cn/openapi/oauth/token";
-    private final static String NEXT_PLUS_TICKET_URL = "https://open.nextxx.cn/openapi/oauth/ticket";
-    private final static String NEXT_PLUS_PROFILE_URL = "http://hr.joyea.cn:8099/openapi/find-ytm-user-by-code/";
-
     @ApiOperation(value = "获取用户信息", notes = "通过泛微返回ticket获取用户信息")
     @RequestMapping(value = "authorize", method = RequestMethod.POST)
     public TransBaseResponse authorize(@RequestBody TransUserRequest request) {
@@ -75,10 +66,10 @@ public class UserController {
         TransBaseResponse response = new TransBaseResponse();
 
         Map<String, String> getAccessTokenParams = new HashMap<String, String>();
-        getAccessTokenParams.put("clientId", nextPlusClientId);
-        getAccessTokenParams.put("clientSecret", nextPlusClientSecret);
+        getAccessTokenParams.put("clientId", Constants.getNextPlusClientId());
+        getAccessTokenParams.put("clientSecret", Constants.getNextPlusClientSecret());
 
-        HttpEntity<NextPlusAccessTokenResp> accessTokenResp = restTemplate.postForEntity(NEXT_PLUS_ACCESS_TOKEN_URL, getAccessTokenParams, NextPlusAccessTokenResp.class);
+        HttpEntity<NextPlusAccessTokenResp> accessTokenResp = restTemplate.postForEntity(Constants.NEXT_PLUS_ACCESS_TOKEN_URL, getAccessTokenParams, NextPlusAccessTokenResp.class);
 
 
 
@@ -90,7 +81,7 @@ public class UserController {
         String ticketRequestParamStr = String.format("{\"accessToken\":\"%s\"}",accessTokenResp.getBody().getAccessToken());
 
         HttpEntity<String> entity = new HttpEntity<>(ticketRequestParamStr, headers);
-        ResponseEntity<NextPlusTicketResp> responseEntity = restTemplate.postForEntity(NEXT_PLUS_TICKET_URL, entity, NextPlusTicketResp.class);
+        ResponseEntity<NextPlusTicketResp> responseEntity = restTemplate.postForEntity(Constants.NEXT_PLUS_TICKET_URL, entity, NextPlusTicketResp.class);
 
         response.setCode("0");
         response.setObj(responseEntity.getBody());
@@ -105,7 +96,7 @@ public class UserController {
         TransBaseResponse response = new TransBaseResponse();
 
         ResponseEntity<NextPlusUserProfileResp> profileResp = restTemplate.getForEntity(
-                String.format("%s%s",NEXT_PLUS_PROFILE_URL,request.getAuthCode()),
+                String.format("%s%s",Constants.NEXT_PLUS_PROFILE_URL,request.getAuthCode()),
                 NextPlusUserProfileResp.class
         );
 

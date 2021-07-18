@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class TransBaseResponse {
 
-    private String code;
+    private String code = "0";
     private String msg;
 
     private Object obj;
