@@ -4,10 +4,10 @@
 
     <insert id="insert">
         INSERT INTO check_item(id, check_standard, check_type_id, check_type_name, seq, operation_id, operation_no,
-                               self_check_person_id, self_check_person_name, self_check_type, self_check_result,
+                               self_check_person_id, self_check_person_name, self_check_type, self_check_result,self_check_remark,
                                special_check_person_id, special_check_person_name, special_check_type,
-                               special_check_result,
-                               mutual_check_person_id, mutual_check_person_name, mutual_check_type, mutual_check_result)
+                               special_check_result, special_check_remark,
+                               mutual_check_person_id, mutual_check_person_name, mutual_check_type, mutual_check_result, mutual_check_remark)
         VALUES (#{checkItem.id},
                 #{checkItem.checkStandard},
                 #{checkItem.checkTypeId},
@@ -19,21 +19,24 @@
                 #{checkItem.selfCheckPersonName},
                 #{checkItem.selfCheckType},
                 #{checkItem.selfCheckResult},
+                #{checkItem.selfCheckRemark},
                 #{checkItem.specialCheckPersonId},
                 #{checkItem.specialCheckPersonName},
                 #{checkItem.specialCheckType},
                 #{checkItem.specialCheckResult},
+                #{checkItem.specialCheckRemark},
                 #{checkItem.mutualCheckPersonId},
                 #{checkItem.mutualCheckPersonName},
                 #{checkItem.mutualCheckType},
-                #{checkItem.mutualCheckResult})
+                #{checkItem.mutualCheckResult},
+                #{checkItem.mutualCheckRemark})
     </insert>
 
     <insert id="insertMany">
         INSERT INTO check_item(id, check_standard, check_type_id, check_type_name, seq, operation_id, operation_no,
-        self_check_person_id, self_check_person_name,self_check_type,self_check_result,
-        special_check_person_id, special_check_person_name,special_check_type,special_check_result,
-        mutual_check_person_id,mutual_check_person_name,mutual_check_type,mutual_check_result)
+        self_check_person_id, self_check_person_name,self_check_type,self_check_result,self_check_remark,
+        special_check_person_id, special_check_person_name,special_check_type,special_check_result,special_check_remark,
+        mutual_check_person_id,mutual_check_person_name,mutual_check_type,mutual_check_result,mutual_check_remark)
         VALUES
         <foreach collection="list" index="index" item="checkItem" separator=",">
             (
@@ -49,16 +52,19 @@
             #{checkItem.selfCheckPersonName},
             #{checkItem.selfCheckType},
             #{checkItem.selfCheckResult},
+            #{checkItem.selfCheckRemark},
 
             #{checkItem.specialCheckPersonId},
             #{checkItem.specialCheckPersonName},
             #{checkItem.specialCheckType},
             #{checkItem.specialCheckResult},
+            #{checkItem.specialCheckRemark},
 
             #{checkItem.mutualCheckPersonId},
             #{checkItem.mutualCheckPersonName},
             #{checkItem.mutualCheckType},
-            #{checkItem.mutualCheckResult}
+            #{checkItem.mutualCheckResult},
+            #{checkItem.mutualCheckRemark}
             )
         </foreach>
     </insert>
@@ -76,16 +82,19 @@
                ci.self_check_person_name    AS selfCheckPersonName,
                ci.self_check_type           AS selfCheckType,
                ci.self_check_result         AS selfCheckResult,
+               ci.self_check_remark         AS selfCheckRemark,
 
                ci.special_check_person_id   AS specialCheckPersonId,
                ci.special_check_person_name AS specialCheckPersonName,
                ci.special_check_type        AS specialCheckType,
                ci.special_check_result      AS specialCheckResult,
+               ci.special_check_remark      AS specialCheckRemark,
 
                ci.mutual_check_person_id    AS mutualCheckPersonId,
                ci.mutual_check_person_name  AS mutualCheckPersonName,
                ci.mutual_check_type         AS mutualCheckType,
-               ci.mutual_check_result       AS mutualCheckResult
+               ci.mutual_check_result       AS mutualCheckResult,
+               ci.mutual_check_remark       AS mutualCheckRemark
         FROM check_item AS ci
         WHERE ci.operation_id = #{checkItem.operationId}
           AND ci.operation_no = #{checkItem.operationNo}
@@ -105,16 +114,19 @@
                ci.self_check_person_name    AS selfCheckPersonName,
                ci.self_check_type           AS selfCheckType,
                ci.self_check_result         AS selfCheckResult,
+               ci.self_check_remark         AS selfCheckRemark,
 
                ci.special_check_person_id   AS specialCheckPersonId,
                ci.special_check_person_name AS specialCheckPersonName,
                ci.special_check_type        AS specialCheckType,
                ci.special_check_result      AS specialCheckResult,
+               ci.special_check_remark      AS specialCheckRemark,
 
                ci.mutual_check_person_id    AS mutualCheckPersonId,
                ci.mutual_check_person_name  AS mutualCheckPersonName,
                ci.mutual_check_type         AS mutualCheckType,
-               ci.mutual_check_result       AS mutualCheckResult
+               ci.mutual_check_result       AS mutualCheckResult,
+               ci.mutual_check_remark       AS mutualCheckRemark
         FROM check_item AS ci
         WHERE ci.id = #{id}
     </select>
@@ -147,6 +159,9 @@
             <if test="checkItem.selfCheckResult != null">
                 self_check_result = #{checkItem.selfCheckResult},
             </if>
+            <if test="checkItem.selfCheckRemark != null">
+                self_check_remark = #{checkItem.selfCheckRemark},
+            </if>
 
             <if test="checkItem.specialCheckPersonId != null and checkItem.specialCheckPersonId != ''">
                 special_check_person_id = #{checkItem.specialCheckPersonId},
@@ -160,6 +175,9 @@
             <if test="checkItem.specialCheckResult != null">
                 special_check_result = #{checkItem.specialCheckResult},
             </if>
+            <if test="checkItem.specialCheckRemark != null">
+                special_check_remark = #{checkItem.specialCheckRemark},
+            </if>
 
             <if test="checkItem.mutualCheckPersonId != null and checkItem.mutualCheckPersonId != ''">
                 mutual_check_person_id = #{checkItem.mutualCheckPersonId},
@@ -172,6 +190,9 @@
             </if>
             <if test="checkItem.mutualCheckResult != null">
                 mutual_check_result = #{checkItem.mutualCheckResult},
+            </if>
+            <if test="checkItem.mutualCheckRemark != null">
+                mutual_check_remark = #{checkItem.mutualCheckRemark},
             </if>
         </set>
         WHERE ID = #{checkItem.id}

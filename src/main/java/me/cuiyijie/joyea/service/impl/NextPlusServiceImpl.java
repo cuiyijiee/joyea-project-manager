@@ -67,6 +67,6 @@ public class NextPlusServiceImpl implements INextPlusService {
         //restTemplate.postForEntity(Constants.NEXT_PLUS_SEND_NOTIFICATION_URL, entity, String.class);
         ResponseEntity<String> response = restTemplate.postForEntity(Constants.NEXT_PLUS_SEND_NOTIFICATION_URL, entity, String.class);
 
-        LOGGER.info("invoke nextplus result:{}",response);
+        LOGGER.info("invoke nextplus notification result:{}",response);
     }
 }

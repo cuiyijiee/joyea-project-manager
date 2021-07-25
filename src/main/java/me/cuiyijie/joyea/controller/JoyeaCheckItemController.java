@@ -141,6 +141,21 @@ public class JoyeaCheckItemController {
         return response;
     }
 
+    @ApiOperation(value = "更新点检项表单列数据", notes = "更新点检项表单列数据")
+    @RequestMapping(value = "form/data/column/update")
+    public TransBaseResponse updateFormColumnData(@RequestBody TransCheckItemFormColumnRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+        try {
+            checkItemFormDataService.updateColumnData(request);
+            response.setCode("0");
+        } catch (Exception exception) {
+            response.setCode("-1");
+            response.setMsg("更新操作发生错误：" + exception.getMessage());
+            LOGGER.error("更新发生错误：", exception);
+        }
+        return response;
+    }
+
     @RequestMapping(value = "form/data/updateAll", method = RequestMethod.POST)
     public TransBaseResponse updateCheckItemFormAllData(@RequestBody TransCheckItemFormUpdateAllRequest request) {
         TransBaseResponse response = new TransBaseResponse();

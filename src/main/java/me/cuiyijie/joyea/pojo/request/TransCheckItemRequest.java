@@ -25,17 +25,20 @@ public class TransCheckItemRequest {
     private Integer specialCheckType;
     @ApiModelProperty("专检人选项检验结果，默认为false")
     private boolean specialCheckResult;
+    private String specialCheckRemark;
 
     //互检人
     private String mutualCheckPersonId;
     private String mutualCheckPersonName;
     private Integer mutualCheckType;
     private boolean mutualCheckResult;
+    private String mutualCheckRemark;
 
     //自检人
     private String selfCheckPersonId;
     private String selfCheckPersonName;
     private Integer selfCheckType;
     private boolean selfCheckResult;
+    private String selfCheckRemark;
 
 }
