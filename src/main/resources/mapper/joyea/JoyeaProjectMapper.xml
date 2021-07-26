@@ -34,20 +34,20 @@
     </select>
 
     <select id="selectProject" resultType="me.cuiyijie.joyea.pojo.vo.JoyeaProjectVO">
-        SELECT DISTINCT c.FID AS "manufactureId",
-        a.fnumber AS "projectNumber",
-        a.CFPROJECTNAME AS "projectName",
-        b.FNUMBER AS "saleOrderNumber",
-        c.FRelatingEntrySeq AS "saleOrderSeq",
-        c.FNUMBER AS "manufactureNumber",
-        d.fid AS "materialId",
-        d.fname_l2 AS "materialName",
-        d.fnumber AS "materialNumber",
-        f.fnumber AS "taskNumber",
-        f.cftaskname AS "taskName",
-        f.cfbegintime AS "taskStartTime",
-        f.cfendtime AS "taskEndTime",
-        g.fname_l2 AS "taskCategory"
+        SELECT DISTINCT c.FID AS "manufactureId", --生产单号ID
+        a.fnumber AS "projectNumber",  --项目编号
+        a.CFPROJECTNAME AS "projectName", --项目名称
+        b.FNUMBER AS "saleOrderNumber", --销售订单编号
+        c.FRelatingEntrySeq AS "saleOrderSeq", --销售订单序号
+        c.FNUMBER AS "manufactureNumber", --生产编号
+        d.fid AS "materialId", --产品ID
+        d.fname_l2 AS "materialName", --产品名称
+        d.fnumber AS "materialNumber", --产品编号
+        f.fnumber AS "taskNumber", --任务编号
+        f.cftaskname AS "taskName", --任务名称
+        f.cfbegintime AS "taskStartTime", --主任务开始时间
+        f.cfendtime AS "taskEndTime", --主任务结束时间
+        g.fname_l2 AS "taskCategory" --任务类型
         FROM ct_prj_project a
         LEFT JOIN T_SD_SALEORDER b ON a.FID = b.CFJYCONTRACTPROJEC
         LEFT JOIN T_MM_ManufactureOrder c ON c.FRelatingOrderNum = b.FNUMBER
@@ -55,7 +55,10 @@
         LEFT JOIN CT_PRE_BOOKENTRYBANDMANUORDER e ON e.cfmanuorderid = c.fid
         LEFT JOIN ct_prj_task f ON e.cfassemblytaskid = f.fid
         LEFT JOIN CT_PRJ_TASKCATEGORY g ON F.CFTASKCATEGORYID = g.fid
-        WHERE c.FOLDBASESTATUS != '-3'
+        LEFT JOIN t_sd_saleorderentry h ON b.fid=h.fparentid AND h.fseq=c.FRelatingEntrySeq
+        LEFT JOIN CT_PRE_ContractDE h1 ON h.CFJYCONTRACTENTRYID=h1.fid
+        LEFT JOIN CT_PRE_EquipCheckItem h2 ON h1.cfequipmentid=h2.cfequipmentid AND h1.cfstatus=4
+        WHERE c.FOLDBASESTATUS != '-3' AND h2.fid IS NOT NULL
         <if test="projectNumber != null and projectNumber != ''">
             AND a.FNUMBER LIKE CONCAT('%',CONCAT(#{projectNumber},'%'))
         </if>
