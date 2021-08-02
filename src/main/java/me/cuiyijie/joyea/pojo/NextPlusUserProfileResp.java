@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.pojo;
 
 import lombok.Data;
+import me.cuiyijie.joyea.auth.util.JwtUtil;
 
 /**
  * @author cyj976655@gmail.com
@@ -21,5 +22,10 @@ public class NextPlusUserProfileResp {
     private String ytmOpenId;
     //一森组织id
     private String tenantId;
+
+
+    public String getToken() {
+        return JwtUtil.createToken(this.id);
+    }
 
 }
