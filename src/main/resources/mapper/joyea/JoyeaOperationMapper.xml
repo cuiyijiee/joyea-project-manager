@@ -18,6 +18,7 @@
                  LEFT JOIN CT_PRJ_TASK cptask ON cptask.FID = cpt.CFTASKID
                  LEFT JOIN T_BD_PERSON tbp ON tbp.FID = cptask.cfworkpersonid
         WHERE cpt.CFManufactureOrder = #{manufactureId,jdbcType=VARCHAR}
+          AND cpt.CFOPERATIONID is not null
         ORDER BY cpt.CFSEQ
     </select>
 </mapper>

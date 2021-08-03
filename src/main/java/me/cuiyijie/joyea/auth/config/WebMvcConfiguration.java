@@ -24,7 +24,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(setBean()).addPathPatterns("/**")
-                .excludePathPatterns("/user/nextplus/**");
+                .excludePathPatterns("/user/nextplus/**","/swagger-ui/**","/swagger-resources/**","/webjars/**","/v2/**");
     }
 
     @Override
