@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ICheckItemFileService {
 
-    Integer insert(String checkItemId,String fileId);
+    Integer insert(String checkItemId, String fileId, Integer fileType);
 
-    List<SysFileUpload> selectByCheckItemId(String checkItemId,Integer fileType);
+    List<SysFileUpload> selectByCheckItemId(String checkItemId, Integer fileType);
 
-    Integer delete(Integer id );
+    Integer delete(Integer id);
 }

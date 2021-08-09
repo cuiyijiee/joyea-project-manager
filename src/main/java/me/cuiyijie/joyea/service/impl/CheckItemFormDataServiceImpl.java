@@ -54,7 +54,7 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
                 TransCheckItemFormUpdateAllRequest.RowData rowData = rowDatas.get(index);
 
                 TransCheckItemFormRequest transCheckItemFormRequest = new TransCheckItemFormRequest();
-                transCheckItemFormRequest.setCheckItem(request.getCheckItem());
+                transCheckItemFormRequest.setCheckItem(request.getCheckItemId());
                 transCheckItemFormRequest.setDataType(request.getDataType());
                 transCheckItemFormRequest.setRowIndex(rowData.getRowIndex());
                 transCheckItemFormRequest.setData(rowData.getData());
@@ -65,11 +65,12 @@ public class CheckItemFormDataServiceImpl implements ICheckItemFormDataService {
     }
 
     @Override
-    public List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex, Integer dataType) {
+    public List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex,Integer columnId, Integer dataType) {
 
         CheckItemFormData selection = new CheckItemFormData();
         selection.setCheckItemId(checkItemId);
         selection.setRowIndex(rowIndex);
+        selection.setColumnId(columnId);
         selection.setDataType(dataType);
 
         return checkItemFormDataDao.selectAllBy(selection);

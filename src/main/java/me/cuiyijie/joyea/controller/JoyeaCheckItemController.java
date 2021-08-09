@@ -156,6 +156,7 @@ public class JoyeaCheckItemController {
         return response;
     }
 
+    @ApiOperation(value = "更新点检项表全部数据", notes = "更新点检项表全部数据")
     @RequestMapping(value = "form/data/updateAll", method = RequestMethod.POST)
     public TransBaseResponse updateCheckItemFormAllData(@RequestBody TransCheckItemFormUpdateAllRequest request) {
         TransBaseResponse response = new TransBaseResponse();
@@ -170,6 +171,7 @@ public class JoyeaCheckItemController {
         return response;
     }
 
+    @ApiOperation(value = "删除点检项某一行数据", notes = "删除点检项某一行数据")
     @RequestMapping(value = "form/data/delete", method = RequestMethod.POST)
     public TransBaseResponse deleteCheckItemFormRowData(@RequestBody TransCheckItemFormRequest request) {
         TransBaseResponse response = new TransBaseResponse();
@@ -180,11 +182,25 @@ public class JoyeaCheckItemController {
         return response;
     }
 
+    @ApiOperation(value = "获取点检项表格的所有数据", notes = "获取点检项表格的所有数据")
     @RequestMapping(value = "form/data", method = RequestMethod.POST)
     public TransBaseResponse getCheckItemFormData(@RequestBody TransCheckItemDataRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), request.getRowIndex(), request.getDataType());
+        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), request.getRowIndex(),null, request.getDataType());
+
+        response.setCode("0");
+        response.setList(result);
+
+        return response;
+    }
+
+    @ApiOperation(value = "获取点检项表格的某一列数据", notes = "获取点检项表格的某一列数据")
+    @RequestMapping(value = "form/data/column", method = RequestMethod.POST)
+    public TransBaseResponse getCheckItemFormColumnData(@RequestBody TransCheckItemDataRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        List<CheckItemFormData> result = checkItemFormDataService.findAll(request.getCheckItemId(), null,request.getColumnId(), request.getDataType());
 
         response.setCode("0");
         response.setList(result);
@@ -198,7 +214,7 @@ public class JoyeaCheckItemController {
 
         TransBaseResponse response = new TransBaseResponse();
 
-        Integer result = checkItemFileService.insert(request.getCheckItemId(), request.getFileId());
+        Integer result = checkItemFileService.insert(request.getCheckItemId(), request.getFileId(),request.getFileType());
 
         if (result == 1) {
             response.setCode("0");

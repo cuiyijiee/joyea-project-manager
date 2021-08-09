@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class TransCheckItemFormUpdateAllRequest {
 
-    private String checkItem;
+    private String checkItemId;
     private Integer dataType;
 
     private List<TransCheckItemFormUpdateAllRequest.RowData> rowData;

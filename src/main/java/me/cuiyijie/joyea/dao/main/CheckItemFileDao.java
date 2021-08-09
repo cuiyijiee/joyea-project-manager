@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface CheckItemFileDao {
 
-    Integer insert(@Param("checkItemId") String checkItemId, @Param("fileId") String fileId);
+    Integer insert(@Param("checkItemId") String checkItemId, @Param("fileId") String fileId,@Param("fileType") Integer fileType);
 
     List<SysFileUpload> selectByCheckItemId(@Param("checkItemId") String checkItemId, @Param("fileType") Integer fileType);
 

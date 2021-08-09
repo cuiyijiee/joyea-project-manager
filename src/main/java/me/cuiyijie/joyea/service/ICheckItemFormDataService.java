@@ -15,7 +15,7 @@ public interface ICheckItemFormDataService {
 
     void updateAllRowData(TransCheckItemFormUpdateAllRequest request);
 
-    List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex, Integer dataType);
+    List<CheckItemFormData> findAll(String checkItemId, Integer rowIndex, Integer columnId, Integer dataType);
 
     Integer deleteRowData(String checkItemId, Integer dataType, Integer rowIndex);
 

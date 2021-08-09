@@ -14,8 +14,11 @@
         FROM check_item_form_setting AS cifs
         LEFT JOIN check_item_form_data AS cifd
         ON cifd.column_id = cifs.id
-        <if test="item.rowIndex != -1">
+        <if test="item.rowIndex != null and item.rowIndex != -1">
             AND cifd.row_index = #{item.rowIndex}
+        </if>
+        <if test="item.columnId != null and item.columnId != -1">
+            AND cifd.column_id = #{item.columnId}
         </if>
         WHERE cifd.check_item_id = #{item.checkItemId}
         AND cifd.data_type = #{item.dataType}

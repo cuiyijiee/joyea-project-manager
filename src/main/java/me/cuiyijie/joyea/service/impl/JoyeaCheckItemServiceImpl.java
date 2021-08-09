@@ -81,13 +81,16 @@ public class JoyeaCheckItemServiceImpl implements IJoyeaCheckItemService {
         List<String> toNotificationIds = new ArrayList<>();
         JoyeaCheckItem checkItem = mainCheckItemDao.findById(joyeaCheckItem.getId());
 
-        if (!checkItem.getSelfCheckPersonId().equals(joyeaCheckItem.getSelfCheckPersonId())) {
+        if (checkItem.getSelfCheckPersonId() == null
+                || !checkItem.getSelfCheckPersonId().equals(joyeaCheckItem.getSelfCheckPersonId())) {
             toNotificationIds.add(joyeaCheckItem.getSelfCheckPersonId());
         }
-        if (!checkItem.getMutualCheckPersonId().equals(joyeaCheckItem.getMutualCheckPersonId())) {
+        if (checkItem.getMutualCheckPersonId() == null
+                || !checkItem.getMutualCheckPersonId().equals(joyeaCheckItem.getMutualCheckPersonId())) {
             toNotificationIds.add(joyeaCheckItem.getMutualCheckPersonId());
         }
-        if (!checkItem.getSpecialCheckPersonId().equals(joyeaCheckItem.getSpecialCheckPersonId())) {
+        if (checkItem.getSpecialCheckPersonId() == null
+                || !checkItem.getSpecialCheckPersonId().equals(joyeaCheckItem.getSpecialCheckPersonId())) {
             toNotificationIds.add(joyeaCheckItem.getSpecialCheckPersonId());
         }
 

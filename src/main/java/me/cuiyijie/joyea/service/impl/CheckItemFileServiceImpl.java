@@ -15,13 +15,13 @@ public class CheckItemFileServiceImpl implements ICheckItemFileService {
     private CheckItemFileDao checkItemFileDao;
 
     @Override
-    public Integer insert(String checkItemId, String fileId) {
-        return checkItemFileDao.insert(checkItemId, fileId);
+    public Integer insert(String checkItemId, String fileId, Integer fileType) {
+        return checkItemFileDao.insert(checkItemId, fileId, fileType);
     }
 
     @Override
     public List<SysFileUpload> selectByCheckItemId(String checkItemId, Integer fileType) {
-        return checkItemFileDao.selectByCheckItemId(checkItemId,fileType);
+        return checkItemFileDao.selectByCheckItemId(checkItemId, fileType);
     }
 
     @Override
