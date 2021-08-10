@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.SheetDao">
+
+
+    <insert id="insert">
+        INSERT INTO sheet (name)
+        VALUES (#{item.name})
+    </insert>
+
+    <select id="findAll" resultType="me.cuiyijie.joyea.domain.Sheet">
+        SELECT id AS id,
+        name AS name
+        FROM sheet
+        WHERE 1=1
+        <if test="item.id != null">
+            AND id = #{item.id}
+        </if>
+        <if test="item.name != null and item.name != ''">
+            AND name = #{item.name}
+        </if>
+    </select>
+
+    <update id="update">
+        UPDATE sheet
+        SET name = #{item.name}
+        WHERE id = #{item.id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM sheet
+        WHERE id = #{item.id}
+    </delete>
+
+</mapper>
