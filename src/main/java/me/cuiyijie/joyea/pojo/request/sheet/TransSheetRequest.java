@@ -8,5 +8,7 @@ public class TransSheetRequest {
 
     private Integer id;
     private String name;
+    private String category;
+    private String remark;
 
 }

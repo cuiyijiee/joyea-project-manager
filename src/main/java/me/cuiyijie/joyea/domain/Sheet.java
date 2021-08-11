@@ -6,4 +6,6 @@ import lombok.Data;
 public class Sheet {
     private Integer id;
     private String name;
+    private String category;
+    private String remark;
 }

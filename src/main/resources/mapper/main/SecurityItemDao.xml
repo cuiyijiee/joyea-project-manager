@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.SecurityItemDao">
+
+    <insert id="insert">
+        INSERT INTO security_item(project_number, check_standard, check_type_id, check_type_name,
+                               self_check_person_id, self_check_person_name, self_check_result, self_check_remark,
+                               special_check_person_id, special_check_person_name,
+                               special_check_result, special_check_remark,
+                               mutual_check_person_id, mutual_check_person_name, mutual_check_result,
+                               mutual_check_remark)
+        VALUES (#{item.projectNumber},
+                #{item.checkStandard},
+                #{item.checkTypeId},
+                #{item.checkTypeName},
+                #{item.selfCheckPersonId},
+                #{item.selfCheckPersonName},
+                #{item.selfCheckResult},
+                #{item.selfCheckRemark},
+                #{item.specialCheckPersonId},
+                #{item.specialCheckPersonName},
+                #{item.specialCheckResult},
+                #{item.specialCheckRemark},
+                #{item.mutualCheckPersonId},
+                #{item.mutualCheckPersonName},
+                #{item.mutualCheckResult},
+                #{item.mutualCheckRemark})
+    </insert>
+
+    <select id="get" resultType="me.cuiyijie.joyea.domain.SecurityItem">
+        SELECT ci.project_number            AS projectNumber,
+               ci.check_standard            AS checkStandard,
+               ci.check_type_id             AS checkTypeId,
+               ci.check_type_name           AS checkTypeName,
+
+               ci.self_check_person_id      AS selfCheckPersonId,
+               ci.self_check_person_name    AS selfCheckPersonName,
+               ci.self_check_result         AS selfCheckResult,
+               ci.self_check_remark         AS selfCheckRemark,
+
+               ci.special_check_person_id   AS specialCheckPersonId,
+               ci.special_check_person_name AS specialCheckPersonName,
+               ci.special_check_result      AS specialCheckResult,
+               ci.special_check_remark      AS specialCheckRemark,
+
+               ci.mutual_check_person_id    AS mutualCheckPersonId,
+               ci.mutual_check_person_name  AS mutualCheckPersonName,
+               ci.mutual_check_result       AS mutualCheckResult,
+               ci.mutual_check_remark       AS mutualCheckRemark
+        FROM security_item AS ci
+        WHERE ci.project_number = #{item.projectNumber}
+    </select>
+
+    <update id="update">
+        UPDATE security_item
+        <set>
+            <if test="item.checkStandard != null and item.checkStandard != ''">
+                check_standard = #{item.checkStandard},
+            </if>
+            <if test="item.checkTypeId != null and item.checkTypeId != ''">
+                check_type_id = #{item.checkTypeId},
+            </if>
+            <if test="item.checkTypeName != null and item.checkTypeName != ''">
+                check_type_name = #{item.checkTypeName},
+            </if>
+
+            <if test="item.selfCheckPersonId != null and item.selfCheckPersonId != ''">
+                self_check_person_id = #{item.selfCheckPersonId},
+            </if>
+            <if test="item.selfCheckPersonName != null and item.selfCheckPersonName != ''">
+                self_check_person_name = #{item.selfCheckPersonName},
+            </if>
+            <if test="item.selfCheckResult != null">
+                self_check_result = #{item.selfCheckResult},
+            </if>
+            <if test="item.selfCheckRemark != null">
+                self_check_remark = #{item.selfCheckRemark},
+            </if>
+
+            <if test="item.specialCheckPersonId != null and item.specialCheckPersonId != ''">
+                special_check_person_id = #{item.specialCheckPersonId},
+            </if>
+            <if test="item.specialCheckPersonName != null and item.specialCheckPersonName != ''">
+                special_check_person_name = #{item.specialCheckPersonName},
+            </if>
+            <if test="item.specialCheckResult != null">
+                special_check_result = #{item.specialCheckResult},
+            </if>
+            <if test="item.specialCheckRemark != null">
+                special_check_remark = #{item.specialCheckRemark},
+            </if>
+
+            <if test="item.mutualCheckPersonId != null and item.mutualCheckPersonId != ''">
+                mutual_check_person_id = #{item.mutualCheckPersonId},
+            </if>
+            <if test="item.mutualCheckPersonName != null and item.mutualCheckPersonName != ''">
+                mutual_check_person_name = #{item.mutualCheckPersonName},
+            </if>
+            <if test="item.mutualCheckResult != null">
+                mutual_check_result = #{item.mutualCheckResult},
+            </if>
+            <if test="item.mutualCheckRemark != null">
+                mutual_check_remark = #{item.mutualCheckRemark},
+            </if>
+        </set>
+        WHERE project_number = #{item.projectNumber}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM security_item
+        WHERE project_number = #{projectNumber}}
+    </delete>
+
+</mapper>
