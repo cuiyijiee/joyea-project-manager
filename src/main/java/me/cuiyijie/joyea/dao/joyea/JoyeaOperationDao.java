@@ -11,4 +11,6 @@ public interface JoyeaOperationDao {
 
     List<JoyeaOperation> selectByManufactureOrder(@Param("manufactureId") String manufactureId);
 
+    List<JoyeaOperation> findAll(@Param("item") JoyeaOperation joyeaOperation);
+
 }

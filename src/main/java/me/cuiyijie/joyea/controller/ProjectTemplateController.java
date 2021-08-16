@@ -93,4 +93,12 @@ public class ProjectTemplateController {
         return transBaseResponse;
     }
 
+
+    @PostMapping(value = "/addOperation")
+    @ApiOperation(value = "向项目模板中增加工序", notes = "向项目模板中增加工序，传入工序number")
+    public TransBaseResponse addOperation(@RequestBody TransProjectTemplateRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+
+        return transBaseResponse;
+    }
 }

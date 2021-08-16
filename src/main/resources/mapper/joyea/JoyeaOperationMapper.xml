@@ -21,4 +21,39 @@
           AND cpt.CFOPERATIONID is not null
         ORDER BY cpt.CFSEQ
     </select>
+
+    <select id="findAll" parameterType="map"
+            resultType="me.cuiyijie.joyea.domain.JoyeaOperation">
+        SELECT cpt.CFMANUFACTUREORDER AS "manufactureOrder",
+        cpt.CFTASKID AS "taskId",
+        cpt.CFOPERATIONNAME AS "operationName",
+        cpt.CFSTATUS AS "status",
+        cpt.CFOPERATIONID AS "operationId",
+        cpt.CFOPERATIONNO AS "operationNo",
+        cptask.CFWORKPERSONID AS "workPersonId",
+        tbp.FNAME_L2 AS "workPersonName",
+        cpt.CFOLDBEGINTIME AS "startTime",
+        cpt.CFOLDENDTIME AS "endTime",
+        cpt.CFSEQ AS "seq"
+        FROM CT_PRE_TASKBMO cpt
+        LEFT JOIN CT_PRJ_TASK cptask ON cptask.FID = cpt.CFTASKID
+        LEFT JOIN T_BD_PERSON tbp ON tbp.FID = cptask.cfworkpersonid
+        WHERE cpt.CFOPERATIONID is not null
+        <if test="item.operationName != null and item.operationName != ''">
+            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}
+        </if>
+        <!--产品名称-->
+<!--        <if test="item.operationName != null and item.operationName != ''">-->
+<!--            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}-->
+<!--        </if>-->
+        <!--产品编号-->
+<!--        <if test="item.operationName != null and item.operationName != ''">-->
+<!--            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}-->
+<!--        </if>-->
+        <!--项目编号-->
+<!--        <if test="item.operationName != null and item.operationName != ''">-->
+<!--            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}-->
+<!--        </if>-->
+        ORDER BY cpt.CFSEQ
+    </select>
 </mapper>
