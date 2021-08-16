@@ -51,6 +51,7 @@ public class SheetController {
             sheet.setId(request.getId());
             sheet.setName(request.getName());
             sheetService.update(sheet);
+            transBaseResponse.setCode("0");
         }
         return transBaseResponse;
     }
@@ -82,6 +83,7 @@ public class SheetController {
             Sheet sheet = new Sheet();
             sheet.setId(request.getId());
             sheetService.delete(sheet);
+            transBaseResponse.setCode("0");
         }
         return transBaseResponse;
     }
