@@ -42,10 +42,10 @@ public class SwaggerConfig {
                 .title("仅一质量管理后端API")
                 .description("仅一质量管理后端API文档")
                 .license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0.html")
                 .termsOfServiceUrl("")
                 .version(VERSION)
-                .contact(new Contact("cuiyijie", "", "cyj976655@gmail.com"))
+                .contact(new Contact("cuiyijie", "https://cuje.tk", "cyj976655@gmail.com"))
                 .build();
     }
 

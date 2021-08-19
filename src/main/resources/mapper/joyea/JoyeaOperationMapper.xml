@@ -42,6 +42,9 @@
         <if test="item.operationName != null and item.operationName != ''">
             AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}
         </if>
+        <if test="item.manufactureOrder != null and item.manufactureOrder != ''">
+            AND cpt.CFManufactureOrder LIKE CONCAT('%',CONCAT(#{item.manufactureOrder},'%'))
+        </if>
         <!--产品名称-->
 <!--        <if test="item.operationName != null and item.operationName != ''">-->
 <!--            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}-->

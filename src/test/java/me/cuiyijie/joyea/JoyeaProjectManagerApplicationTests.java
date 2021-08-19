@@ -1,8 +1,10 @@
 package me.cuiyijie.joyea;
 
 import me.cuiyijie.joyea.dao.joyea.JoyeaPersonDao;
+import me.cuiyijie.joyea.dao.joyea.JoyeaUrsDao;
 import me.cuiyijie.joyea.dao.main.CheckItemFormDataDao;
 import me.cuiyijie.joyea.domain.CheckItemFormData;
+import me.cuiyijie.joyea.domain.JoyeaUrs;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ class JoyeaProjectManagerApplicationTests {
     @Autowired
     CheckItemFormDataDao checkItemFormDataDao;
 
+    @Autowired
+    JoyeaUrsDao joyeaUrsDao;
+
     @Test
     void contextLoads() {
 //        JoyeaAccessToken result = userService.getAccessTokenByTicket("ST-891-eHFF6mckJVZZ9bUaDz4r-c01");
@@ -39,13 +44,16 @@ class JoyeaProjectManagerApplicationTests {
 //            System.out.println(item);
 //        });
 
-        CheckItemFormData checkItemFormData = new CheckItemFormData();
-        checkItemFormData.setCheckItemId("1");
-        checkItemFormData.setRowIndex(1);
-        List<CheckItemFormData> checkItemFormDataList = checkItemFormDataDao.selectAllBy(checkItemFormData);
-        checkItemFormDataList.stream().forEach(item -> {
-            System.out.println(item);
-        });
+//        CheckItemFormData checkItemFormData = new CheckItemFormData();
+//        checkItemFormData.setCheckItemId("1");
+//        checkItemFormData.setRowIndex(1);
+//        List<CheckItemFormData> checkItemFormDataList = checkItemFormDataDao.selectAllBy(checkItemFormData);
+//        checkItemFormDataList.stream().forEach(item -> {
+//            System.out.println(item);
+//        });
+
+//        List<JoyeaUrs> joyeaUrsList = joyeaUrsDao.selectByProjectNumber("");
+//        System.out.println(joyeaUrsList);
     }
 
 }

@@ -27,8 +27,13 @@ public class JoyeaOperationController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse listByManufactureOrderId(@RequestBody TransOperationRequest request) {
 
-        PageHelper.startPage(request.getPageNum(),request.getPageSize());
-        List<JoyeaOperation> operations = joyeaManufactureTaskService.findByManufacturerOrderId(request.getManufactureId());
+        PageHelper.startPage(request.getPageNum(), request.getPageSize());
+
+        JoyeaOperation joyeaOperation = new JoyeaOperation();
+        joyeaOperation.setManufactureOrder(request.getManufactureId());
+        joyeaOperation.setOperationName(request.getOperationName());
+
+        List<JoyeaOperation> operations = joyeaManufactureTaskService.findAll(joyeaOperation);
 
         return new TransBasePageResponse(new PageInfo<>(operations));
     }

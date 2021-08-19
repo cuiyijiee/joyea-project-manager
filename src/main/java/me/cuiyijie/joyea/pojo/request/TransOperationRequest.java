@@ -10,4 +10,6 @@ public class TransOperationRequest {
 
     private String manufactureId;
 
+    private String operationName;
+
 }

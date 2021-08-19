@@ -13,10 +13,15 @@ public class JoyeaOperationServiceImpl implements IJoyeaOperationService {
 
 
     @Autowired
-    private JoyeaOperationDao joyeaManufactureTaskDao;
+    private JoyeaOperationDao joyeaOperationDao;
 
     @Override
     public List<JoyeaOperation> findByManufacturerOrderId(String manufactureId) {
-        return joyeaManufactureTaskDao.selectByManufactureOrder(manufactureId);
+        return joyeaOperationDao.selectByManufactureOrder(manufactureId);
+    }
+
+    @Override
+    public List<JoyeaOperation> findAll(JoyeaOperation joyeaOperation) {
+        return joyeaOperationDao.findAll(joyeaOperation);
     }
 }
