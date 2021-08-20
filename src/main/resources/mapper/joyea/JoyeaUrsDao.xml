@@ -15,8 +15,10 @@
                b.CFREMARK        AS remark
         FROM CT_URS_ProjectURSDemand a
                  LEFT JOIN CT_URS_ProjectURSDNS b ON a.fid = b.fparentid
+                 LEFT JOIN ct_prj_project c ON a.cfsaleprojectid = c.cfsaleprojectid
         WHERE a.cfstatus = 4
           AND b.fid IS NOT NULL
+          AND c.fnumber = #{projectNumber,jdbcType=VARCHAR}
         ORDER BY a.fbizdate DESC
     </select>
 </mapper>
