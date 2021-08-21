@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.joyea.JoyeaAssemblyProblemDao">
+    <select id="selectByProjectNumber" parameterType="java.lang.String"
+            resultType="me.cuiyijie.joyea.domain.JoyeaAssemblyProblem">
+        SELECT b.fid                AS problemId,
+               d.fnumber            AS projectNumber,
+               b.cfprojectname      AS projectName,
+               e.fname_l2           AS productLine,
+               f.fname_l2           AS equipmentName,
+               g.fname_l2           AS componentName,
+               b.cfproblemdesc      AS problemDesc,
+               h.fname_l2           AS feedbackPerson,
+               i.fname_l2           AS problemCategory,
+               b.cfreason           AS problemReason,
+               b.cfsolution         AS problemSolution,
+               CASE
+                   WHEN b.cfisinvolved = 1 THEN 1
+                   WHEN b.cfisinvolved = 2 THEN 0
+                   ELSE NULL
+                   END
+                                    AS isInvolved,
+               j.fname_l2           AS workPerson,
+               b.cfsolve            AS solve,
+               CASE
+                   WHEN b.cfisassembly = 1 THEN 1
+                   WHEN b.cfisassembly = 2 THEN 0
+                   ELSE NULL
+                   END
+                                    AS isAssembly,
+               b.CFASSEMBLYSOLUTION AS assemblySolution
+        FROM ct_che_assemblyproblembill a
+                 LEFT JOIN ct_che_assemblypbae b ON a.fid = b.fparentid
+                 LEFT JOIN ct_prj_project d ON d.fid = a.cfprojectid
+                 LEFT JOIN ct_prj_productline e ON e.fid = b.cfproductlineid
+                 LEFT JOIN ct_pre_equipment f ON f.fid = b.cfequipmentid
+                 LEFT JOIN ct_pre_component g ON g.fid = b.cfcomponentid
+                 LEFT JOIN t_bd_person h ON h.fid = b.cffeedbackpersonid
+                 LEFT JOIN ct_bas_problemcategory i ON i.fid = b.cfproblemtypeid
+                 LEFT JOIN t_bd_person j ON j.fid = b.cfworkpersonid
+        WHERE d.fnumber = #{projectNumber}
+    </select>
+</mapper>

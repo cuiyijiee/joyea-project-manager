@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class SecurityItem {
 
+    private Integer id;
+
     private String checkStandard;
     private String checkTypeId;
     private String checkTypeName;

@@ -1,9 +1,11 @@
 package me.cuiyijie.joyea;
 
+import me.cuiyijie.joyea.dao.joyea.JoyeaAssemblyProblemDao;
 import me.cuiyijie.joyea.dao.joyea.JoyeaPersonDao;
 import me.cuiyijie.joyea.dao.joyea.JoyeaUrsDao;
 import me.cuiyijie.joyea.dao.main.CheckItemFormDataDao;
 import me.cuiyijie.joyea.domain.CheckItemFormData;
+import me.cuiyijie.joyea.domain.JoyeaAssemblyProblem;
 import me.cuiyijie.joyea.domain.JoyeaUrs;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,9 @@ class JoyeaProjectManagerApplicationTests {
 
     @Autowired
     JoyeaUrsDao joyeaUrsDao;
+
+    @Autowired
+    JoyeaAssemblyProblemDao joyeaAssemblyProblemDao;
 
     @Test
     void contextLoads() {
@@ -54,6 +59,9 @@ class JoyeaProjectManagerApplicationTests {
 
 //        List<JoyeaUrs> joyeaUrsList = joyeaUrsDao.selectByProjectNumber("");
 //        System.out.println(joyeaUrsList);
+
+//        List<JoyeaAssemblyProblem> problems = joyeaAssemblyProblemDao.selectByProjectNumber("J1707YCSW01S");
+//        System.out.println(problems);
     }
 
 }

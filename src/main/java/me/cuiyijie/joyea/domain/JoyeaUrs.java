@@ -34,4 +34,7 @@ public class JoyeaUrs {
 
     //备注说明
     private String remark;
+
+    //设置
+    private JoyeaUrsSettings settings;
 }

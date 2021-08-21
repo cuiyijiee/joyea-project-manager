@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("securityItem")
 @Api(tags = "安全手册模块")
@@ -33,13 +35,13 @@ public class SecurityItemController {
             response.setMsg("请求参数projectNum为空");
             return response;
         }
-        SecurityItem securityItem = securityItemService.find(request.getProjectNumber());
-        response.setObj(securityItem);
+        List<SecurityItem> securityItems = securityItemService.find(request.getProjectNumber());
+        response.setList(securityItems);
         response.setCode("0");
         return response;
     }
 
-    @ApiOperation(value = "更新项目安全手册信息", notes = "通过projectNumber更新安全手册信息，只更新有值的参数，如果是null或空值则不更新")
+    @ApiOperation(value = "更新项目安全手册信息", notes = "通过id更新安全手册信息，只更新有值的参数，如果是null或空值则不更新")
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public TransBaseResponse update(@RequestBody TransSecurityItemRequest request) {
         TransBaseResponse response = new TransBaseResponse();
@@ -57,5 +59,45 @@ public class SecurityItemController {
 
         return response;
     }
+
+    @ApiOperation(value = "新增项目安全手册信息", notes = "新增一个项目得安全手册")
+    @RequestMapping(value = "insert", method = RequestMethod.POST)
+    public TransBaseResponse insert(@RequestBody TransSecurityItemRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        SecurityItem securityItem = new SecurityItem();
+        BeanUtils.copyProperties(request, securityItem);
+
+        Integer result = securityItemService.add(securityItem);
+
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+
+        return response;
+    }
+
+    @ApiOperation(value = "删除目安全手册信息", notes = "通过ID删除一个项目得安全手册")
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public TransBaseResponse delete(@RequestBody TransSecurityItemRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+
+        SecurityItem securityItem = new SecurityItem();
+        BeanUtils.copyProperties(request, securityItem);
+
+        Integer result = securityItemService.delete(securityItem);
+
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+
+        return response;
+    }
+
+
 
 }

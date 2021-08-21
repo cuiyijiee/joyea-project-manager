@@ -4,6 +4,8 @@ import me.cuiyijie.joyea.domain.SecurityItem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SecurityItemDao {
 
@@ -11,7 +13,9 @@ public interface SecurityItemDao {
 
     Integer update(@Param("item") SecurityItem securityItem);
 
-    SecurityItem get(@Param("item")SecurityItem securityItem);
+    List<SecurityItem> findByProjectNumber(@Param("item")SecurityItem securityItem);
+
+    SecurityItem findById(@Param("item")SecurityItem securityItem);
 
     Integer delete(@Param("projectNumber")String projectNumber);
 

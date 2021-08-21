@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class TransSecurityItemRequest {
 
+    private Integer id;
+
     private String projectNumber;
     private String checkStandard;
     private String checkTypeId;

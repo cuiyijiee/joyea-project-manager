@@ -27,7 +27,7 @@
                 #{item.mutualCheckRemark})
     </insert>
 
-    <select id="get" resultType="me.cuiyijie.joyea.domain.SecurityItem">
+    <select id="findByProjectNumber" resultType="me.cuiyijie.joyea.domain.SecurityItem">
         SELECT ci.project_number            AS projectNumber,
                ci.check_standard            AS checkStandard,
                ci.check_type_id             AS checkTypeId,
@@ -49,6 +49,30 @@
                ci.mutual_check_remark       AS mutualCheckRemark
         FROM security_item AS ci
         WHERE ci.project_number = #{item.projectNumber}
+    </select>
+
+    <select id="findById" resultType="me.cuiyijie.joyea.domain.SecurityItem">
+        SELECT ci.project_number            AS projectNumber,
+               ci.check_standard            AS checkStandard,
+               ci.check_type_id             AS checkTypeId,
+               ci.check_type_name           AS checkTypeName,
+
+               ci.self_check_person_id      AS selfCheckPersonId,
+               ci.self_check_person_name    AS selfCheckPersonName,
+               ci.self_check_result         AS selfCheckResult,
+               ci.self_check_remark         AS selfCheckRemark,
+
+               ci.special_check_person_id   AS specialCheckPersonId,
+               ci.special_check_person_name AS specialCheckPersonName,
+               ci.special_check_result      AS specialCheckResult,
+               ci.special_check_remark      AS specialCheckRemark,
+
+               ci.mutual_check_person_id    AS mutualCheckPersonId,
+               ci.mutual_check_person_name  AS mutualCheckPersonName,
+               ci.mutual_check_result       AS mutualCheckResult,
+               ci.mutual_check_remark       AS mutualCheckRemark
+        FROM security_item AS ci
+        WHERE ci.id = #{item.id}
     </select>
 
     <update id="update">
@@ -103,7 +127,7 @@
                 mutual_check_remark = #{item.mutualCheckRemark},
             </if>
         </set>
-        WHERE project_number = #{item.projectNumber}
+        WHERE id = #{item.id}
     </update>
 
     <delete id="delete">

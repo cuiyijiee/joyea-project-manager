@@ -2,9 +2,11 @@ package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.domain.SecurityItem;
 
+import java.util.List;
+
 public interface ISecurityItemService {
 
-    SecurityItem find(String projectNumber);
+    List<SecurityItem> find(String projectNumber);
 
     Integer add(SecurityItem joyeaCheckItem);
 
