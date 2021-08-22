@@ -49,4 +49,7 @@ public class JoyeaProjectVO {
     //任务类型
     private String taskCategory;
 
+    //是否含有非标URS
+    private Boolean hasUrs;
+
 }

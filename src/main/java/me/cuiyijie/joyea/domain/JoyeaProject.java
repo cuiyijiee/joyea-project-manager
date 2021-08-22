@@ -34,4 +34,7 @@ public class JoyeaProject {
     private String fNumber3;
 
     private String cFTaskName;
+
+    //是否含有非标URS
+    private Boolean hasUrs;
 }

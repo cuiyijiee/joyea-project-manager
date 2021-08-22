@@ -10,4 +10,6 @@ public class TransProjectTemplateRequest {
     private String category;
     private Boolean enabled;
 
+
+
 }

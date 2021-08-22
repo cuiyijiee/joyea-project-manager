@@ -6,8 +6,10 @@ import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.domain.ProjectTemplate;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.projecttemplate.TransProjectTemplateOperationRequest;
 import me.cuiyijie.joyea.pojo.request.projecttemplate.TransProjectTemplatePageRequest;
 import me.cuiyijie.joyea.pojo.request.projecttemplate.TransProjectTemplateRequest;
+import me.cuiyijie.joyea.pojo.vo.JoyeaProjectTemplateOperationVo;
 import me.cuiyijie.joyea.service.IProjectTemplateService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("projectTemplate")
@@ -88,12 +92,37 @@ public class ProjectTemplateController {
         return transBaseResponse;
     }
 
+    @PostMapping(value = "/findAllOperation")
+    @ApiOperation(value = "获取模板全部工序", notes = "传入id")
+    public TransBaseResponse findAllOperation(@RequestBody TransProjectTemplateRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        if (request.getId() == null) {
+            transBaseResponse.setCode("-1");
+            transBaseResponse.setMsg("参数id为空");
+        } else {
+            List<JoyeaProjectTemplateOperationVo> result = projectTemplateService.findAllOperation(request.getId());
+            transBaseResponse.setList(result);
+            transBaseResponse.setCode("0");
+        }
+        return transBaseResponse;
+    }
+
 
     @PostMapping(value = "/addOperation")
-    @ApiOperation(value = "向项目模板中增加工序", notes = "向项目模板中增加工序，传入工序number")
-    public TransBaseResponse addOperation(@RequestBody TransProjectTemplateRequest request) {
+    @ApiOperation(value = "向项目模板中增加工序", notes = "向项目模板中增加工序，传入operationId和operationNo")
+    public TransBaseResponse addOperation(@RequestBody TransProjectTemplateOperationRequest request) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
+        projectTemplateService.addOperation(request.getTemplateId(), request.getOperationId(), request.getOperationNo());
+        transBaseResponse.setCode("0");
+        return transBaseResponse;
+    }
 
+    @PostMapping(value = "/deleteOperation")
+    @ApiOperation(value = "向项目模板中增加工序", notes = "向项目模板中增加工序，传入operationId和operationNo")
+    public TransBaseResponse deleteOperation(@RequestBody TransProjectTemplateOperationRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        projectTemplateService.deleteOperation(request.getTemplateId(), request.getOperationId(), request.getOperationNo());
+        transBaseResponse.setCode("0");
         return transBaseResponse;
     }
 }
