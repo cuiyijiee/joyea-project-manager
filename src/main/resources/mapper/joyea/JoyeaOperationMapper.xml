@@ -82,7 +82,7 @@
         LEFT JOIN CT_PRJ_TASK cptask ON cptask.FID = cpt.CFTASKID
         LEFT JOIN T_BD_PERSON tbp ON tbp.FID = cptask.cfworkpersonid
         WHERE cpt.CFOPERATIONID is not null
-        AND cpt.CFOPERATIONID = #{item.operationId,jdbcType=VARCHAR}
-          AND cpt.CFOPERATIONNO = #{item.operationNo,jdbcType=VARCHAR}
+        AND cpt.CFOPERATIONID = #{id,jdbcType=VARCHAR}
+          AND cpt.CFOPERATIONNO = #{no,jdbcType=VARCHAR}
     </select>
 </mapper>
