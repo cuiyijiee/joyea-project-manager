@@ -19,7 +19,7 @@
     <select id="findById" resultMap="BaseResultMap">
         SELECT *
         from assembly_problem_settings
-        WHERE problemId = #{id,jdbcType=VARCHAR}
+        WHERE problem_id = #{id,jdbcType=VARCHAR}
     </select>
 
     <insert id="insert">

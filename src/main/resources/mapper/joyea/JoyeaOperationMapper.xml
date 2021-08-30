@@ -45,6 +45,12 @@
         <if test="item.manufactureOrder != null and item.manufactureOrder != ''">
             AND cpt.CFManufactureOrder LIKE CONCAT('%',CONCAT(#{item.manufactureOrder},'%'))
         </if>
+        <if test="item.operationId != null and item.operationId != ''">
+            AND cpt.CFOPERATIONID = #{item.operationId,jdbcType=VARCHAR}
+        </if>
+        <if test="item.operationNo != null and item.operationNo != ''">
+            AND cpt.CFOPERATIONNO = #{item.operationNo,jdbcType=VARCHAR}
+        </if>
         <!--产品名称-->
 <!--        <if test="item.operationName != null and item.operationName != ''">-->
 <!--            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}-->
@@ -58,5 +64,25 @@
 <!--            AND cpt.CFOPERATIONNAME = #{item.operationName,jdbcType=VARCHAR}-->
 <!--        </if>-->
         ORDER BY cpt.CFSEQ
+    </select>
+
+    <select id="findByIdAndNo" resultType="me.cuiyijie.joyea.domain.JoyeaOperation">
+        SELECT cpt.CFMANUFACTUREORDER AS "manufactureOrder",
+        cpt.CFTASKID AS "taskId",
+        cpt.CFOPERATIONNAME AS "operationName",
+        cpt.CFSTATUS AS "status",
+        cpt.CFOPERATIONID AS "operationId",
+        cpt.CFOPERATIONNO AS "operationNo",
+        cptask.CFWORKPERSONID AS "workPersonId",
+        tbp.FNAME_L2 AS "workPersonName",
+        cpt.CFOLDBEGINTIME AS "startTime",
+        cpt.CFOLDENDTIME AS "endTime",
+        cpt.CFSEQ AS "seq"
+        FROM CT_PRE_TASKBMO cpt
+        LEFT JOIN CT_PRJ_TASK cptask ON cptask.FID = cpt.CFTASKID
+        LEFT JOIN T_BD_PERSON tbp ON tbp.FID = cptask.cfworkpersonid
+        WHERE cpt.CFOPERATIONID is not null
+        AND cpt.CFOPERATIONID = #{id,jdbcType=VARCHAR}
+          AND cpt.CFOPERATIONNO = #{no,jdbcType=VARCHAR}
     </select>
 </mapper>

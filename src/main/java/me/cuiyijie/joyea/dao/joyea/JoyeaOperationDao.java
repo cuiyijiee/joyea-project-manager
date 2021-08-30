@@ -13,4 +13,6 @@ public interface JoyeaOperationDao {
 
     List<JoyeaOperation> findAll(@Param("item") JoyeaOperation joyeaOperation);
 
+    JoyeaOperation findByIdAndNo(@Param("id") String operationId, @Param("no") String operationNo);
+
 }
