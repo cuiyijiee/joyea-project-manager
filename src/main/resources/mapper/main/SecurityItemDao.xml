@@ -4,11 +4,11 @@
 
     <insert id="insert">
         INSERT INTO security_item(project_number, check_standard, check_type_id, check_type_name,
-                               self_check_person_id, self_check_person_name, self_check_result, self_check_remark,
-                               special_check_person_id, special_check_person_name,
-                               special_check_result, special_check_remark,
-                               mutual_check_person_id, mutual_check_person_name, mutual_check_result,
-                               mutual_check_remark)
+                                  self_check_person_id, self_check_person_name, self_check_result, self_check_remark,
+                                  special_check_person_id, special_check_person_name,
+                                  special_check_result, special_check_remark,
+                                  mutual_check_person_id, mutual_check_person_name, mutual_check_result,
+                                  mutual_check_remark)
         VALUES (#{item.projectNumber},
                 #{item.checkStandard},
                 #{item.checkTypeId},
@@ -28,7 +28,8 @@
     </insert>
 
     <select id="findByProjectNumber" resultType="me.cuiyijie.joyea.domain.SecurityItem">
-        SELECT ci.project_number            AS projectNumber,
+        SELECT ci.id                        AS id,
+               ci.project_number            AS projectNumber,
                ci.check_standard            AS checkStandard,
                ci.check_type_id             AS checkTypeId,
                ci.check_type_name           AS checkTypeName,
