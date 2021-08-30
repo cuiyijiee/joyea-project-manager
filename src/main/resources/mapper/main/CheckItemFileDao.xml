@@ -13,7 +13,9 @@
         cif.file_type AS fileType,
         sfu.origin_file_name AS originFileName,
         sfu.file_save_id AS fileSaveId,
-        sfu.file_suffix AS fileSuffix
+        sfu.file_suffix AS fileSuffix,
+        sfu.created_by AS createdBy,
+        sfu.created_at AS createdAt
         FROM check_item_file AS cif
         LEFT JOIN sys_file_upload AS sfu ON cif.file_id = sfu.file_save_id
         WHERE cif.check_item_id = #{checkItemId}

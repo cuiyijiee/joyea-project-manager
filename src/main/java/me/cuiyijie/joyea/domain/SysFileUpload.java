@@ -12,10 +12,11 @@ public class SysFileUpload {
     private String fileSaveId;
     private String fileSuffix;
     private Integer fileType;
-    private LocalDateTime createdTime = LocalDateTime.now();
+    private String createdBy;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public String getFullName(){
-        return String.format("%s.%s",fileSaveId,fileSuffix);
+    public String getFullName() {
+        return String.format("%s.%s", fileSaveId, fileSuffix);
     }
 
 }

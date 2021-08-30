@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.TestSheetDao">
+
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.domain.TestSheet">
+
+        <id property="id" column="id"/>
+        <id property="testName" column="test_name"/>
+        <id property="testType" column="test_type"/>
+
+    </resultMap>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT *
+        from test_sheet
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO test_sheet(test_name,test_type)
+        VALUES (#{item.testName},
+                #{item.testType})
+    </insert>
+
+</mapper>

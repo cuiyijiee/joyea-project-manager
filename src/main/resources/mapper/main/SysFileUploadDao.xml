@@ -4,12 +4,13 @@
 
     <insert id="insert">
 
-        INSERT INTO sys_file_upload (origin_file_name, file_save_id, file_suffix, created_time)
+        INSERT INTO sys_file_upload (origin_file_name, file_save_id, file_suffix,created_by, created_at)
         VALUES (
                 #{item.originFileName},
                 #{item.fileSaveId},
                 #{item.fileSuffix},
-                #{item.createdTime}
+                #{item.createdBy},
+                #{item.createdAt}
                )
     </insert>
 

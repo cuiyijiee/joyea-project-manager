@@ -4,15 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.auth.util.JwtUtil;
 import me.cuiyijie.joyea.exception.UserException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Slf4j
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
+
+    @Value("${server.allow-user}")
+    private List<String> allowUsers;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -25,8 +30,8 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
         if(token == null) {
             throw new UserException("token verify failed");
-        }else if (token.equalsIgnoreCase("test")){
-            request.setAttribute("currentUserInfo", new CurrentUserInfo("test"));
+        }else if (allowUsers.contains(token)){
+            request.setAttribute("currentUserInfo", new CurrentUserInfo(token));
         }else if (!JwtUtil.verifyToken(token)) {
             throw new UserException("token verify failed");
         }else{

@@ -1,12 +1,12 @@
 package me.cuiyijie.joyea;
 
+import me.cuiyijie.joyea.config.UserFileType;
 import me.cuiyijie.joyea.dao.joyea.JoyeaAssemblyProblemDao;
 import me.cuiyijie.joyea.dao.joyea.JoyeaPersonDao;
 import me.cuiyijie.joyea.dao.joyea.JoyeaUrsDao;
 import me.cuiyijie.joyea.dao.main.CheckItemFormDataDao;
-import me.cuiyijie.joyea.domain.CheckItemFormData;
-import me.cuiyijie.joyea.domain.JoyeaAssemblyProblem;
-import me.cuiyijie.joyea.domain.JoyeaUrs;
+import me.cuiyijie.joyea.dao.main.TestSheetDao;
+import me.cuiyijie.joyea.domain.TestSheet;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,9 @@ class JoyeaProjectManagerApplicationTests {
 
     @Autowired
     JoyeaAssemblyProblemDao joyeaAssemblyProblemDao;
+
+    @Autowired
+    TestSheetDao testSheetDao;
 
     @Test
     void contextLoads() {
@@ -62,6 +65,14 @@ class JoyeaProjectManagerApplicationTests {
 
 //        List<JoyeaAssemblyProblem> problems = joyeaAssemblyProblemDao.selectByProjectNumber("J1707YCSW01S");
 //        System.out.println(problems);
+
+//        TestSheet testSheet = new TestSheet();
+//        testSheet.setTestName("test");
+//        testSheet.setTestType(UserFileType.QualityManual);
+//        testSheetDao.insert(testSheet);
+
+        List<TestSheet> result = testSheetDao.selectById(1);
+        System.out.println(result);
     }
 
 }

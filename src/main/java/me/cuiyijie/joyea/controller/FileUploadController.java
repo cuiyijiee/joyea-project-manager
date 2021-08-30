@@ -1,6 +1,8 @@
 package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
+import me.cuiyijie.joyea.auth.CurrentUser;
+import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
@@ -31,7 +33,7 @@ public class FileUploadController {
     private ISysFileUploadService iSysFileUploadService;
 
     @PostMapping(value = "/upload")
-    public TransBaseResponse upload(@RequestParam("file") MultipartFile multipartFile) {
+    public TransBaseResponse upload(@RequestParam("file") MultipartFile multipartFile, @CurrentUser CurrentUserInfo currentUserInfo) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         if (multipartFile.isEmpty()) {
             transBaseResponse.setCode(Constants.UPLOAD_FILE_EMPTY_CODE);
@@ -54,6 +56,7 @@ public class FileUploadController {
             SysFileUpload sysFileUpload = new SysFileUpload();
             sysFileUpload.setFileSaveId(fileSaveId);
             sysFileUpload.setFileSuffix(fileSuffix);
+            sysFileUpload.setCreatedBy(currentUserInfo.getId());
             sysFileUpload.setOriginFileName(multipartFile.getOriginalFilename());
             iSysFileUploadService.insert(sysFileUpload);
 
