@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service.impl;
 
+import me.cuiyijie.joyea.config.UserFileType;
 import me.cuiyijie.joyea.dao.main.CheckItemFileDao;
 import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.service.ICheckItemFileService;
@@ -15,13 +16,13 @@ public class CheckItemFileServiceImpl implements ICheckItemFileService {
     private CheckItemFileDao checkItemFileDao;
 
     @Override
-    public Integer insert(String checkItemId, String fileId, Integer fileType) {
-        return checkItemFileDao.insert(checkItemId, fileId, fileType);
+    public Integer insert(String checkItemId, String fileId, Integer fileType,UserFileType userFileType) {
+        return checkItemFileDao.insert(checkItemId, fileId, fileType,userFileType);
     }
 
     @Override
-    public List<SysFileUpload> selectByCheckItemId(String checkItemId, Integer fileType) {
-        return checkItemFileDao.selectByCheckItemId(checkItemId, fileType);
+    public List<SysFileUpload> selectByCheckItemId(String checkItemId, Integer fileType, UserFileType userFileType) {
+        return checkItemFileDao.selectByCheckItemId(checkItemId, fileType,userFileType);
     }
 
     @Override

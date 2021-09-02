@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.controller;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.cuiyijie.joyea.config.UserFileType;
 import me.cuiyijie.joyea.domain.CheckItemFormData;
 import me.cuiyijie.joyea.domain.CheckItemFormSetting;
 import me.cuiyijie.joyea.domain.JoyeaCheckItem;
@@ -214,7 +215,7 @@ public class JoyeaCheckItemController {
 
         TransBaseResponse response = new TransBaseResponse();
 
-        Integer result = checkItemFileService.insert(request.getCheckItemId(), request.getFileId(),request.getFileType());
+        Integer result = checkItemFileService.insert(request.getCheckItemId(), request.getFileId(),request.getFileType(),UserFileType.QualityManual);
 
         if (result == 1) {
             response.setCode("0");
@@ -230,7 +231,7 @@ public class JoyeaCheckItemController {
     public TransBaseResponse getAllFile(@RequestBody TransCheckItemFileRequest request) {
         TransBaseResponse response = new TransBaseResponse();
 
-        List<SysFileUpload> result = checkItemFileService.selectByCheckItemId(request.getCheckItemId(), request.getFileType());
+        List<SysFileUpload> result = checkItemFileService.selectByCheckItemId(request.getCheckItemId(), request.getFileType(), UserFileType.QualityManual);
 
         response.setList(result);
         response.setCode("0");

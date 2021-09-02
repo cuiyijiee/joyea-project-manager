@@ -3,9 +3,9 @@
 <mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemFileDao">
 
     <insert id="insert" useGeneratedKeys="true">
-        INSERT INTO check_item_file(check_item_id, file_id, file_type)
+        INSERT INTO check_item_file(check_item_id, file_id, file_type, check_type)
         VALUES (#{checkItemId},
-                #{fileId}, #{fileType})
+                #{fileId}, #{fileType}, #{checkType})
     </insert>
 
     <select id="selectByCheckItemId" resultType="me.cuiyijie.joyea.domain.SysFileUpload">
@@ -21,6 +21,9 @@
         WHERE cif.check_item_id = #{checkItemId}
         <if test="fileType != null">
             AND file_type = #{fileType}
+        </if>
+        <if test="checkType != null">
+            AND check_type = #{checkType}
         </if>
     </select>
 

@@ -8,6 +8,6 @@ public enum UserFileType {
 
     QualityManual(), //质量手册
     SecurityManual(), //安全手册
-    Urs()  //非标URs
-
+    Urs(),  //非标URs
+    AssemblyProblem() //曾经问题
 }

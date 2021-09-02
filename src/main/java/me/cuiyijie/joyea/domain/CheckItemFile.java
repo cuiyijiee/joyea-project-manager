@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.domain;
 
 import lombok.Data;
+import me.cuiyijie.joyea.config.UserFileType;
 
 @Data
 public class CheckItemFile {
@@ -10,5 +11,7 @@ public class CheckItemFile {
     private Integer fileId;
     //附件类型，1-自检，2-互检，3-专检
     private Integer fileType;
+
+    private UserFileType checkType;
 
 }
