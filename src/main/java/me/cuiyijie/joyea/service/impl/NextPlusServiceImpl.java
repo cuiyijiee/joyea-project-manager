@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.service.impl;
 
 import me.cuiyijie.joyea.config.Constants;
+import me.cuiyijie.joyea.domain.Department;
 import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
 import me.cuiyijie.joyea.pojo.NextPlusNotificationRequest;
 import me.cuiyijie.joyea.pojo.NextPlusTenant;
@@ -8,6 +9,7 @@ import me.cuiyijie.joyea.service.INextPlusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -67,6 +69,15 @@ public class NextPlusServiceImpl implements INextPlusService {
         //restTemplate.postForEntity(Constants.NEXT_PLUS_SEND_NOTIFICATION_URL, entity, String.class);
         ResponseEntity<String> response = restTemplate.postForEntity(Constants.NEXT_PLUS_SEND_NOTIFICATION_URL, entity, String.class);
 
-        LOGGER.info("invoke nextplus notification result:{}",response);
+        LOGGER.info("invoke nextplus notification result:{}", response);
     }
+
+    public List<Department> getAllDepartment() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<List<Department>> response = restTemplate.exchange(Constants.NEXT_PLUS_DEPARTMENT_URL, HttpMethod.POST, null, new ParameterizedTypeReference<List<Department>>() {
+        });
+        return response.getBody();
+    }
+
 }

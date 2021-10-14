@@ -1,4 +1,4 @@
-package me.cuiyijie.joyea.pojo;
+package me.cuiyijie.joyea.model;
 
 import lombok.Data;
 
@@ -10,16 +10,10 @@ import lombok.Data;
 public class NextPlusTenantMember {
 
     private String id;
-    private String login;
-    private String firstName;
-    private String lastName;
     private String name;
-    private String idCardNo;
     private String signature;
     private String email;
     private String mobile;
     private String imageUrl;
     private Boolean activated;
-    private String openId;
-
 }

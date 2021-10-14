@@ -17,6 +17,7 @@ public class Constants implements EnvironmentAware {
     public final static String NEXT_PLUS_PROFILE_URL = "http://hr.joyea.cn:8099/openapi/find-ytm-user-by-code/";
     public final static String NEXT_PLUS_JOYEA_TENANT_MEMBER_URL = "https://open.nextxx.cn/openapi/group/members/8a9c8ff35deb9042015dee0ea0bf0011?tenantId=3347731b-5c0e-4a80-9dff-6c66aa79fd8c";
     public final static String NEXT_PLUS_SEND_NOTIFICATION_URL = "https://open.nextxx.cn/openapi/message/send-to-eapp";
+    public final static String NEXT_PLUS_DEPARTMENT_URL = "http://hr.joyea.cn:8099/openapi/find-eas-department-list";
 
     public static String getNextPlusClientId(){
         return getProperty("joyea.oauth2.nextplus.clientId");

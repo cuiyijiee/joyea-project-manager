@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.ProjectDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Project">
+
+        <id property="id" column="id"/>
+        <id property="projectName" column="project_name"/>
+        <id property="projectNumber" column="project_number"/>
+        <id property="projectManager" column="project_manager"/>
+        <id property="projectCommissioner" column="project_commissioner"/>
+        <id property="projectPrincipal" column="project_principal"/>
+        <id property="department" column="department"/>
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
+
+    </resultMap>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT *
+        from t_project
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_project(project_name, project_number, project_manager, project_commissioner,
+                              project_principal, department, created_at)
+        VALUES (#{item.projectName},
+                #{item.projectNumber},
+                #{item.projectManager},
+                #{item.projectCommissioner},
+                #{item.projectPrincipal},
+                #{item.department},
+                NOW())
+    </insert>
+
+</mapper>

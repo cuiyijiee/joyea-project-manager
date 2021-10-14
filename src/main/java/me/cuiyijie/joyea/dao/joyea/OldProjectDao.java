@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface ProjectDao {
+public interface OldProjectDao {
 
     List<JoyeaProject> getProjectList();
 

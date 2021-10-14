@@ -1,8 +1,7 @@
 package me.cuiyijie.joyea.pojo;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import io.swagger.models.auth.In;
 import lombok.Data;
+import me.cuiyijie.joyea.model.NextPlusTenantMember;
 
 import java.util.List;
 

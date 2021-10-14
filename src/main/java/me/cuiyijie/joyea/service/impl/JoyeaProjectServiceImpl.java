@@ -2,7 +2,7 @@ package me.cuiyijie.joyea.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import me.cuiyijie.joyea.dao.joyea.ProjectDao;
+import me.cuiyijie.joyea.dao.joyea.OldProjectDao;
 import me.cuiyijie.joyea.domain.JoyeaProject;
 import me.cuiyijie.joyea.service.IJoyeaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
 public class JoyeaProjectServiceImpl implements IJoyeaProjectService {
 
     @Autowired
-    private ProjectDao projectDao;
+    private OldProjectDao projectDao;
 
     @Override
     public PageInfo<JoyeaProject> pageListJoyeaProject(int pageNum, int pageSize) {
