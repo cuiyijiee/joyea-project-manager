@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.controller;
 import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.model.Project;
+import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProjectService;
@@ -23,12 +24,14 @@ public class ProjectController {
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProjectRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
+        TransBasePageResponse response = new TransBasePageResponse();
         Project selection = new Project();
         selection.setProjectNumber(request.getProjectNumber());
         Page<Project> resultList = projectService.list(selection, request.getPageNumber(), request.getPageSize());
-        response.setCode("0");
         response.setList(resultList.getResult());
+        response.setPageNum(resultList.getPageNum());
+        response.setPageSize(resultList.getPageSize());
+        response.setTotal(resultList.getTotal());
         return response;
     }
 
