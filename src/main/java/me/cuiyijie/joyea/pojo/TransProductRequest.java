@@ -9,8 +9,10 @@ import lombok.Data;
 @Data
 public class TransProductRequest {
 
-    private Integer pageNumber;
-    private Integer pageSize;
+    private Integer pageSize = 10;
+    private Integer pageNumber = 1;
+
+    private Integer id;
 
     private String projectId;
     private String productNumber;

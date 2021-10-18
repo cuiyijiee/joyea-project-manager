@@ -19,6 +19,12 @@
         <if test="item.projectId != null and item.projectId != ''">
             AND project_id = #{item.projectId}
         </if>
+        <if test="item.productName != null and item.productName != ''">
+            AND product_name = #{item.productName}
+        </if>
+        <if test="item.productNumber != null and item.productNumber != ''">
+            AND product_number = #{item.productNumber}
+        </if>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -28,5 +34,26 @@
                 #{item.productNumber},
                 NOW())
     </insert>
+
+    <delete id="delete" >
+        DELETE t_proejct
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE t_product
+        <set>
+            <if test="item.projectId != null and item.projectId != ''">
+                AND project_id = #{item.projectId}
+            </if>
+            <if test="item.productName != null and item.productName != ''">
+                AND product_name = #{item.productName}
+            </if>
+            <if test="item.productNumber != null and item.productNumber != ''">
+                AND product_number = #{item.productNumber}
+            </if>
+        </set>
+        WHERE id = #{item.id}
+    </update>
 
 </mapper>

@@ -13,4 +13,6 @@ public interface ProjectDao {
 
     List<Project> list(@Param("item") Project project);
 
+    Integer update(@Param("item") Project project);
+
 }

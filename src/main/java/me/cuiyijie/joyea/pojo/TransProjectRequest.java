@@ -31,4 +31,9 @@ public class TransProjectRequest {
      */
     private String department;
 
+    /**
+     * 生产单号
+     */
+    private String productionNumber;
+
 }

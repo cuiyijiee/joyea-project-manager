@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.dao.main;
 
+import io.swagger.models.auth.In;
 import me.cuiyijie.joyea.model.Product;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,7 @@ public interface ProductDao {
 
     List<Product> list(@Param("item") Product product);
 
+    Integer delete(@Param("id") Integer id);
+
+    Integer update(@Param("item") Product product);
 }

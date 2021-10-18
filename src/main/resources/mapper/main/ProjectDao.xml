@@ -10,6 +10,7 @@
         <id property="projectCommissioner" column="project_commissioner"/>
         <id property="projectPrincipal" column="project_principal"/>
         <id property="department" column="department"/>
+        <id property="productionNumber" column="production_number"/>
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
 
@@ -17,19 +18,70 @@
 
     <select id="list" resultMap="BaseResultMap">
         SELECT *
-        from t_project
+        FROM t_project
+        WHERE 1=1
+        <if test="item.projectName != null and item.projectName != ''">
+            project_name = #{projectName}
+        </if>
+        <if test="item.projectNumber != null and item.projectNumber != ''">
+            project_number = #{projectNumber}
+        </if>
+        <if test="item.projectManager != null and item.projectManager != ''">
+            project_manager = #{projectManager}
+        </if>
+        <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
+            project_commissioner = #{projectCommissioner}
+        </if>
+        <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
+            project_principal = #{projectPrincipal}
+        </if>
+        <if test="item.department != null and item.department != ''">
+            department = #{department}
+        </if>
+        <if test="item.productionNumber != null and item.productionNumber != ''">
+            production_number = #{productionNumber}
+        </if>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_project(project_name, project_number, project_manager, project_commissioner,
-                              project_principal, department, created_at)
+                              project_principal, department,production_number, created_at)
         VALUES (#{item.projectName},
                 #{item.projectNumber},
                 #{item.projectManager},
                 #{item.projectCommissioner},
                 #{item.projectPrincipal},
                 #{item.department},
+                #{item.productionNumber},
                 NOW())
     </insert>
+
+    <update id="update">
+        UPDATE t_project
+        <set>
+            <if test="item.projectName != null and item.projectName != ''">
+                project_name = #{projectName}
+            </if>
+            <if test="item.projectNumber != null and item.projectNumber != ''">
+                project_number = #{projectNumber}
+            </if>
+            <if test="item.projectManager != null and item.projectManager != ''">
+                project_manager = #{projectManager}
+            </if>
+            <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
+                project_commissioner = #{projectCommissioner}
+            </if>
+            <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
+                project_principal = #{projectPrincipal}
+            </if>
+            <if test="item.department != null and item.department != ''">
+                department = #{department}
+            </if>
+            <if test="item.productionNumber != null and item.productionNumber != ''">
+                production_number = #{productionNumber}
+            </if>
+        </set>
+        WHERE id = #{item.id}
+    </update>
 
 </mapper>

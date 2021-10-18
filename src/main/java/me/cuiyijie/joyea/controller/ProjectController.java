@@ -2,9 +2,12 @@ package me.cuiyijie.joyea.controller;
 
 import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.Project;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.TransProductRequest;
 import me.cuiyijie.joyea.pojo.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProjectService;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +46,21 @@ public class ProjectController {
         Project selection = new Project();
         BeanUtils.copyProperties(request, selection);
         Integer result = projectService.insert(selection);
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+        return response;
+    }
+
+    @ApiOperation(value = "更新项目", notes = "传入id,其余同insert")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public TransBaseResponse update(@RequestBody TransProductRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+        Project selection = new Project();
+        BeanUtils.copyProperties(request,selection);
+        Integer result = projectService.update(selection);
         if (result == 1) {
             response.setCode("0");
         } else {

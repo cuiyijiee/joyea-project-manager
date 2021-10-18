@@ -16,12 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: yjcui3
  * @Date: 2021/10/18 11:25
  */
-@Controller
+@RestController
+@RequestMapping("product")
 @Api(tags = "项目产品模块")
 public class ProductController {
 
@@ -58,6 +60,33 @@ public class ProductController {
         return response;
     }
 
+    @ApiOperation(value = "删除项目产品", notes = "传入id")
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public TransBaseResponse delete(@RequestBody TransProductRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+        Integer result = productService.delete(request.getId());
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+        return response;
+    }
+
+    @ApiOperation(value = "更新项目产品", notes = "传入id,其余同insert")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public TransBaseResponse update(@RequestBody TransProductRequest request) {
+        TransBaseResponse response = new TransBaseResponse();
+        Product selection = new Product();
+        BeanUtils.copyProperties(request,selection);
+        Integer result = productService.update(selection);
+        if (result == 1) {
+            response.setCode("0");
+        } else {
+            response.setCode("-1");
+        }
+        return response;
+    }
 
 
 }

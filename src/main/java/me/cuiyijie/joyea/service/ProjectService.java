@@ -13,7 +13,7 @@ public class ProjectService {
     @Autowired
     private ProjectDao projectDao;
 
-    public Page<Project> list(Project project, Integer pageNumber,Integer pageSize) {
+    public Page<Project> list(Project project, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
         Page<Project> result = (Page<Project>) projectDao.list(project);
         return result;
@@ -21,6 +21,10 @@ public class ProjectService {
 
     public Integer insert(Project project) {
         return projectDao.insert(project);
+    }
+
+    public Integer update(Project project) {
+        return projectDao.update(project);
     }
 
 }
