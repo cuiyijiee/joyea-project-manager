@@ -34,11 +34,6 @@ public class Project {
     private String department;
 
     /**
-     * 生产单号
-     */
-    private String productionNumber;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createdAt;

@@ -8,6 +8,8 @@ public class TransProjectRequest {
     private Integer pageSize = 10;
     private Integer pageNumber = 1;
 
+    private Integer id;
+
     private String projectName;
     private String projectNumber;
 
@@ -31,9 +33,6 @@ public class TransProjectRequest {
      */
     private String department;
 
-    /**
-     * 生产单号
-     */
-    private String productionNumber;
+
 
 }

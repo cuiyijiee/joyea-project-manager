@@ -10,7 +10,6 @@
         <id property="projectCommissioner" column="project_commissioner"/>
         <id property="projectPrincipal" column="project_principal"/>
         <id property="department" column="department"/>
-        <id property="productionNumber" column="production_number"/>
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
 
@@ -21,38 +20,34 @@
         FROM t_project
         WHERE 1=1
         <if test="item.projectName != null and item.projectName != ''">
-            project_name = #{projectName}
+            project_name = #{item.projectName}
         </if>
         <if test="item.projectNumber != null and item.projectNumber != ''">
-            project_number = #{projectNumber}
+            project_number = #{item.projectNumber}
         </if>
         <if test="item.projectManager != null and item.projectManager != ''">
-            project_manager = #{projectManager}
+            project_manager = #{item.projectManager}
         </if>
         <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
-            project_commissioner = #{projectCommissioner}
+            project_commissioner = #{item.projectCommissioner}
         </if>
         <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
-            project_principal = #{projectPrincipal}
+            project_principal = #{item.projectPrincipal}
         </if>
         <if test="item.department != null and item.department != ''">
-            department = #{department}
-        </if>
-        <if test="item.productionNumber != null and item.productionNumber != ''">
-            production_number = #{productionNumber}
+            department = #{item.department}
         </if>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_project(project_name, project_number, project_manager, project_commissioner,
-                              project_principal, department,production_number, created_at)
+                              project_principal, department, created_at)
         VALUES (#{item.projectName},
                 #{item.projectNumber},
                 #{item.projectManager},
                 #{item.projectCommissioner},
                 #{item.projectPrincipal},
                 #{item.department},
-                #{item.productionNumber},
                 NOW())
     </insert>
 
@@ -60,25 +55,22 @@
         UPDATE t_project
         <set>
             <if test="item.projectName != null and item.projectName != ''">
-                project_name = #{projectName}
+                project_name = #{item.projectName},
             </if>
             <if test="item.projectNumber != null and item.projectNumber != ''">
-                project_number = #{projectNumber}
+                project_number = #{item.projectNumber},
             </if>
             <if test="item.projectManager != null and item.projectManager != ''">
-                project_manager = #{projectManager}
+                project_manager = #{item.projectManager},
             </if>
             <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
-                project_commissioner = #{projectCommissioner}
+                project_commissioner = #{item.projectCommissioner},
             </if>
             <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
-                project_principal = #{projectPrincipal}
+                project_principal = #{item.projectPrincipal},
             </if>
             <if test="item.department != null and item.department != ''">
-                department = #{department}
-            </if>
-            <if test="item.productionNumber != null and item.productionNumber != ''">
-                production_number = #{productionNumber}
+                department = #{item.department},
             </if>
         </set>
         WHERE id = #{item.id}

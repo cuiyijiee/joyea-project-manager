@@ -56,7 +56,7 @@ public class ProjectController {
 
     @ApiOperation(value = "更新项目", notes = "传入id,其余同insert")
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public TransBaseResponse update(@RequestBody TransProductRequest request) {
+    public TransBaseResponse update(@RequestBody TransProjectRequest request) {
         TransBaseResponse response = new TransBaseResponse();
         Project selection = new Project();
         BeanUtils.copyProperties(request,selection);

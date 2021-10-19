@@ -17,5 +17,9 @@ public class TransProductRequest {
     private String projectId;
     private String productNumber;
     private String productName;
+    /**
+     * 生产单号
+     */
+    private String productionNumber;
 
 }

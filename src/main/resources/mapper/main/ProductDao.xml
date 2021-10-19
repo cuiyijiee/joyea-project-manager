@@ -7,6 +7,7 @@
         <id property="projectId" column="project_id"/>
         <id property="productName" column="product_name"/>
         <id property="productNumber" column="product_number"/>
+        <id property="productionNumber" column="production_number"/>
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
 
@@ -25,13 +26,17 @@
         <if test="item.productNumber != null and item.productNumber != ''">
             AND product_number = #{item.productNumber}
         </if>
+        <if test="item.productionNumber != null and item.productionNumber != ''">
+            production_number = #{productionNumber}
+        </if>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_product(project_id, product_name, product_number, created_at)
+        INSERT INTO t_product(project_id, product_name, product_number,production_number, created_at)
         VALUES (#{item.projectId},
                 #{item.productName},
                 #{item.productNumber},
+                #{item.productionNumber},
                 NOW())
     </insert>
 
@@ -44,13 +49,16 @@
         UPDATE t_product
         <set>
             <if test="item.projectId != null and item.projectId != ''">
-                AND project_id = #{item.projectId}
+                project_id = #{item.projectId},
             </if>
             <if test="item.productName != null and item.productName != ''">
-                AND product_name = #{item.productName}
+                product_name = #{item.productName},
             </if>
             <if test="item.productNumber != null and item.productNumber != ''">
-                AND product_number = #{item.productNumber}
+                product_number = #{item.productNumber},
+            </if>
+            <if test="item.productionNumber != null and item.productionNumber != ''">
+                production_number = #{productionNumber},
             </if>
         </set>
         WHERE id = #{item.id}
