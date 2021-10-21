@@ -20,22 +20,22 @@
         FROM t_project
         WHERE 1=1
         <if test="item.projectName != null and item.projectName != ''">
-            project_name = #{item.projectName}
+            AND project_name LIKE CONCAT('%',CONCAT(#{item.projectName},'%'))
         </if>
         <if test="item.projectNumber != null and item.projectNumber != ''">
-            project_number = #{item.projectNumber}
+            AND project_number LIKE CONCAT('%',CONCAT(#{item.projectNumber},'%'))
         </if>
         <if test="item.projectManager != null and item.projectManager != ''">
-            project_manager = #{item.projectManager}
+            AND project_manager LIKE CONCAT('%',CONCAT(#{item.projectManager},'%'))
         </if>
         <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
-            project_commissioner = #{item.projectCommissioner}
+            AND project_commissioner LIKE CONCAT('%',CONCAT(#{item.projectCommissioner},'%'))
         </if>
         <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
-            project_principal = #{item.projectPrincipal}
+            AND project_principal LIKE CONCAT('%',CONCAT(#{item.projectPrincipal},'%'))
         </if>
         <if test="item.department != null and item.department != ''">
-            department = #{item.department}
+            AND department LIKE CONCAT('%',CONCAT(#{item.department},'%'))
         </if>
     </select>
 
@@ -72,6 +72,7 @@
             <if test="item.department != null and item.department != ''">
                 department = #{item.department},
             </if>
+            updated_at = NOW()
         </set>
         WHERE id = #{item.id}
     </update>

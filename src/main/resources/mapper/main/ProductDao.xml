@@ -27,7 +27,7 @@
             AND product_number = #{item.productNumber}
         </if>
         <if test="item.productionNumber != null and item.productionNumber != ''">
-            production_number = #{productionNumber}
+            AND production_number = #{productionNumber}
         </if>
     </select>
 
@@ -41,7 +41,7 @@
     </insert>
 
     <delete id="delete" >
-        DELETE t_proejct
+        DELETE FROM t_product
         WHERE id = #{id}
     </delete>
 
@@ -58,8 +58,9 @@
                 product_number = #{item.productNumber},
             </if>
             <if test="item.productionNumber != null and item.productionNumber != ''">
-                production_number = #{productionNumber},
+                production_number = #{item.productionNumber},
             </if>
+            updated_at = NOW()
         </set>
         WHERE id = #{item.id}
     </update>
