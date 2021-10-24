@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.TemplateDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Template">
+
+        <id property="id" column="id"/>
+        <id property="pid" column="pid"/>
+        <id property="name" column="name"/>
+        <id property="levelType" column="level_type"/>
+        <id property="isRoot" column="is_root"/>
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
+
+    </resultMap>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_template
+    </select>
+
+    <insert id="insert">
+        INSERT INTO t_template(pid, name, level_type, is_root, created_at)
+        VALUES (#{item.pid},
+                #{item.name},
+                #{item.levelType},
+                #{item.isRoot},
+                NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE t_template
+        <set>
+            <if test="item.pid != null and item.pid != ''">
+                pid = #{item.pid},
+            </if>
+            <if test="item.name != null and item.name != ''">
+                name = #{item.name},
+            </if>
+            <if test="item.levelType != null and item.levelType != ''">
+                level_type = #{item.levelType},
+            </if>
+            <if test="item.isRoot != null and item.isRoot != ''">
+                is_root = #{item.isRoot},
+            </if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{item.id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM t_template
+        WHERE id = #{item.id}
+    </delete>
+
+</mapper>
