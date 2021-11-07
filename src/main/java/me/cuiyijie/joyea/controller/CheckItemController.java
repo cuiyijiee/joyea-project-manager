@@ -2,9 +2,9 @@ package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.cuiyijie.joyea.model.Template;
+import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
-import me.cuiyijie.joyea.service.TemplateService;
+import me.cuiyijie.joyea.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,45 +12,46 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("template")
-@Api(tags = "模板模块")
-public class TemplateController {
+@RequestMapping("checkItem")
+@Api(tags = "点检项模块")
+public class CheckItemController {
 
     @Autowired
-    private TemplateService templateService;
+    private CheckItemService checkItemService;
 
 
-    @ApiOperation(value = "获取全部节点", notes = "获取全部节点")
+    @ApiOperation(value = "获取点检项", notes = "获取点检项")
     @RequestMapping(value = "listAll", method = RequestMethod.POST)
     public TransBaseResponse listAll() {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         transBaseResponse.setCode("0");
-        transBaseResponse.setList(templateService.listAll());
+        transBaseResponse.setList(checkItemService.listAll());
         return transBaseResponse;
     }
 
-    @ApiOperation(value = "新增节点", notes = "新增节点")
+    @ApiOperation(value = "新增点检项", notes = "新增点检项")
     @RequestMapping(value = "insert", method = RequestMethod.POST)
-    public TransBaseResponse insert(@RequestBody Template template) {
+    public TransBaseResponse insert(@RequestBody CheckItem checkItem) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        transBaseResponse.setCode(templateService.insert(template) == 1 ? "0" : "-1");
+        transBaseResponse.setCode(checkItemService.insert(checkItem) == 1 ? "0" : "-1");
         return transBaseResponse;
     }
 
-    @ApiOperation(value = "更新节点", notes = "更新节点")
+    @ApiOperation(value = "更新点检项", notes = "更新点检项")
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public TransBaseResponse update(@RequestBody Template template) {
+    public TransBaseResponse update(@RequestBody CheckItem checkItem) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        transBaseResponse.setCode(templateService.update(template) == 1 ? "0" : "-1");
+        transBaseResponse.setCode(checkItemService.update(checkItem) == 1 ? "0" : "-1");
         return transBaseResponse;
     }
 
-    @ApiOperation(value = "删除节点", notes = "删除节点")
+    @ApiOperation(value = "删除点检项", notes = "删除点检项")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public TransBaseResponse delete(@RequestBody Template template) {
+    public TransBaseResponse delete(@RequestBody CheckItem checkItem) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        transBaseResponse.setCode(templateService.delete(template) == 1 ? "0" : "-1");
+        transBaseResponse.setCode(checkItemService.delete(checkItem) == 1 ? "0" : "-1");
         return transBaseResponse;
     }
+
 
 }

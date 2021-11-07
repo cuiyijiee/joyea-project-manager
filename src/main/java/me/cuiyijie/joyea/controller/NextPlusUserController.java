@@ -5,16 +5,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.domain.Department;
-import me.cuiyijie.joyea.domain.JoyeaAccessToken;
-import me.cuiyijie.joyea.domain.JoyeaUserProfile;
+import me.cuiyijie.joyea.model.User;
 import me.cuiyijie.joyea.pojo.*;
 import me.cuiyijie.joyea.pojo.request.TransJoyeaPersonRequest;
 import me.cuiyijie.joyea.pojo.request.TransNextPlusUserRequest;
-import me.cuiyijie.joyea.pojo.request.TransUserRequest;
 import me.cuiyijie.joyea.service.INextPlusService;
 import me.cuiyijie.joyea.service.IUserService;
+import me.cuiyijie.joyea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -34,10 +32,13 @@ import java.util.stream.Collectors;
 public class NextPlusUserController {
 
     @Autowired
-    IUserService userService;
+    IUserService iUserService;
 
     @Autowired
     private INextPlusService nextPlusService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     RestTemplate restTemplate;
@@ -116,12 +117,16 @@ public class NextPlusUserController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse listNextPlusPerson(@RequestBody TransJoyeaPersonRequest request) {
         TransBaseResponse response = new TransBaseResponse();
-        NextPlusTenant nextPlusTenant = nextPlusService.getTenantInfo();
-        if (StringUtil.isNotEmpty(request.getName()) && nextPlusTenant != null) {
-            response.setObj(nextPlusTenant.getMembers().stream().filter(item -> item.getName().contains(request.getName())).collect(Collectors.toList()));
-        } else {
-            response.setObj(nextPlusTenant.getMembers());
-        }
+//        NextPlusTenant nextPlusTenant = nextPlusService.getTenantInfo();
+//        if (StringUtil.isNotEmpty(request.getName()) && nextPlusTenant != null) {
+//            response.setObj(nextPlusTenant.getMembers().stream().filter(item -> item.getName().contains(request.getName())).collect(Collectors.toList()));
+//        } else {
+//            response.setObj(nextPlusTenant.getMembers());
+//        }
+        User user = new User();
+        user.setName(request.getName());
+        response.setList(userService.listAll(user));
+
         response.setCode("0");
         return response;
     }
