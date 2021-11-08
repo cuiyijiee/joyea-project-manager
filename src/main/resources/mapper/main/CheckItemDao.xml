@@ -36,6 +36,16 @@
     <select id="listAll" resultMap="BaseResultMap">
         SELECT *
         FROM t_check_item
+        WHERE 1=1
+        <if test="item.checkModuleType != null and item.checkModuleType != ''">
+            AND check_module_type = #{item.checkModuleType}
+        </if>
+        <if test="item.checkCategoryType != null and item.checkCategoryType != ''">
+            AND check_category_type = #{item.checkCategoryType}
+        </if>
+        <if test="item.checkStageType != null and item.checkStageType != ''">
+            AND check_stage_type = #{item.checkStageType}
+        </if>
     </select>
 
     <insert id="insert">

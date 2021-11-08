@@ -10,12 +10,12 @@ import java.util.List;
 @Repository
 public interface CheckItemDao {
 
-    List<CheckItem> listAll();
+    List<CheckItem> listAll(@Param("item") CheckItem checkItem);
 
-    Integer insert(@Param("item") CheckItem template);
+    Integer insert(@Param("item") CheckItem checkItem);
 
-    Integer update(@Param("item") CheckItem template);
+    Integer update(@Param("item") CheckItem checkItem);
 
-    Integer delete(@Param("item") CheckItem template);
+    Integer delete(@Param("item") CheckItem checkItem);
 
 }

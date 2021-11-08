@@ -7,6 +7,7 @@ import me.cuiyijie.joyea.enums.CheckStageType;
 import me.cuiyijie.joyea.enums.CheckVerifyType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class CheckItem {
@@ -21,6 +22,9 @@ public class CheckItem {
     private String checkMethod;
     private String checkTool;
     private String checkStandardFrom;
+
+    //产品标签/工序标签
+    private List<CheckItemTag> tags;
 
     //自检人
     private CheckVerifyType firstCheckVerifyType;

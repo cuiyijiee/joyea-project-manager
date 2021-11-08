@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.dao.main.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
+import me.cuiyijie.joyea.model.CheckItemTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,19 @@ public class CheckItemService {
     @Autowired
     private CheckItemDao checkItemDao;
 
+    @Autowired
+    private CheckItemTagService checkItemTagService;
 
-    public List<CheckItem> listAll() {
-        return checkItemDao.listAll();
+    public List<CheckItem> listAll(CheckItem checkItem) {
+        List<CheckItem> checkItems = checkItemDao.listAll(checkItem);
+        for(int index = 0;index < checkItems.size();index ++) {
+            CheckItem checkItem1 = checkItems.get(index);
+            CheckItemTag checkItemTag = new CheckItemTag();
+            checkItemTag.setCheckItemId(checkItem1.getId());
+            List<CheckItemTag> checkItemTags = checkItemTagService.listAll(checkItemTag);
+            checkItem1.setTags(checkItemTags);
+        }
+        return checkItems;
     }
 
     public Integer update(CheckItem checkItem) {

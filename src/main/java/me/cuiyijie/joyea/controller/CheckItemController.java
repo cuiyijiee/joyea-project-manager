@@ -22,10 +22,10 @@ public class CheckItemController {
 
     @ApiOperation(value = "获取点检项", notes = "获取点检项")
     @RequestMapping(value = "listAll", method = RequestMethod.POST)
-    public TransBaseResponse listAll() {
+    public TransBaseResponse listAll(@RequestBody CheckItem checkItem) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         transBaseResponse.setCode("0");
-        transBaseResponse.setList(checkItemService.listAll());
+        transBaseResponse.setList(checkItemService.listAll(checkItem));
         return transBaseResponse;
     }
 

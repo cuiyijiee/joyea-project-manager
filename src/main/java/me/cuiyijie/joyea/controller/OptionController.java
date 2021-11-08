@@ -59,6 +59,14 @@ public class OptionController {
         return transBaseResponse;
     }
 
+    @PostMapping("checkItemTag")
+    public TransBaseResponse checkItemTagOption() {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        transBaseResponse.setObj(genKv(CheckItemTagType.values()));
+        transBaseResponse.setCode("0");
+        return transBaseResponse;
+    }
+
 
     private List<Map<String, String>> genKv(BaseEnum[] baseEnums) {
         List<Map<String, String>> result = new ArrayList<>();
