@@ -8,94 +8,147 @@
         <id property="checkCategoryType" column="check_category_type"/>
         <id property="checkStageType" column="check_stage_type"/>
         <id property="checkName" column="check_name"/>
+        <id property="checkNameVisible" column="check_name_visible"/>
         <id property="checkStandard" column="check_standard"/>
+        <id property="checkStandardVisible" column="check_standard_visible"/>
         <id property="checkMethod" column="check_method"/>
+        <id property="checkMethodVisible" column="check_method_visible"/>
         <id property="checkTool" column="check_tool"/>
+        <id property="checkToolVisible" column="check_tool_visible"/>
         <id property="checkStandardFrom" column="check_standard_from"/>
+        <id property="checkStandardFromVisible" column="check_standard_from_visible"/>
 
         <id property="firstCheckVerifyType" column="first_check_verify_type"/>
         <id property="firstCheckVerifyResult" column="first_check_verify_result"/>
         <id property="firstCheckVerifySheetId" column="first_check_verify_sheet_id"/>
         <id property="firstCheckPersonId" column="first_check_person_id"/>
+        <id property="firstCheckRemark" column="first_check_remark"/>
 
         <id property="secondCheckVerifyType" column="second_check_verify_type"/>
         <id property="secondCheckVerifyResult" column="second_check_verify_result"/>
         <id property="secondCheckVerifySheetId" column="second_check_verify_sheet_id"/>
         <id property="secondCheckPersonId" column="second_check_person_id"/>
+        <id property="secondCheckRemark" column="second_check_remark"/>
 
         <id property="thirdCheckVerifyType" column="third_check_verify_type"/>
         <id property="thirdCheckVerifyResult" column="third_check_verify_result"/>
         <id property="thirdCheckVerifySheetId" column="third_check_verify_sheet_id"/>
         <id property="thirdCheckPersonId" column="third_check_person_id"/>
+        <id property="thirdCheckRemark" column="third_check_remark"/>
 
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
 
     </resultMap>
 
-    <select id="listAll" resultMap="BaseResultMap">
+    <select id="listChild" resultMap="BaseResultMap">
         SELECT *
-        FROM t_check_item
+        FROM t_template_checkitem_rel tcl
+                 LEFT JOIN t_checkitem c ON tcl.cid = c.id
+        WHERE tcl.pid = #{id}
+    </select>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT DISTINCT ci.*
+        FROM t_checkitem ci
+        <if test="(item.productTagText != null and item.productTagText != '') || (item.operationTagText != null and item.operationTagText != '')">
+            LEFT JOIN t_checkitem_tag cit on cit.checkitem_id = ci.id
+        </if>
         WHERE 1=1
-        <if test="item.checkModuleType != null and item.checkModuleType != ''">
-            AND check_module_type = #{item.checkModuleType}
+        <if test="item.checkModuleType != null ">
+            AND ci.check_module_type = #{item.checkModuleType}
         </if>
-        <if test="item.checkCategoryType != null and item.checkCategoryType != ''">
-            AND check_category_type = #{item.checkCategoryType}
+        <if test="item.checkCategoryType != null">
+            AND ci.check_category_type = #{item.checkCategoryType}
         </if>
-        <if test="item.checkStageType != null and item.checkStageType != ''">
-            AND check_stage_type = #{item.checkStageType}
+        <if test="item.checkStageType != null">
+            AND ci.check_stage_type = #{item.checkStageType}
+        </if>
+        <if test="item.productTagText != null and item.productTagText != ''">
+            AND cit.tag_name LIKE CONCAT('%',#{item.productTagText},'%')
+            AND cit.tag_type = 'PRODUCT'
+        </if>
+        <if test="item.operationTagText != null and item.operationTagText != ''">
+            AND cit.tag_name LIKE CONCAT('%',#{item.operationTagText},'%')
+            AND cit.tag_type = 'OPERATION'
         </if>
     </select>
 
+    <select id="listById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_checkitem
+        WHERE id = #{id}
+    </select>
+
     <insert id="insert">
-        INSERT INTO t_check_item(check_module_type, check_category_type, check_stage_type, check_name,
-                                 check_standard, check_method, check_tool, check_standard_from,
-                                 first_check_verify_type, first_check_verify_result, first_check_verify_sheet_id,
-                                 first_check_person_id,
-                                 second_check_verify_type, second_check_verify_result, second_check_verify_sheet_id,
-                                 second_check_person_id,
-                                 third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
-                                 third_check_person_id, created_at)
-        VALUES (#{item.checkModuleType}, #{item.checkCategoryType}, #{item.checkStageType}, #{item.checkName},
-                #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool}, #{item.checkStandardFrom},
+        INSERT INTO t_checkitem(check_module_type, check_category_type, check_stage_type,
+                                check_name, check_standard, check_method, check_tool, check_standard_from,
+                                check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,
+                                check_standard_from_visible,
+                                first_check_verify_type, first_check_verify_result, first_check_verify_sheet_id,
+                                first_check_person_id, first_check_remark,
+                                second_check_verify_type, second_check_verify_result, second_check_verify_sheet_id,
+                                second_check_person_id, second_check_remark,
+                                third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
+                                third_check_person_id, third_check_remark,
+                                created_at)
+        VALUES (#{item.checkModuleType}, #{item.checkCategoryType}, #{item.checkStageType},
+                #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
+                #{item.checkStandardFrom},
+                #{item.checkNameVisible}, #{item.checkStandardVisible}, #{item.checkMethodVisible},
+                #{item.checkToolVisible}, #{item.checkStandardFromVisible},
                 #{item.firstCheckVerifyType}, #{item.firstCheckVerifyResult}, #{item.firstCheckVerifySheetId},
-                #{item.firstCheckPersonId},
+                #{item.firstCheckPersonId}, #{item.firstCheckRemark},
                 #{item.secondCheckVerifyType}, #{item.secondCheckVerifyResult}, #{item.secondCheckVerifySheetId},
-                #{item.secondCheckPersonId},
+                #{item.secondCheckPersonId}, #{item.secondCheckRemark},
                 #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifyResult}, #{item.thirdCheckVerifySheetId},
-                #{item.thirdCheckPersonId},
+                #{item.thirdCheckPersonId}, #{item.thirdCheckRemark},
                 NOW())
     </insert>
 
     <update id="update">
-        UPDATE t_check_item
+        UPDATE t_checkitem
         <set>
-            <if test="item.checkModuleType != null and item.checkModuleType != ''">
+            <if test="item.checkModuleType != null ">
                 check_module_type = #{item.checkModuleType},
             </if>
-            <if test="item.checkCategoryType != null and item.checkCategoryType != ''">
+            <if test="item.checkCategoryType != null">
                 check_category_type = #{item.checkCategoryType},
             </if>
-            <if test="item.checkStageType != null and item.checkStageType != ''">
+            <if test="item.checkStageType != null">
                 check_stage_type = #{item.checkStageType},
             </if>
             <if test="item.checkName != null and item.checkName != ''">
                 check_name = #{item.checkName},
             </if>
+            <if test="item.checkNameVisible != null and item.checkNameVisible != ''">
+                check_name_visible = #{item.checkNameVisible},
+            </if>
             <if test="item.checkStandard != null and item.checkStandard != ''">
                 check_standard = #{item.checkStandard},
+            </if>
+            <if test="item.checkStandardVisible != null and item.checkStandardVisible != ''">
+                check_standard_visible = #{item.checkStandardVisible},
             </if>
             <if test="item.checkMethod != null and item.checkMethod != ''">
                 check_method = #{item.checkMethod},
             </if>
+            <if test="item.checkMethodVisible != null and item.checkMethodVisible != ''">
+                check_method_visible = #{item.checkMethodVisible},
+            </if>
             <if test="item.checkTool != null and item.checkTool != ''">
                 check_tool = #{item.checkTool},
+            </if>
+            <if test="item.checkToolVisible != null and item.checkToolVisible != ''">
+                check_tool_visible = #{item.checkToolVisible},
             </if>
             <if test="item.checkStandardFrom != null and item.checkStandardFrom != ''">
                 check_standard_from = #{item.checkStandardFrom},
             </if>
-            <if test="item.firstCheckVerifyType != null and item.firstCheckVerifyType != ''">
+            <if test="item.checkStandardFromVisible != null and item.checkStandardFromVisible != ''">
+                check_standard_from_visible = #{item.checkStandardFromVisible},
+            </if>
+            <if test="item.firstCheckVerifyType != null">
                 first_check_verify_type = #{item.firstCheckVerifyType},
             </if>
             <if test="item.firstCheckVerifyResult != null and item.firstCheckVerifyResult != ''">
@@ -107,7 +160,10 @@
             <if test="item.firstCheckPersonId != null and item.firstCheckPersonId != ''">
                 first_check_person_id = #{item.firstCheckPersonId},
             </if>
-            <if test="item.secondCheckVerifyType != null and item.secondCheckVerifyType != ''">
+            <if test="item.firstCheckRemark != null and item.firstCheckRemark != ''">
+                first_check_remark = #{item.firstCheckRemark},
+            </if>
+            <if test="item.secondCheckVerifyType != null">
                 second_check_verify_type = #{item.secondCheckVerifyType},
             </if>
             <if test="item.secondCheckVerifyResult != null and item.secondCheckVerifyResult != ''">
@@ -119,7 +175,10 @@
             <if test="item.secondCheckPersonId != null and item.secondCheckPersonId != ''">
                 second_check_person_id = #{item.secondCheckPersonId},
             </if>
-            <if test="item.thirdCheckVerifyType != null and item.thirdCheckVerifyType != ''">
+            <if test="item.secondCheckRemark != null and item.secondCheckRemark != ''">
+                second_check_remark = #{item.secondCheckRemark},
+            </if>
+            <if test="item.thirdCheckVerifyType != null">
                 third_check_verify_type = #{item.thirdCheckVerifyType},
             </if>
             <if test="item.thirdCheckVerifyResult != null and item.thirdCheckVerifyResult != ''">
@@ -131,6 +190,9 @@
             <if test="item.thirdCheckPersonId != null and item.thirdCheckPersonId != ''">
                 third_check_person_id = #{item.thirdCheckPersonId},
             </if>
+            <if test="item.thirdCheckRemark != null and item.thirdCheckRemark != ''">
+                third_check_remark = #{item.thirdCheckRemark},
+            </if>
             updated_at = NOW()
         </set>
         WHERE id = #{item.id}
@@ -138,7 +200,7 @@
 
     <delete id="delete">
         DELETE
-        FROM t_check_item
+        FROM t_checkitem
         WHERE id = #{item.id}
     </delete>
 

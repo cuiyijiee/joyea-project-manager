@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Template">
 
         <id property="id" column="id"/>
-        <id property="pid" column="pid"/>
         <id property="name" column="name"/>
         <id property="levelType" column="level_type"/>
         <id property="isRoot" column="is_root"/>
@@ -13,15 +12,48 @@
 
     </resultMap>
 
+    <resultMap id="VoResultMap" type="me.cuiyijie.joyea.model.vo.TemplateVo" extends="BaseResultMap">
+        <id property="childCount" column="child_count"/>
+    </resultMap>
+
+    <select id="listById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_template
+        WHERE id = #{id}
+    </select>
+
     <select id="listAll" resultMap="BaseResultMap">
         SELECT *
         FROM t_template
+        WHERE 1=1
+        <if test="item.levelType != null">
+            AND level_type = #{item.levelType}
+        </if>
+        <if test="item.isRoot != null and item.isRoot">
+            AND is_root = #{item.isRoot}
+        </if>
     </select>
 
-    <insert id="insert">
-        INSERT INTO t_template(pid, name, level_type, is_root, created_at)
-        VALUES (#{item.pid},
-                #{item.name},
+    <select id="listAllOperation" resultMap="VoResultMap">
+        SELECT
+            t.*,IF(t1.child_count IS NULL,0,t1.child_count) child_count
+        FROM
+            t_template t
+                LEFT JOIN ( SELECT count(*) child_count, pid FROM t_template_checkitem_rel GROUP BY pid ) t1 ON t1.pid = t.id
+        WHERE
+            t.level_type = 'OPERATION'
+    </select>
+
+    <select id="listChild" resultMap="BaseResultMap">
+        SELECT t.*
+        FROM t_template_checkitem_rel tcl
+                 LEFT JOIN t_template t ON tcl.cid = t.id
+        WHERE tcl.pid = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_template(name, level_type, is_root, created_at)
+        VALUES (#{item.name},
                 #{item.levelType},
                 #{item.isRoot},
                 NOW())
@@ -30,13 +62,10 @@
     <update id="update">
         UPDATE t_template
         <set>
-            <if test="item.pid != null and item.pid != ''">
-                pid = #{item.pid},
-            </if>
             <if test="item.name != null and item.name != ''">
                 name = #{item.name},
             </if>
-            <if test="item.levelType != null and item.levelType != ''">
+            <if test="item.levelType != null ">
                 level_type = #{item.levelType},
             </if>
             <if test="item.isRoot != null and item.isRoot != ''">
@@ -48,8 +77,14 @@
     </update>
 
     <delete id="delete">
-        DELETE FROM t_template
+        DELETE
+        FROM t_template
         WHERE id = #{item.id}
     </delete>
+
+    <insert id="addTemplateRel">
+        INSERT INTO t_template_checkitem_rel (pid, cid)
+        VALUES (#{pid}, #{cid})
+    </insert>
 
 </mapper>

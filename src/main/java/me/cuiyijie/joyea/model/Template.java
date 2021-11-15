@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class Template {
 
     private Integer id;
-    private Integer pid;
     private String name;
     private TemplateLevelType levelType;
     private Boolean isRoot;
