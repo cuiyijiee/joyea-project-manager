@@ -1,6 +1,9 @@
 package me.cuiyijie.joyea.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.models.auth.In;
 import me.cuiyijie.joyea.dao.main.CheckItemTagDao;
+import me.cuiyijie.joyea.enums.CheckItemTagType;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,16 @@ public class CheckItemTagService {
     @Autowired
     private CheckItemTagDao checkItemTagDao;
 
+    public CheckItemTag selectById(Integer id) {
+        return checkItemTagDao.selectById(id);
+    }
 
-    public List<CheckItemTag> listAll(CheckItemTag checkItemTag) {
-        return checkItemTagDao.listAll(checkItemTag);
+    public CheckItemTag selectByTypeAndName(CheckItemTagType tagType, String tagName) {
+        return checkItemTagDao.selectByTypeAndName(tagType, tagName);
+    }
+
+    public List<CheckItemTag> list(CheckItemTag checkItemTag) {
+        return checkItemTagDao.list(checkItemTag);
     }
 
     public Integer update(CheckItemTag checkItemTag) {
@@ -32,6 +42,10 @@ public class CheckItemTagService {
 
     public Integer delete(CheckItemTag checkItemTag) {
         return checkItemTagDao.delete(checkItemTag);
+    }
+
+    public Integer getTagRelNum(CheckItemTag checkItemTag) {
+        return checkItemTagDao.getTagRelNum(checkItemTag);
     }
 
 }

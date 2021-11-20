@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItemTag">
 
         <id property="id" column="id"/>
-        <id property="checkItemId" column="checkitem_id"/>
         <id property="tagName" column="tag_name"/>
         <id property="tagType" column="tag_type"/>
         <id property="createdAt" column="created_at"/>
@@ -12,19 +11,24 @@
 
     </resultMap>
 
-    <select id="listAll" resultMap="BaseResultMap">
+    <select id="list" resultMap="BaseResultMap">
         SELECT *
         FROM t_checkitem_tag
         WHERE 1=1
-        <if test="item.checkItemId != null and item.checkItemId != ''" >
-            AND checkitem_id = #{item.checkItemId}
+        <if test="item.id != null">
+            AND id = #{item.id}
+        </if>
+        <if test="item.tagName != null and item.tagName != ''">
+            AND tag_name = #{item.tagName}
+        </if>
+        <if test="item.tagType != null">
+            AND tag_type = #{item.tagType}
         </if>
     </select>
 
     <insert id="insert">
-        INSERT INTO t_checkitem_tag(checkitem_id, tag_name, tag_type, created_at)
-        VALUES (#{item.checkItemId},
-                #{item.tagName},
+        INSERT INTO t_checkitem_tag(tag_name, tag_type, created_at)
+        VALUES (#{item.tagName},
                 #{item.tagType},
                 NOW())
     </insert>
@@ -32,9 +36,6 @@
     <update id="update">
         UPDATE t_checkitem_tag
         <set>
-            <if test="item.checkItemId != null and item.checkItemId != ''">
-                checkitem_id = #{item.checkItemId},
-            </if>
             <if test="item.tagName != null and item.tagName != ''">
                 tag_name = #{item.tagName},
             </if>
@@ -47,8 +48,22 @@
     </update>
 
     <delete id="delete">
-        DELETE FROM t_checkitem_tag
+        DELETE
+        FROM t_checkitem_tag
         WHERE id = #{item.id}
     </delete>
+
+    <select id="getTagRelNum" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM t_checkitem_tag_rel
+        WHERE checkitem_tag_id = #{item.id}
+    </select>
+
+    <select id="selectByTypeAndName" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_checkitem_tag
+        WHERE tag_type = #{tagType}
+          AND tag_name = #{tagName}
+    </select>
 
 </mapper>

@@ -30,13 +30,13 @@ public class CheckItemService {
 
     public List<CheckItem> listAll(CheckItemVo checkItemVo) {
         List<CheckItem> checkItems = checkItemDao.listAll(checkItemVo);
-        for (int index = 0; index < checkItems.size(); index++) {
-            CheckItem checkItem1 = checkItems.get(index);
-            CheckItemTag checkItemTag = new CheckItemTag();
-            checkItemTag.setCheckItemId(checkItem1.getId());
-            List<CheckItemTag> checkItemTags = checkItemTagService.listAll(checkItemTag);
-            checkItem1.setTags(checkItemTags);
-        }
+//        for (int index = 0; index < checkItems.size(); index++) {
+//            CheckItem checkItem1 = checkItems.get(index);
+//            CheckItemTag checkItemTag = new CheckItemTag();
+//            checkItemTag.setCheckItemId(checkItem1.getId());
+//            List<CheckItemTag> checkItemTags = checkItemTagService.listAll(checkItemTag);
+//            checkItem1.setTags(checkItemTags);
+//        }
         return checkItems;
     }
 

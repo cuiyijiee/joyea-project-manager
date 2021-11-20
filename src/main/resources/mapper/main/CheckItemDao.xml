@@ -51,9 +51,6 @@
     <select id="listAll" resultMap="BaseResultMap">
         SELECT DISTINCT ci.*
         FROM t_checkitem ci
-        <if test="(item.productTagText != null and item.productTagText != '') || (item.operationTagText != null and item.operationTagText != '')">
-            LEFT JOIN t_checkitem_tag cit on cit.checkitem_id = ci.id
-        </if>
         WHERE 1=1
         <if test="item.checkModuleType != null ">
             AND ci.check_module_type = #{item.checkModuleType}

@@ -14,7 +14,6 @@ public class CheckItemTag {
 
 
     private int id;
-    private int checkItemId;
     private String tagName;
     private CheckItemTagType tagType;
 
