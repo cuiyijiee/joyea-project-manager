@@ -16,6 +16,8 @@ public class CheckItemTag {
     private int id;
     private String tagName;
     private CheckItemTagType tagType;
+    private String remark1;
+    private String remark2;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

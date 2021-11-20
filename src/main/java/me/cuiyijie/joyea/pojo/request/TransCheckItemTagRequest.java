@@ -11,4 +11,6 @@ import me.cuiyijie.joyea.model.CheckItemTag;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class TransCheckItemTagRequest extends CheckItemTag {
+
+    private Integer checkItemId;
 }

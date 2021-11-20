@@ -63,6 +63,10 @@ public class TemplateService {
         return templateDao.delete(template);
     }
 
+    public Integer deleteRelByCid(Template template) {
+        return templateDao.deleteRelByCid(template.getId());
+    }
+
     public Integer addTemplateRel(Integer pid, Integer cid) {
         Template pTemplate = templateDao.listById(pid);
         if (pTemplate == null || pTemplate.getLevelType() == null || pTemplate.getLevelType() != TemplateLevelType.DIR) {
@@ -73,5 +77,9 @@ public class TemplateService {
             throw new RuntimeException("待关联工序不存在！");
         }
         return templateDao.addTemplateRel(pid, cid);
+    }
+
+    public Integer selectChildCount(Integer templateId){
+        return templateDao.selectChildCount(templateId);
     }
 }

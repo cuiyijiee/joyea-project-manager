@@ -15,6 +15,10 @@ import java.util.List;
 @Repository
 public interface CheckItemTagDao extends BaseMapper<CheckItemTag> {
 
+
+    @Override
+    int insert(@Param("item") CheckItemTag entity);
+
     List<CheckItemTag> list(@Param("item") CheckItemTag checkItemTag);
 
     Integer update(@Param("item") CheckItemTag checkItemTag);
@@ -25,4 +29,11 @@ public interface CheckItemTagDao extends BaseMapper<CheckItemTag> {
 
     CheckItemTag selectByTypeAndName(@Param("tagType") CheckItemTagType tagType, @Param("tagName") String tagName);
 
+    List<CheckItemTag> listByCheckItemId(@Param("checkItemId") Integer checkItemId);
+
+    Integer addCheckItemTagRel(@Param("checkItemId") Integer checkItemId, @Param("tagId") Integer tagId);
+
+    Integer deleteCheckItemTagRel(@Param("checkItemId") Integer checkItemId, @Param("tagId") Integer tagId);
+
+    Integer selectRelCount(@Param("checkItemId") Integer checkItemId, @Param("tagId") Integer tagId);
 }

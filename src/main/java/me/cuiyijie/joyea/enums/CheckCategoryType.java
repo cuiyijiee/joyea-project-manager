@@ -4,6 +4,7 @@ import me.cuiyijie.joyea.enums.base.BaseEnum;
 
 public enum CheckCategoryType implements BaseEnum {
 
+    ALL("0", "全部"),  //选择是否
     WHBY("1", "维护保养类"),  //选择是否
     QZAQ("2", "强制安全类"),  //选择是否
     DQBZ("3", "电气标准类"),  //选择是否

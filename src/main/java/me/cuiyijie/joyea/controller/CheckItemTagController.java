@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransCheckItemTagRequest;
 import me.cuiyijie.joyea.pojo.request.TransPageCheckItemTagRequest;
 import me.cuiyijie.joyea.service.CheckItemTagService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
@@ -98,14 +99,14 @@ public class CheckItemTagController {
             response.setMsg("该标签不存在！");
             return response;
         }
-        if(existTag.getId() == request.getId()){
+        if (existTag.getId() == request.getId()) {
             logger.error("要更新的内容没有改动！");
             response.setCode("-1");
             response.setMsg("要更新的内容没有改动！");
             return response;
         }
         //检查标签是否存在
-        CheckItemTag existTag1 = checkItemTagService.selectByTypeAndName(request.getTagType(),request.getTagName());
+        CheckItemTag existTag1 = checkItemTagService.selectByTypeAndName(request.getTagType(), request.getTagName());
         if (existTag1 != null) {
             logger.error("该标签不存在！");
             response.setCode("-1");
@@ -160,5 +161,57 @@ public class CheckItemTagController {
         return response;
     }
 
+    @ApiOperation(value = "增加点检项标签关联", notes = "增加点检项标签关联")
+    @RequestMapping(value = "addTagRel", method = RequestMethod.POST)
+    public TransBaseResponse addCheckItemTagRel(@RequestBody TransCheckItemTagRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        List<String> paramsCheck = Lists.newArrayList("id:标签id（id）", "checkItemId:点检项ID（checkItemId）");
+        String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errMsg != null) {
+            logger.error(errMsg);
+            transBaseResponse.setCode("-1");
+            transBaseResponse.setMsg(errMsg);
+            return transBaseResponse;
+        }
+        try {
+            Integer count = checkItemTagService.selectRelCount(request.getCheckItemId(), request.getId());
+            if (count > 0) {
+                logger.error("该标签已经被点检项关联！");
+                transBaseResponse.setCode("-1");
+                transBaseResponse.setMsg("该标签已经被点检项关联！");
+                return transBaseResponse;
+            }
+            checkItemTagService.addCheckItemTagRel(request.getCheckItemId(), request.getId());
+            transBaseResponse.setObj("0");
+        } catch (Exception exception) {
+            logger.error("关联点检项标签失败：", exception);
+            transBaseResponse.setObj("-1");
+            transBaseResponse.setMsg(exception.getMessage());
+        }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "删除点检项标签关联", notes = "删除点检项标签关联")
+    @RequestMapping(value = "deleteTagRel", method = RequestMethod.POST)
+    public TransBaseResponse deleteCheckItemTagRel(@RequestBody TransCheckItemTagRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        List<String> paramsCheck = Lists.newArrayList("id:标签id（id）", "checkItemId:点检项ID（checkItemId）");
+        String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errMsg != null) {
+            logger.error(errMsg);
+            transBaseResponse.setCode("-1");
+            transBaseResponse.setMsg(errMsg);
+            return transBaseResponse;
+        }
+        try {
+            checkItemTagService.deleteCheckItemTagRel(request.getCheckItemId(), request.getId());
+            transBaseResponse.setObj("0");
+        }catch (Exception exception){
+            logger.error("删除关联点检项标签失败：", exception);
+            transBaseResponse.setObj("-1");
+            transBaseResponse.setMsg(exception.getMessage());
+        }
+        return transBaseResponse;
+    }
 
 }

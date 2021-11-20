@@ -38,6 +38,7 @@
 
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
+        <id property="enabled" column="enabled"/>
 
     </resultMap>
 
@@ -77,6 +78,12 @@
         WHERE id = #{id}
     </select>
 
+    <select id="selectCheckItemRel" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_template_checkitem_rel
+        WHERE cid = #{checkItemId}
+    </select>
+
     <insert id="insert">
         INSERT INTO t_checkitem(check_module_type, check_category_type, check_stage_type,
                                 check_name, check_standard, check_method, check_tool, check_standard_from,
@@ -88,7 +95,7 @@
                                 second_check_person_id, second_check_remark,
                                 third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
                                 third_check_person_id, third_check_remark,
-                                created_at)
+                                created_at,enabled)
         VALUES (#{item.checkModuleType}, #{item.checkCategoryType}, #{item.checkStageType},
                 #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
                 #{item.checkStandardFrom},
@@ -100,7 +107,7 @@
                 #{item.secondCheckPersonId}, #{item.secondCheckRemark},
                 #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifyResult}, #{item.thirdCheckVerifySheetId},
                 #{item.thirdCheckPersonId}, #{item.thirdCheckRemark},
-                NOW())
+                NOW(),1)
     </insert>
 
     <update id="update">
@@ -190,6 +197,9 @@
             <if test="item.thirdCheckRemark != null and item.thirdCheckRemark != ''">
                 third_check_remark = #{item.thirdCheckRemark},
             </if>
+            <if test="item.enabled != null and item.enabled != ''">
+                enabled = #{item.enabled},
+            </if>
             updated_at = NOW()
         </set>
         WHERE id = #{item.id}
@@ -200,5 +210,13 @@
         FROM t_checkitem
         WHERE id = #{item.id}
     </delete>
+
+    <update id="updateState">
+        UPDATE t_checkitem
+        <set>
+            enabled = #{item.enabled}
+        </set>
+        WHERE id = #{item.id}
+    </update>
 
 </mapper>

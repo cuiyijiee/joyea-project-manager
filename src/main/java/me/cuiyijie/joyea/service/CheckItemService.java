@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import io.swagger.models.auth.In;
 import me.cuiyijie.joyea.dao.main.CheckItemDao;
 import me.cuiyijie.joyea.dao.main.TemplateDao;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
@@ -7,6 +8,7 @@ import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import me.cuiyijie.joyea.model.Template;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +32,11 @@ public class CheckItemService {
 
     public List<CheckItem> listAll(CheckItemVo checkItemVo) {
         List<CheckItem> checkItems = checkItemDao.listAll(checkItemVo);
-//        for (int index = 0; index < checkItems.size(); index++) {
-//            CheckItem checkItem1 = checkItems.get(index);
-//            CheckItemTag checkItemTag = new CheckItemTag();
-//            checkItemTag.setCheckItemId(checkItem1.getId());
-//            List<CheckItemTag> checkItemTags = checkItemTagService.listAll(checkItemTag);
-//            checkItem1.setTags(checkItemTags);
-//        }
+        for (int index = 0; index < checkItems.size(); index++) {
+            CheckItem checkItem1 = checkItems.get(index);
+            List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem1.getId());
+            checkItem1.setTags(checkItemTags);
+        }
         return checkItems;
     }
 
@@ -69,5 +69,17 @@ public class CheckItemService {
         } else {
             templateDao.addTemplateRel(pid, id);
         }
+    }
+
+    public Integer deleteCheckItemRel(Integer pid, Integer id) {
+        return templateDao.deleteTemplateRel(pid, id);
+    }
+
+    public Integer selectCheckItemRel(Integer checkItemId) {
+        return checkItemDao.selectCheckItemRel(checkItemId);
+    }
+
+    public Integer updateState(@Param("item") CheckItem checkItem) {
+        return checkItemDao.updateState(checkItem);
     }
 }

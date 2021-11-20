@@ -56,6 +56,7 @@ public class CheckItem {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean enabled;
 
     public String getCheckModuleTypeValue(){
         return checkModuleType == null ? "" :checkModuleType.getValue();

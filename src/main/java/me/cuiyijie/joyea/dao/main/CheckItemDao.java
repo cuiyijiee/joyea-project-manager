@@ -16,6 +16,8 @@ public interface CheckItemDao {
 
     CheckItem listById(@Param("id") Integer id);
 
+    Integer selectCheckItemRel(@Param("checkItemId")Integer checkItemId);
+
     List<CheckItem> listChild(@Param("id") Integer id);
 
     Integer insert(@Param("item") CheckItem checkItem);
@@ -23,5 +25,7 @@ public interface CheckItemDao {
     Integer update(@Param("item") CheckItem checkItem);
 
     Integer delete(@Param("item") CheckItem checkItem);
+
+    Integer updateState(@Param("item") CheckItem checkItem);
 
 }

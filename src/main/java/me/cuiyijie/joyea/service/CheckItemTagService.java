@@ -28,6 +28,10 @@ public class CheckItemTagService {
         return checkItemTagDao.selectByTypeAndName(tagType, tagName);
     }
 
+    public List<CheckItemTag> listByCheckItemId(Integer checkItemId){
+        return checkItemTagDao.listByCheckItemId(checkItemId);
+    }
+
     public List<CheckItemTag> list(CheckItemTag checkItemTag) {
         return checkItemTagDao.list(checkItemTag);
     }
@@ -46,6 +50,18 @@ public class CheckItemTagService {
 
     public Integer getTagRelNum(CheckItemTag checkItemTag) {
         return checkItemTagDao.getTagRelNum(checkItemTag);
+    }
+
+    public Integer addCheckItemTagRel(Integer checkItemId,Integer tagId){
+        return checkItemTagDao.addCheckItemTagRel(checkItemId,tagId);
+    }
+
+    public Integer deleteCheckItemTagRel(Integer checkItemId,Integer tagId){
+        return checkItemTagDao.deleteCheckItemTagRel(checkItemId,tagId);
+    }
+
+    public Integer selectRelCount(Integer checkItemId,Integer tagId){
+        return checkItemTagDao.selectRelCount(checkItemId,tagId);
     }
 
 }

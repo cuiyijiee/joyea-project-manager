@@ -24,6 +24,11 @@ public interface TemplateDao {
 
     Integer delete(@Param("item") Template template);
 
-    Integer addTemplateRel(@Param("pid") Integer pid,@Param("cid")Integer cid);
+    Integer addTemplateRel(@Param("pid") Integer pid, @Param("cid") Integer cid);
 
+    Integer deleteTemplateRel(@Param("pid") Integer pid, @Param("cid") Integer cid);
+
+    Integer selectChildCount(@Param("templateId") Integer templateId);
+
+    Integer deleteRelByCid(@Param("templateId") Integer templateId);
 }

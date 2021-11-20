@@ -148,7 +148,22 @@ public class TemplateController {
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public TransBaseResponse delete(@RequestBody Template template) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        transBaseResponse.setCode(templateService.delete(template) == 1 ? "0" : "-1");
+        try {
+            //判断要删除的节点下有没有子节点，如果有子节点不允许删除
+            Integer childCount = templateService.selectChildCount(template.getId());
+            if (childCount > 0) {
+                logger.error("删除节点，存在子节点无法删除");
+                transBaseResponse.setCode("-1");
+                transBaseResponse.setMsg("该节点存在子节点，无法删除！");
+                return transBaseResponse;
+            }
+            templateService.deleteRelByCid(template);
+            transBaseResponse.setCode(templateService.delete(template) == 1 ? "0" : "-1");
+        } catch (Exception exception) {
+            logger.error("删除节点：", exception);
+            transBaseResponse.setCode("-1");
+            transBaseResponse.setMsg(exception.toString());
+        }
         return transBaseResponse;
     }
 

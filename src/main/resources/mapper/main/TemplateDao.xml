@@ -87,4 +87,20 @@
         VALUES (#{pid}, #{cid})
     </insert>
 
+    <insert id="deleteTemplateRel">
+        DELETE FROM t_template_checkitem_rel
+        WHERE pid = #{pid}
+        AND cid = #{cid}
+    </insert>
+
+    <select id="selectChildCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_template_checkitem_rel
+        WHERE pid = #{templateId}
+    </select>
+
+    <delete id="deleteRelByCid">
+        DELETE FROM t_template_checkitem_rel
+        WHERE cid = #{templateId}
+    </delete>
 </mapper>

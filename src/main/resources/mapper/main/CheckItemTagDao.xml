@@ -6,6 +6,8 @@
         <id property="id" column="id"/>
         <id property="tagName" column="tag_name"/>
         <id property="tagType" column="tag_type"/>
+        <id property="remark1" column="remark1"/>
+        <id property="remark2" column="remark2"/>
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
 
@@ -27,9 +29,11 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO t_checkitem_tag(tag_name, tag_type, created_at)
+        INSERT INTO t_checkitem_tag(tag_name, tag_type, remark1, remark2 ,created_at)
         VALUES (#{item.tagName},
                 #{item.tagType},
+                #{item.remark1},
+                #{item.remark2},
                 NOW())
     </insert>
 
@@ -41,6 +45,12 @@
             </if>
             <if test="item.tagType != null and item.tagType != ''">
                 tag_type = #{item.tagType},
+            </if>
+            <if test="item.remark1 != null and item.remark1 != ''">
+                remark1 = #{item.remark1},
+            </if>
+            <if test="item.remark2 != null and item.remark2 != ''">
+                remark2 = #{item.remark2},
             </if>
             updated_at = NOW()
         </set>
@@ -64,6 +74,33 @@
         FROM t_checkitem_tag
         WHERE tag_type = #{tagType}
           AND tag_name = #{tagName}
+    </select>
+
+    <select id="listByCheckItemId" resultMap="BaseResultMap">
+        SELECT ct.*
+        FROM t_checkitem_tag_rel ctr
+        LEFT JOIN t_checkitem_tag ct ON  ct.id = ctr.checkitem_tag_id
+        WHERE ctr.checkitem_id = #{checkItemId}
+    </select>
+
+    <insert id="addCheckItemTagRel">
+        INSERT INTO t_checkitem_tag_rel (checkitem_id, checkitem_tag_id)
+        VALUES (#{checkItemId},
+                #{tagId})
+    </insert>
+
+    <delete id="deleteCheckItemTagRel">
+        DELETE
+        FROM t_checkitem_tag_rel
+        WHERE checkitem_id = #{checkItemId}
+          AND checkitem_tag_id = #{tagId}
+    </delete>
+
+    <select id="selectRelCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_checkitem_tag_rel
+        WHERE checkitem_id = #{checkItemId}
+          AND checkitem_tag_id = #{tagId}
     </select>
 
 </mapper>

@@ -4,6 +4,7 @@ import me.cuiyijie.joyea.enums.base.BaseEnum;
 
 public enum CheckStageType implements BaseEnum {
 
+    ALL("0", "全部"),  //选择是否
     XMXQ("1", "项目需求阶段"),  //选择是否
     SRSCPS("2", "输入输出评审阶段"),  //选择是否
     WXCG("3", "外协采购阶段"),  //选择是否
