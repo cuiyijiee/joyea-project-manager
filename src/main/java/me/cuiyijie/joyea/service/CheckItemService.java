@@ -27,7 +27,13 @@ public class CheckItemService {
     private CheckItemTagService checkItemTagService;
 
     public List<CheckItem> listChild(Integer id) {
-        return checkItemDao.listChild(id);
+        List<CheckItem> checkItems = checkItemDao.listChild(id);
+        for (int index = 0; index < checkItems.size(); index++) {
+            CheckItem checkItem1 = checkItems.get(index);
+            List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem1.getId());
+            checkItem1.setTags(checkItemTags);
+        }
+        return checkItems;
     }
 
     public List<CheckItem> listAll(CheckItemVo checkItemVo) {
@@ -41,17 +47,29 @@ public class CheckItemService {
     }
 
     public Integer update(CheckItem checkItem) {
+        Integer result = checkItemDao.update(checkItem);
+        checkItemTagService.deleteAllCheckItemTagRel(checkItem.getId());
+        if (checkItem.getTags() != null) {
+            for (int index = 0; index < checkItem.getTags().size(); index++) {
+                CheckItemTag checkItemTag = checkItem.getTags().get(index);
+                checkItemTagService.addCheckItemTagRel(checkItem.getId(),checkItemTag.getId());
+                //checkItemTagService.insert(checkItem.getTags().get(index));
+            }
+        }
         return checkItemDao.update(checkItem);
     }
 
     @Transactional
     public Integer insert(CheckItem checkItem) {
+        Integer result = checkItemDao.insert(checkItem);
         if (checkItem.getTags() != null) {
             for (int index = 0; index < checkItem.getTags().size(); index++) {
-                checkItemTagService.insert(checkItem.getTags().get(index));
+                CheckItemTag checkItemTag = checkItem.getTags().get(index);
+                checkItemTagService.addCheckItemTagRel(checkItem.getId(),checkItemTag.getId());
+                //checkItemTagService.insert(checkItem.getTags().get(index));
             }
         }
-        return checkItemDao.insert(checkItem);
+        return result;
     }
 
     public Integer delete(CheckItem checkItem) {

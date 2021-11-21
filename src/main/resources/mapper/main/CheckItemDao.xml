@@ -43,7 +43,7 @@
     </resultMap>
 
     <select id="listChild" resultMap="BaseResultMap">
-        SELECT *
+        SELECT c.*
         FROM t_template_checkitem_rel tcl
                  LEFT JOIN t_checkitem c ON tcl.cid = c.id
         WHERE tcl.pid = #{id}
@@ -70,6 +70,7 @@
             AND cit.tag_name LIKE CONCAT('%',#{item.operationTagText},'%')
             AND cit.tag_type = 'OPERATION'
         </if>
+        ORDER BY created_at DESC
     </select>
 
     <select id="listById" resultMap="BaseResultMap">
@@ -84,7 +85,7 @@
         WHERE cid = #{checkItemId}
     </select>
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_checkitem(check_module_type, check_category_type, check_stage_type,
                                 check_name, check_standard, check_method, check_tool, check_standard_from,
                                 check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,

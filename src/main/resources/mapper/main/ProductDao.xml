@@ -29,6 +29,7 @@
         <if test="item.productionNumber != null and item.productionNumber != ''">
             AND production_number = #{productionNumber}
         </if>
+        ORDER BY created_at DESC
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">

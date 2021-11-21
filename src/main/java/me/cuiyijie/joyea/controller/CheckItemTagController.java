@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author: yjcui3
@@ -99,12 +100,12 @@ public class CheckItemTagController {
             response.setMsg("该标签不存在！");
             return response;
         }
-        if (existTag.getId() == request.getId()) {
-            logger.error("要更新的内容没有改动！");
-            response.setCode("-1");
-            response.setMsg("要更新的内容没有改动！");
-            return response;
-        }
+//        if (existTag.getTagType() == request.getTagType() && existTag.getTagName().equals(request.getTagName())) {
+//            logger.error("要更新的内容没有改动！");
+//            response.setCode("-1");
+//            response.setMsg("要更新的内容没有改动！");
+//            return response;
+//        }
         //检查标签是否存在
         CheckItemTag existTag1 = checkItemTagService.selectByTypeAndName(request.getTagType(), request.getTagName());
         if (existTag1 != null) {

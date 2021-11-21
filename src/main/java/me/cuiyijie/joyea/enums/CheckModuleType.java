@@ -3,7 +3,6 @@ package me.cuiyijie.joyea.enums;
 import me.cuiyijie.joyea.enums.base.BaseEnum;
 
 public enum CheckModuleType implements BaseEnum {
-    ALL("0", "全部"),
     TYBZYXZ("1", "通用标准验证项"),
     CJFSWT("2", "曾经发生问题"),
     FBURS("3", "非标URS"),

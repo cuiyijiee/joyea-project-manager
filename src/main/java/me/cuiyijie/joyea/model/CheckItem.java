@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.model;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import io.swagger.models.auth.In;
 import lombok.Data;
 import me.cuiyijie.joyea.enums.CheckCategoryType;
 import me.cuiyijie.joyea.enums.CheckModuleType;

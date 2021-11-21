@@ -60,6 +60,10 @@ public class CheckItemTagService {
         return checkItemTagDao.deleteCheckItemTagRel(checkItemId,tagId);
     }
 
+    public Integer deleteAllCheckItemTagRel(Integer checkItemId){
+        return checkItemTagDao.deleteAllCheckItemTagRel(checkItemId);
+    }
+
     public Integer selectRelCount(Integer checkItemId,Integer tagId){
         return checkItemTagDao.selectRelCount(checkItemId,tagId);
     }

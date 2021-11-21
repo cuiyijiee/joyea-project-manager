@@ -37,6 +37,7 @@
         <if test="item.department != null and item.department != ''">
             AND department LIKE CONCAT('%',CONCAT(#{item.department},'%'))
         </if>
+        ORDER BY created_at DESC
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">

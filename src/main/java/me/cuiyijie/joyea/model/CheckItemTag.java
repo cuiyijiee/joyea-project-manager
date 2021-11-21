@@ -1,8 +1,10 @@
 package me.cuiyijie.joyea.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import me.cuiyijie.joyea.enums.CheckItemTagType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,10 +12,12 @@ import java.time.LocalDateTime;
  * @Date: 2021/11/8 10:33
  */
 @Data
-public class CheckItemTag {
+public class CheckItemTag implements Serializable {
 
+    private static final long serialVersionUID = -7155610581355123677L;
 
-    private int id;
+    @TableId("id")
+    private Integer id;
     private String tagName;
     private CheckItemTagType tagType;
     private String remark1;

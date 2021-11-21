@@ -1,11 +1,14 @@
 package me.cuiyijie.joyea.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
+import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.CheckItemTagService;
@@ -36,11 +39,10 @@ public class CheckItemController {
 
     @ApiOperation(value = "获取点检项", notes = "获取点检项")
     @RequestMapping(value = "listAll", method = RequestMethod.POST)
-    public TransBaseResponse listAll(@RequestBody CheckItemVo checkItemVo) {
-        TransBaseResponse transBaseResponse = new TransBaseResponse();
-        transBaseResponse.setCode("0");
-        transBaseResponse.setList(checkItemService.listAll(checkItemVo));
-        return transBaseResponse;
+    public TransBasePageResponse listAll(@RequestBody CheckItemVo checkItemVo) {
+        PageHelper.startPage(checkItemVo.getPageNum(),checkItemVo.getPageSize());
+        List<CheckItem> result = checkItemService.listAll(checkItemVo);
+        return new TransBasePageResponse(new PageInfo<CheckItem>(result));
     }
 
     @ApiOperation(value = "新增点检项", notes = "新增点检项")

@@ -6,6 +6,7 @@ import me.cuiyijie.joyea.model.CheckItemTag;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,10 +14,10 @@ import java.util.List;
  * @Date: 2021/11/8 10:43
  */
 @Repository
-public interface CheckItemTagDao extends BaseMapper<CheckItemTag> {
+public interface CheckItemTagDao {
 
+    CheckItemTag selectById(@Param("id")Integer id);
 
-    @Override
     int insert(@Param("item") CheckItemTag entity);
 
     List<CheckItemTag> list(@Param("item") CheckItemTag checkItemTag);
@@ -34,6 +35,8 @@ public interface CheckItemTagDao extends BaseMapper<CheckItemTag> {
     Integer addCheckItemTagRel(@Param("checkItemId") Integer checkItemId, @Param("tagId") Integer tagId);
 
     Integer deleteCheckItemTagRel(@Param("checkItemId") Integer checkItemId, @Param("tagId") Integer tagId);
+
+    Integer deleteAllCheckItemTagRel(@Param("checkItemId") Integer checkItemId);
 
     Integer selectRelCount(@Param("checkItemId") Integer checkItemId, @Param("tagId") Integer tagId);
 }

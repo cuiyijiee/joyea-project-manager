@@ -16,6 +16,9 @@ import java.util.List;
 @Data
 public class CheckItemVo extends CheckItem {
 
+    private Integer pageSize = 10;
+    private Integer pageNum = 1;
+
     private List<CheckItemTag> checkItemTags;
 
     private Integer pid;

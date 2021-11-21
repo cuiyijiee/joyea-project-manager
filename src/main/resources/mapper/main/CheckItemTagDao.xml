@@ -17,15 +17,19 @@
         SELECT *
         FROM t_checkitem_tag
         WHERE 1=1
-        <if test="item.id != null">
-            AND id = #{item.id}
-        </if>
         <if test="item.tagName != null and item.tagName != ''">
             AND tag_name = #{item.tagName}
         </if>
         <if test="item.tagType != null">
             AND tag_type = #{item.tagType}
         </if>
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_checkitem_tag
+        WHERE id = #{id}
     </select>
 
     <insert id="insert">
@@ -43,7 +47,7 @@
             <if test="item.tagName != null and item.tagName != ''">
                 tag_name = #{item.tagName},
             </if>
-            <if test="item.tagType != null and item.tagType != ''">
+            <if test="item.tagType != null ">
                 tag_type = #{item.tagType},
             </if>
             <if test="item.remark1 != null and item.remark1 != ''">
@@ -94,6 +98,12 @@
         FROM t_checkitem_tag_rel
         WHERE checkitem_id = #{checkItemId}
           AND checkitem_tag_id = #{tagId}
+    </delete>
+
+    <delete id="deleteAllCheckItemTagRel">
+        DELETE
+        FROM t_checkitem_tag_rel
+        WHERE checkitem_id = #{checkItemId}
     </delete>
 
     <select id="selectRelCount" resultType="java.lang.Integer">
