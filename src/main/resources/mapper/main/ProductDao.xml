@@ -49,9 +49,9 @@
     <update id="update">
         UPDATE t_product
         <set>
-            <if test="item.projectId != null and item.projectId != ''">
-                project_id = #{item.projectId},
-            </if>
+<!--            <if test="item.projectId != null and item.projectId != ''">-->
+<!--                project_id = #{item.projectId},-->
+<!--            </if>-->
             <if test="item.productName != null and item.productName != ''">
                 product_name = #{item.productName},
             </if>

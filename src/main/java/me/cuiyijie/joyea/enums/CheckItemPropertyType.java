@@ -4,17 +4,19 @@ import me.cuiyijie.joyea.enums.base.BaseEnum;
 
 /**
  * @Author: cuiyijie
- * @Date: 2021/11/8 10:33
+ * @Date: 2021/11/26 14:10
  */
-public enum CheckItemTagType implements BaseEnum {
+public enum CheckItemPropertyType implements BaseEnum {
 
-    OPERATION("1", "工序标签"),
-    PRODUCT("2", "产品标签");
+
+    MODULE("1", "验证模块"),
+    CATEGORY("2", "验证类别"),
+    STAGE("3", "验证阶段");
 
     private String key;
     private String value;
 
-    CheckItemTagType(String key, String value) {
+    CheckItemPropertyType(String key, String value) {
         this.key = key;
         this.value = value;
     }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemPropertyDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItemProperty">
+
+        <id property="id" column="id"/>
+        <id property="checkItemId" column="checkitem_id"/>
+        <id property="propertyType" column="property_type"/>
+        <id property="propertyValue" column="property_value"/>
+
+    </resultMap>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT * FROM t_checkitem_property
+        WHERE 1=1
+        <if test="item.checkItemId != null">
+            AND checkitem_id = #{item.checkItemId}
+        </if>
+        <if test="item.propertyType != null">
+            AND property_type = #{item.propertyType}
+        </if>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO t_checkitem_property(checkitem_id, property_type, property_value)
+        VALUES (#{item.checkItemId},
+                #{item.propertyType},
+                #{item.propertyValue})
+    </insert>
+
+    <insert id="deleteByCheckItemIdAndType">
+        DELETE
+        FROM t_checkitem_property
+        WHERE checkitem_id = #{item.checkItemId}
+        <if test="item.propertyType != null">
+            AND property_type = #{item.propertyType}
+        </if>
+    </insert>
+
+</mapper>

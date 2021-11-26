@@ -1,9 +1,8 @@
 package me.cuiyijie.joyea.service;
 
-import io.swagger.models.auth.In;
 import me.cuiyijie.joyea.dao.main.CheckItemDao;
 import me.cuiyijie.joyea.dao.main.TemplateDao;
-import me.cuiyijie.joyea.enums.TemplateLevelType;
+import me.cuiyijie.joyea.enums.*;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import me.cuiyijie.joyea.model.Template;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CheckItemService {
@@ -25,6 +26,8 @@ public class CheckItemService {
 
     @Autowired
     private CheckItemTagService checkItemTagService;
+    @Autowired
+    private CheckItemPropertyService checkItemPropertyService;
 
     public List<CheckItem> listChild(Integer id) {
         List<CheckItem> checkItems = checkItemDao.listChild(id);
@@ -32,6 +35,11 @@ public class CheckItemService {
             CheckItem checkItem1 = checkItems.get(index);
             List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem1.getId());
             checkItem1.setTags(checkItemTags);
+
+            Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem1.getId(), null);
+            checkItem1.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
+            checkItem1.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
+            checkItem1.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
         }
         return checkItems;
     }
@@ -42,6 +50,12 @@ public class CheckItemService {
             CheckItem checkItem1 = checkItems.get(index);
             List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem1.getId());
             checkItem1.setTags(checkItemTags);
+
+            Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem1.getId(), null);
+            checkItem1.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
+            checkItem1.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
+            checkItem1.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
+
         }
         return checkItems;
     }
@@ -52,8 +66,9 @@ public class CheckItemService {
         if (checkItem.getTags() != null) {
             for (int index = 0; index < checkItem.getTags().size(); index++) {
                 CheckItemTag checkItemTag = checkItem.getTags().get(index);
-                checkItemTagService.addCheckItemTagRel(checkItem.getId(),checkItemTag.getId());
+                checkItemTagService.addCheckItemTagRel(checkItem.getId(), checkItemTag.getId());
                 //checkItemTagService.insert(checkItem.getTags().get(index));
+                checkItemPropertyService.updateCheckItemProperty(checkItem);
             }
         }
         return checkItemDao.update(checkItem);
@@ -65,14 +80,17 @@ public class CheckItemService {
         if (checkItem.getTags() != null) {
             for (int index = 0; index < checkItem.getTags().size(); index++) {
                 CheckItemTag checkItemTag = checkItem.getTags().get(index);
-                checkItemTagService.addCheckItemTagRel(checkItem.getId(),checkItemTag.getId());
+                checkItemTagService.addCheckItemTagRel(checkItem.getId(), checkItemTag.getId());
                 //checkItemTagService.insert(checkItem.getTags().get(index));
+                checkItemPropertyService.updateCheckItemProperty(checkItem);
             }
         }
         return result;
     }
 
     public Integer delete(CheckItem checkItem) {
+        //TODO 需要同步删除t_checkitem_property表
+        checkItemTagService.deleteAllCheckItemTagRel(checkItem.getId());
         return checkItemDao.delete(checkItem);
     }
 

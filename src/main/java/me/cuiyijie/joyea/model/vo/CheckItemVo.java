@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.model.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +10,7 @@ import me.cuiyijie.joyea.model.CheckItemTag;
 import java.util.List;
 
 /**
- * @Author: yjcui3
+ * @Author: cuiyijie
  * @Date: 2021/11/8 14:03
  */
 @EqualsAndHashCode(callSuper = true)
@@ -24,7 +25,9 @@ public class CheckItemVo extends CheckItem {
     private Integer pid;
     private List<Integer> ids;
 
+    @ApiModelProperty(value = "产品标签搜索")
     private String productTagText;
+    @ApiModelProperty(value = "工序标签搜索")
     private String operationTagText;
 
 }

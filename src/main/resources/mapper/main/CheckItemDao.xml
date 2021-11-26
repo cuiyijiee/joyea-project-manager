@@ -4,9 +4,9 @@
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItem">
 
         <id property="id" column="id"/>
-        <id property="checkModuleType" column="check_module_type"/>
-        <id property="checkCategoryType" column="check_category_type"/>
-        <id property="checkStageType" column="check_stage_type"/>
+        <!--        <id property="checkModuleType" column="check_module_type"/>-->
+        <!--        <id property="checkCategoryType" column="check_category_type"/>-->
+        <!--        <id property="checkStageType" column="check_stage_type"/>-->
         <id property="checkName" column="check_name"/>
         <id property="checkNameVisible" column="check_name_visible"/>
         <id property="checkStandard" column="check_standard"/>
@@ -52,23 +52,52 @@
     <select id="listAll" resultMap="BaseResultMap">
         SELECT DISTINCT ci.*
         FROM t_checkitem ci
+
+        LEFT JOIN t_checkitem_tag_rel tctr on ci.id = tctr.checkitem_id
+        LEFT JOIN t_checkitem_tag tct on tctr.checkitem_tag_id = tct.id
+
+        LEFT JOIN t_checkitem_property tcp on ci.id = tcp.checkitem_id
         WHERE 1=1
-        <if test="item.checkModuleType != null ">
-            AND ci.check_module_type = #{item.checkModuleType}
+        <!--        <if test="item.checkModuleType != null ">-->
+        <!--            AND ci.check_module_type = #{item.checkModuleType}-->
+        <!--        </if>-->
+        <!--        <if test="item.checkCategoryType != null">-->
+        <!--            AND ci.check_category_type = #{item.checkCategoryType}-->
+        <!--        </if>-->
+        <!--        <if test="item.checkStageType != null">-->
+        <!--            AND ci.check_stage_type = #{item.checkStageType}-->
+        <!--        </if>-->
+        <if test="item.checkCategoryTypes != null">
+            AND tcp.property_value in
+            <foreach collection="item.checkCategoryTypes" item="property" index="index" open="(" close=")"
+                     separator=",">
+                #{property,jdbcType=VARCHAR}
+            </foreach>
+            AND tcp.property_type = 'CATEGORY'
         </if>
-        <if test="item.checkCategoryType != null">
-            AND ci.check_category_type = #{item.checkCategoryType}
+        <if test="item.checkModuleTypes != null">
+            AND tcp.property_value in
+            <foreach collection="item.checkModuleTypes" item="property" index="index" open="(" close=")"
+                     separator=",">
+                #{property,jdbcType=VARCHAR}
+            </foreach>
+            AND tcp.property_type = 'MODULE'
         </if>
-        <if test="item.checkStageType != null">
-            AND ci.check_stage_type = #{item.checkStageType}
+        <if test="item.checkStageTypes != null">
+            AND tcp.property_value in
+            <foreach collection="item.checkStageTypes" item="property" index="index" open="(" close=")"
+                     separator=",">
+                #{property,jdbcType=VARCHAR}
+            </foreach>
+            AND tcp.property_type = 'STAGE'
         </if>
         <if test="item.productTagText != null and item.productTagText != ''">
-            AND cit.tag_name LIKE CONCAT('%',#{item.productTagText},'%')
-            AND cit.tag_type = 'PRODUCT'
+            AND tct.tag_name LIKE CONCAT('%',#{item.productTagText},'%')
+            AND tct.tag_type = 'PRODUCT'
         </if>
         <if test="item.operationTagText != null and item.operationTagText != ''">
-            AND cit.tag_name LIKE CONCAT('%',#{item.operationTagText},'%')
-            AND cit.tag_type = 'OPERATION'
+            AND tct.tag_name LIKE CONCAT('%',#{item.operationTagText},'%')
+            AND tct.tag_type = 'OPERATION'
         </if>
         ORDER BY created_at DESC
     </select>
@@ -86,43 +115,45 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_checkitem(check_module_type, check_category_type, check_stage_type,
-                                check_name, check_standard, check_method, check_tool, check_standard_from,
-                                check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,
-                                check_standard_from_visible,
-                                first_check_verify_type, first_check_verify_result, first_check_verify_sheet_id,
-                                first_check_person_id, first_check_remark,
-                                second_check_verify_type, second_check_verify_result, second_check_verify_sheet_id,
-                                second_check_person_id, second_check_remark,
-                                third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
-                                third_check_person_id, third_check_remark,
-                                created_at,enabled)
-        VALUES (#{item.checkModuleType}, #{item.checkCategoryType}, #{item.checkStageType},
-                #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
-                #{item.checkStandardFrom},
-                #{item.checkNameVisible}, #{item.checkStandardVisible}, #{item.checkMethodVisible},
-                #{item.checkToolVisible}, #{item.checkStandardFromVisible},
-                #{item.firstCheckVerifyType}, #{item.firstCheckVerifyResult}, #{item.firstCheckVerifySheetId},
-                #{item.firstCheckPersonId}, #{item.firstCheckRemark},
-                #{item.secondCheckVerifyType}, #{item.secondCheckVerifyResult}, #{item.secondCheckVerifySheetId},
-                #{item.secondCheckPersonId}, #{item.secondCheckRemark},
-                #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifyResult}, #{item.thirdCheckVerifySheetId},
-                #{item.thirdCheckPersonId}, #{item.thirdCheckRemark},
-                NOW(),1)
+        INSERT INTO t_checkitem(
+--                                 check_module_type, check_category_type, check_stage_type,
+            check_name, check_standard, check_method, check_tool, check_standard_from,
+            check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,
+            check_standard_from_visible,
+            first_check_verify_type, first_check_verify_result, first_check_verify_sheet_id,
+            first_check_person_id, first_check_remark,
+            second_check_verify_type, second_check_verify_result, second_check_verify_sheet_id,
+            second_check_person_id, second_check_remark,
+            third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
+            third_check_person_id, third_check_remark,
+            created_at, enabled)
+        VALUES (
+--                 #{item.checkModuleType}, #{item.checkCategoryType}, #{item.checkStageType},
+                   #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
+                   #{item.checkStandardFrom},
+                   #{item.checkNameVisible}, #{item.checkStandardVisible}, #{item.checkMethodVisible},
+                   #{item.checkToolVisible}, #{item.checkStandardFromVisible},
+                   #{item.firstCheckVerifyType}, #{item.firstCheckVerifyResult}, #{item.firstCheckVerifySheetId},
+                   #{item.firstCheckPersonId}, #{item.firstCheckRemark},
+                   #{item.secondCheckVerifyType}, #{item.secondCheckVerifyResult}, #{item.secondCheckVerifySheetId},
+                   #{item.secondCheckPersonId}, #{item.secondCheckRemark},
+                   #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifyResult}, #{item.thirdCheckVerifySheetId},
+                   #{item.thirdCheckPersonId}, #{item.thirdCheckRemark},
+                   NOW(), 1)
     </insert>
 
     <update id="update">
         UPDATE t_checkitem
         <set>
-            <if test="item.checkModuleType != null ">
-                check_module_type = #{item.checkModuleType},
-            </if>
-            <if test="item.checkCategoryType != null">
-                check_category_type = #{item.checkCategoryType},
-            </if>
-            <if test="item.checkStageType != null">
-                check_stage_type = #{item.checkStageType},
-            </if>
+            <!--            <if test="item.checkModuleType != null ">-->
+            <!--                check_module_type = #{item.checkModuleType},-->
+            <!--            </if>-->
+            <!--            <if test="item.checkCategoryType != null">-->
+            <!--                check_category_type = #{item.checkCategoryType},-->
+            <!--            </if>-->
+            <!--            <if test="item.checkStageType != null">-->
+            <!--                check_stage_type = #{item.checkStageType},-->
+            <!--            </if>-->
             <if test="item.checkName != null and item.checkName != ''">
                 check_name = #{item.checkName},
             </if>

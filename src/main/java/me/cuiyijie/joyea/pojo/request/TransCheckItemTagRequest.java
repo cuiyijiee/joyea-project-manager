@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import me.cuiyijie.joyea.model.CheckItemTag;
 
 /**
- * @Author: yjcui3
+ * @Author: cuiyijie
  * @Date: 2021/11/19 15:11
  */
 @EqualsAndHashCode(callSuper = true)
