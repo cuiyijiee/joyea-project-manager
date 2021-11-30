@@ -71,8 +71,8 @@ class JoyeaProjectManagerApplicationTests {
 //        testSheet.setTestType(UserFileType.QualityManual);
 //        testSheetDao.insert(testSheet);
 
-        List<TestSheet> result = testSheetDao.selectById(1);
-        System.out.println(result);
+//        List<TestSheet> result = testSheetDao.selectById(1);
+//        System.out.println(result);
     }
 
 }

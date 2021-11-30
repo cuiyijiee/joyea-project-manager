@@ -5,7 +5,7 @@
 
         <id property="id" column="id"/>
         <id property="projectId" column="project_id"/>
-        <id property="checkStage" column="check_stage"/>
+        <id property="checkStageType" column="check_stage"/>
         <id property="containsProject" column="contains_project"/>
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
@@ -14,15 +14,22 @@
     </resultMap>
 
     <resultMap id="ProductVoResultMap"
-               type="me.cuiyijie.joyea.model.vo.ProductVo"
+               type="me.cuiyijie.joyea.model.StageProduct"
                extends="me.cuiyijie.joyea.dao.main.ProductDao.BaseResultMap">
         <id property="stageProductRelId" column="stage_product_rel_id"/>
+        <id property="isProject" column="is_project"/>
+    </resultMap>
+
+    <resultMap id="TemplateVoResultMap"
+               type="me.cuiyijie.joyea.model.vo.TemplateVo"
+               extends="me.cuiyijie.joyea.dao.main.TemplateDao.BaseResultMap">
+        <id property="parentName" column="parentName"/>
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_project_stage(project_id, check_stage, contains_project, created_at, enabled)
         VALUES (#{item.projectId},
-                #{item.checkStage},
+                #{item.checkStageType},
                 #{item.containsProject},
                 NOW(), 1)
     </insert>
@@ -33,8 +40,8 @@
             <if test="item.projectId != null">
                 project_id = #{item.projectId},
             </if>
-            <if test="item.checkStage != null">
-                check_stage = #{item.checkStage},
+            <if test="item.checkStageType != null">
+                check_stage = #{item.checkStageType},
             </if>
             <if test="item.containsProject != null">
                 contains_project = #{item.containsProject},
@@ -54,8 +61,8 @@
     </delete>
 
     <insert id="insertStageProduct">
-        INSERT INTO t_project_stage_product_rel(stage_id, product_id)
-        VALUES (#{stageId}, #{productId})
+        INSERT INTO t_project_stage_product_rel(stage_id, product_id, is_project)
+        VALUES (#{stageId}, #{productId}, #{isProject})
     </insert>
 
     <delete id="deleteStageProductByStageId">
@@ -68,14 +75,21 @@
         SELECT *
         FROM t_project_stage
         WHERE 1 = 1
+        <if test="item.id != null">
+            AND id = #{item.id}
+        </if>
+        <if test="item.projectId != null">
+            AND project_id = #{item.projectId}
+        </if>
         ORDER BY created_at DESC
     </select>
 
     <select id="listProductByStageId" resultMap="me.cuiyijie.joyea.dao.main.ProjectStageDao.ProductVoResultMap">
         SELECT p.*,
-               pspr.id stage_product_rel_id
-        FROM t_product p
-                 LEFT JOIN t_project_stage_product_rel pspr on p.id = pspr.product_id
+               pspr.id stage_product_rel_id,
+               pspr.is_project is_project
+        FROM t_project_stage_product_rel pspr
+                 LEFT JOIN t_product p on p.id = pspr.product_id
         WHERE pspr.stage_id = #{stageId}
     </select>
 

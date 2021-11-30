@@ -33,13 +33,7 @@ public class CheckItemService {
         List<CheckItem> checkItems = checkItemDao.listChild(id);
         for (int index = 0; index < checkItems.size(); index++) {
             CheckItem checkItem1 = checkItems.get(index);
-            List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem1.getId());
-            checkItem1.setTags(checkItemTags);
-
-            Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem1.getId(), null);
-            checkItem1.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
-            checkItem1.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
-            checkItem1.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
+            addCheckItemAttributes(checkItem1);
         }
         return checkItems;
     }
@@ -48,16 +42,20 @@ public class CheckItemService {
         List<CheckItem> checkItems = checkItemDao.listAll(checkItemVo);
         for (int index = 0; index < checkItems.size(); index++) {
             CheckItem checkItem1 = checkItems.get(index);
-            List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem1.getId());
-            checkItem1.setTags(checkItemTags);
-
-            Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem1.getId(), null);
-            checkItem1.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
-            checkItem1.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
-            checkItem1.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
-
+            addCheckItemAttributes(checkItem1);
         }
         return checkItems;
+    }
+
+    public void addCheckItemAttributes(CheckItem checkItem) {
+        List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem.getId());
+        checkItem.setTags(checkItemTags);
+
+        Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem.getId(), null);
+        checkItem.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
+        checkItem.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
+        checkItem.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
+
     }
 
     public Integer update(CheckItem checkItem) {

@@ -12,7 +12,7 @@ import me.cuiyijie.joyea.model.Product;
 @Data
 public class ProductVo extends Product {
 
-    private Integer stageProductRelId;
+
 
     private Integer operationId;
 

@@ -12,4 +12,6 @@ public class TemplateVo extends Template {
     private Integer pid;
     private List<Integer> ids;
     private Integer childCount;
+
+    private String parentName;
 }

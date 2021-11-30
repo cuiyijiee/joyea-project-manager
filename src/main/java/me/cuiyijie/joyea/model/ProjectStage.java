@@ -2,7 +2,6 @@ package me.cuiyijie.joyea.model;
 
 import lombok.Data;
 import me.cuiyijie.joyea.enums.CheckStageType;
-import me.cuiyijie.joyea.model.vo.ProductVo;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,11 +15,15 @@ public class ProjectStage {
 
     private Integer id;
     private Integer projectId;
-    private CheckStageType checkStage;
+    private CheckStageType checkStageType;
     private Boolean containsProject;
-    private List<ProductVo> products;
+    private List<StageProduct> products;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean enabled;
+
+    public String getCheckStageTypeValue(){
+        return checkStageType != null ? checkStageType.getValue() : null;
+    }
 
 }

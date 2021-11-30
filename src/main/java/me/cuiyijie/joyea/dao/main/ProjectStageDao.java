@@ -1,9 +1,7 @@
 package me.cuiyijie.joyea.dao.main;
 
-import io.swagger.models.auth.In;
-import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.ProjectStage;
-import me.cuiyijie.joyea.model.vo.ProductVo;
+import me.cuiyijie.joyea.model.StageProduct;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +22,9 @@ public interface ProjectStageDao {
 
     List<ProjectStage> list(@Param("item") ProjectStage projectStage);
 
-    Integer insertStageProduct(@Param("stageId") Integer stageId, @Param("productId") Integer productId);
+    Integer insertStageProduct(@Param("stageId") Integer stageId, @Param("productId") Integer productId,@Param("isProject") Boolean isProject);
 
     Integer deleteStageProductByStageId(@Param("stageId") Integer stageId);
 
-    List<ProductVo> listProductByStageId(@Param("stageId")Integer stageId);
+    List<StageProduct> listProductByStageId(@Param("stageId")Integer stageId);
 }
