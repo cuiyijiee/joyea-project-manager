@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
@@ -12,24 +13,23 @@ import me.cuiyijie.joyea.pojo.request.TransCheckItemTagRequest;
 import me.cuiyijie.joyea.pojo.request.TransPageCheckItemTagRequest;
 import me.cuiyijie.joyea.service.CheckItemTagService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Author: cuiyijie
  * @Date: 2021/11/19 15:00
  */
+@Slf4j
 @RestController
 @RequestMapping("checkItemTag")
 @Api(tags = "点检项标签模块")
 public class CheckItemTagController {
-
-    private final Logger logger = LoggerFactory.getLogger(CheckItemTagController.class);
 
     @Autowired
     private CheckItemTagService checkItemTagService;
@@ -43,7 +43,7 @@ public class CheckItemTagController {
             List<CheckItemTag> result = checkItemTagService.list(request);
             transBasePageResponse = new TransBasePageResponse(new PageInfo<>(result));
         } catch (Exception exception) {
-            logger.error("查询点检项标签失败:", exception);
+            log.error("查询点检项标签失败:", exception);
             transBasePageResponse.setCode("-1");
             transBasePageResponse.setMsg(exception.getMessage());
         }
@@ -57,7 +57,7 @@ public class CheckItemTagController {
         List<String> paramsCheck = Lists.newArrayList("tagName:标签名称", "tagType:标签类型");
         String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errMsg != null) {
-            logger.error(errMsg);
+            log.error(errMsg);
             response.setCode("-1");
             response.setMsg(errMsg);
             return response;
@@ -65,7 +65,7 @@ public class CheckItemTagController {
         //检查标签是否存在
         CheckItemTag existTags = checkItemTagService.selectByTypeAndName(request.getTagType(), request.getTagName());
         if (existTags != null) {
-            logger.error("该标签已经存在！");
+            log.error("该标签已经存在！");
             response.setCode("-1");
             response.setMsg("该标签已经存在");
             return response;
@@ -87,7 +87,7 @@ public class CheckItemTagController {
         List<String> paramsCheck = Lists.newArrayList("id:id");
         String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errMsg != null) {
-            logger.error(errMsg);
+            log.error(errMsg);
             response.setCode("-1");
             response.setMsg(errMsg);
             return response;
@@ -95,21 +95,15 @@ public class CheckItemTagController {
         //检查标签是否存在
         CheckItemTag existTag = checkItemTagService.selectById(request.getId());
         if (existTag == null) {
-            logger.error("该标签不存在！");
+            log.error("该标签不存在！");
             response.setCode("-1");
             response.setMsg("该标签不存在！");
             return response;
         }
-//        if (existTag.getTagType() == request.getTagType() && existTag.getTagName().equals(request.getTagName())) {
-//            logger.error("要更新的内容没有改动！");
-//            response.setCode("-1");
-//            response.setMsg("要更新的内容没有改动！");
-//            return response;
-//        }
         //检查标签是否存在
         CheckItemTag existTag1 = checkItemTagService.selectByTypeAndName(request.getTagType(), request.getTagName());
         if (existTag1 != null) {
-            logger.error("该标签不存在！");
+            log.error("该标签不存在！");
             response.setCode("-1");
             response.setMsg("该标签不存在！");
             return response;
@@ -131,7 +125,7 @@ public class CheckItemTagController {
         List<String> paramsCheck = Lists.newArrayList("id:id");
         String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errMsg != null) {
-            logger.error(errMsg);
+            log.error(errMsg);
             response.setCode("-1");
             response.setMsg(errMsg);
             return response;
@@ -139,7 +133,7 @@ public class CheckItemTagController {
         //检查标签是否存在
         CheckItemTag existTag = checkItemTagService.selectById(request.getId());
         if (existTag == null) {
-            logger.error("该标签不存在！");
+            log.error("该标签不存在！");
             response.setCode("-1");
             response.setMsg("该标签不存在！");
             return response;
@@ -147,7 +141,7 @@ public class CheckItemTagController {
         //检查标签是否被关联
         Integer relNum = checkItemTagService.getTagRelNum(request);
         if (relNum > 0) {
-            logger.error("该标签已经被点检项关联，请解除关联之后再进行删除操作！");
+            log.error("该标签已经被点检项关联，请解除关联之后再进行删除操作！");
             response.setCode("-1");
             response.setMsg("该标签已经被点检项关联！");
             return response;
@@ -169,7 +163,7 @@ public class CheckItemTagController {
         List<String> paramsCheck = Lists.newArrayList("id:标签id（id）", "checkItemId:点检项ID（checkItemId）");
         String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errMsg != null) {
-            logger.error(errMsg);
+            log.error(errMsg);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(errMsg);
             return transBaseResponse;
@@ -177,7 +171,7 @@ public class CheckItemTagController {
         try {
             Integer count = checkItemTagService.selectRelCount(request.getCheckItemId(), request.getId());
             if (count > 0) {
-                logger.error("该标签已经被点检项关联！");
+                log.error("该标签已经被点检项关联！");
                 transBaseResponse.setCode("-1");
                 transBaseResponse.setMsg("该标签已经被点检项关联！");
                 return transBaseResponse;
@@ -185,7 +179,7 @@ public class CheckItemTagController {
             checkItemTagService.addCheckItemTagRel(request.getCheckItemId(), request.getId());
             transBaseResponse.setObj("0");
         } catch (Exception exception) {
-            logger.error("关联点检项标签失败：", exception);
+            log.error("关联点检项标签失败：", exception);
             transBaseResponse.setObj("-1");
             transBaseResponse.setMsg(exception.getMessage());
         }
@@ -199,7 +193,7 @@ public class CheckItemTagController {
         List<String> paramsCheck = Lists.newArrayList("id:标签id（id）", "checkItemId:点检项ID（checkItemId）");
         String errMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errMsg != null) {
-            logger.error(errMsg);
+            log.error(errMsg);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(errMsg);
             return transBaseResponse;
@@ -208,7 +202,7 @@ public class CheckItemTagController {
             checkItemTagService.deleteCheckItemTagRel(request.getCheckItemId(), request.getId());
             transBaseResponse.setObj("0");
         }catch (Exception exception){
-            logger.error("删除关联点检项标签失败：", exception);
+            log.error("删除关联点检项标签失败：", exception);
             transBaseResponse.setObj("-1");
             transBaseResponse.setMsg(exception.getMessage());
         }

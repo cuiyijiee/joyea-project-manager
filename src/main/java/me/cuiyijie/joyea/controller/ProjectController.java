@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.Project;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
@@ -23,12 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("project")
 @Api(tags = "项目模块")
 public class ProjectController {
-
-    private Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     @Autowired
     private ProjectService projectService;
@@ -54,7 +54,7 @@ public class ProjectController {
         List<String> paramsCheck = Lists.newArrayList("projectName:项目名称（projectName）", "projectNumber:项目编号（projectNumber）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             response.setCode("0");
             response.setMsg(errorMsg);
             return response;
@@ -79,7 +79,7 @@ public class ProjectController {
         List<String> paramsCheck = Lists.newArrayList("projectName:项目名称（projectName）", "projectNumber:项目编号（projectNumber）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             response.setCode("0");
             response.setMsg(errorMsg);
             return response;

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
 import me.cuiyijie.joyea.model.Template;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
@@ -18,12 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("template")
 @Api(tags = "模板模块")
 public class TemplateController {
-
-    private Logger logger = LoggerFactory.getLogger(TemplateController.class);
 
     @Autowired
     private TemplateService templateService;
@@ -42,7 +42,7 @@ public class TemplateController {
             transBaseResponse.setList(templateService.listAll(template));
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("获取全部根节点：", exception);
+            log.error("获取全部根节点：", exception);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(exception.toString());
         }
@@ -68,7 +68,7 @@ public class TemplateController {
             }
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("获取全部根节点：", exception);
+            log.error("获取全部根节点：", exception);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(exception.toString());
         }
@@ -83,7 +83,7 @@ public class TemplateController {
             transBaseResponse.setList(templateService.listAllOperation());
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("获取全部根节点：", exception);
+            log.error("获取全部根节点：", exception);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(exception.toString());
         }
@@ -98,7 +98,7 @@ public class TemplateController {
             templateService.insert(templateVo);
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("新增节点出现错误：", exception);
+            log.error("新增节点出现错误：", exception);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(exception.toString());
         }
@@ -128,7 +128,7 @@ public class TemplateController {
             }
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("新增节点出现错误：", exception);
+            log.error("新增节点出现错误：", exception);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(exception.toString());
         }
@@ -152,7 +152,7 @@ public class TemplateController {
             //判断要删除的节点下有没有子节点，如果有子节点不允许删除
             Integer childCount = templateService.selectChildCount(template.getId());
             if (childCount > 0) {
-                logger.error("删除节点，存在子节点无法删除");
+                log.error("删除节点，存在子节点无法删除");
                 transBaseResponse.setCode("-1");
                 transBaseResponse.setMsg("该节点存在子节点，无法删除！");
                 return transBaseResponse;
@@ -160,7 +160,7 @@ public class TemplateController {
             templateService.deleteRelByCid(template);
             transBaseResponse.setCode(templateService.delete(template) == 1 ? "0" : "-1");
         } catch (Exception exception) {
-            logger.error("删除节点：", exception);
+            log.error("删除节点：", exception);
             transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(exception.toString());
         }

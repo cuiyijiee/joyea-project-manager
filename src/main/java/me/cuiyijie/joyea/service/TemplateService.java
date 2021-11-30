@@ -15,8 +15,6 @@ import java.util.List;
 @Service
 public class TemplateService {
 
-    private Logger logger = LoggerFactory.getLogger(TemplateService.class);
-
     @Autowired
     private TemplateDao templateDao;
 

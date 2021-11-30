@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.Project;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
@@ -28,12 +29,11 @@ import java.util.List;
  * @Author: cuiyijie
  * @Date: 2021/10/18 11:25
  */
+@Slf4j
 @RestController
 @RequestMapping("product")
 @Api(tags = "项目产品模块")
 public class ProductController {
-
-    private Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private ProductService productService;
@@ -59,7 +59,7 @@ public class ProductController {
         List<String> paramsCheck = Lists.newArrayList("projectId:项目id（projectId）","productName:产品名称（productName）", "productNumber:产品编号（productNumber）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             response.setCode("0");
             response.setMsg(errorMsg);
             return response;
@@ -82,7 +82,7 @@ public class ProductController {
         List<String> paramsCheck = Lists.newArrayList("id:产品id（id）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             response.setCode("0");
             response.setMsg(errorMsg);
             return response;
@@ -103,7 +103,7 @@ public class ProductController {
         List<String> paramsCheck = Lists.newArrayList("id:产品id（id）","productName:产品名称（productName）", "productNumber:产品编号（productNumber）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             response.setCode("0");
             response.setMsg(errorMsg);
             return response;

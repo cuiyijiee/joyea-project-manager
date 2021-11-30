@@ -5,16 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.CheckItem;
-import me.cuiyijie.joyea.model.CheckItemTag;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.CheckItemTagService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("checkItem")
 @Api(tags = "点检项模块")
 public class CheckItemController {
-
-    private Logger logger = LoggerFactory.getLogger(CheckItemController.class);
 
     @Autowired
     private CheckItemService checkItemService;
@@ -40,7 +37,7 @@ public class CheckItemController {
     @ApiOperation(value = "获取点检项", notes = "获取点检项")
     @RequestMapping(value = "listAll", method = RequestMethod.POST)
     public TransBasePageResponse listAll(@RequestBody CheckItemVo checkItemVo) {
-        PageHelper.startPage(checkItemVo.getPageNum(),checkItemVo.getPageSize());
+        PageHelper.startPage(checkItemVo.getPageNum(), checkItemVo.getPageSize());
         List<CheckItem> result = checkItemService.listAll(checkItemVo);
         return new TransBasePageResponse(new PageInfo<CheckItem>(result));
     }
@@ -71,7 +68,15 @@ public class CheckItemController {
             transBaseResponse.setMsg("请在工序中解除关联后删除！");
             return transBaseResponse;
         }
-        transBaseResponse.setCode(checkItemService.delete(checkItem) == 1 ? "0" : "-1");
+        try {
+            checkItemService.delete(checkItem);
+            checkItemTagService.deleteAllCheckItemTagRel(checkItem.getId());
+            transBaseResponse.setCode("0");
+        } catch (Exception exception) {
+            log.error("删除点检项失败：", exception);
+            transBaseResponse.setMsg(exception.getMessage());
+            transBaseResponse.setCode("-1");
+        }
         return transBaseResponse;
     }
 
@@ -93,9 +98,9 @@ public class CheckItemController {
                 }
             }
         } catch (Exception exception) {
-            logger.error("增加点检项关联：", exception);
-            transBaseResponse.setCode("-1");
+            log.error("增加点检项关联：", exception);
             transBaseResponse.setMsg(exception.toString());
+            transBaseResponse.setCode("-1");
         }
         return transBaseResponse;
     }
@@ -119,9 +124,9 @@ public class CheckItemController {
                 }
             }
         } catch (Exception exception) {
-            logger.error("删除点检项关联：", exception);
-            transBaseResponse.setCode("-1");
+            log.error("删除点检项关联：", exception);
             transBaseResponse.setMsg(exception.toString());
+            transBaseResponse.setCode("-1");
         }
         return transBaseResponse;
     }
@@ -133,13 +138,19 @@ public class CheckItemController {
         List<String> paramsCheck = Lists.newArrayList("id:点检项id（id）", "enabled:启用禁用状态（enabled）");
         String errorMsg = CheckParamsUtil.checkAll(checkItem, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setCode("0");
             transBaseResponse.setMsg(errorMsg);
             return transBaseResponse;
         }
-        checkItemService.updateState(checkItem);
-        transBaseResponse.setCode("0");
+        try {
+            checkItemService.updateState(checkItem);
+            transBaseResponse.setCode("0");
+        }catch (Exception exception){
+            log.error("更新点检项状态失败：",exception);
+            transBaseResponse.setMsg(exception.getMessage());
+            transBaseResponse.setCode("-1");
+        }
         return transBaseResponse;
     }
 }

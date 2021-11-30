@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.util;
 
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.exception.UserException;
 import org.slf4j.Logger;
@@ -19,10 +20,9 @@ import java.util.Map;
  * @date 2018/6/19 17:16
  * @description
  */
+@Slf4j
 @ControllerAdvice
 public class MyExceptionHandler {
-
-    private final Logger logger = LoggerFactory.getLogger(MyExceptionHandler.class);
 
     /**
      * 全局异常处理，反正异常返回统一格式的map
@@ -40,7 +40,7 @@ public class MyExceptionHandler {
             map.put("code", Constants.UNKNOWN_ERROR_CODE);
             map.put("msg", String.format("发生未知错误：%s", exception.getMessage()));
         }
-        logger.error("全局捕捉到异常：", exception);
+        log.error("全局捕捉到异常：", exception);
         return map;
     }
 }

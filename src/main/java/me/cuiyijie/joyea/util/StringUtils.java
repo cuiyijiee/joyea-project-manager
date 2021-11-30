@@ -15,13 +15,14 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
-    private static Logger logger = LoggerFactory.getLogger(StringUtils.class);
+    
     private static int sequence = 10000;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
     static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     static String DATE_TIMEZONE = "GMT+8";
 
@@ -41,7 +42,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (str1 == null && str2 == null) {
             return true;
         } else {
-            return str1 != null ? str1.equals(str2) : false;
+            return str1 != null && str1.equals(str2);
         }
     }
 
@@ -49,7 +50,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (obj1 == null && obj2 == null) {
             return true;
         } else {
-            return obj1 != null ? obj1.equals(obj2) : false;
+            return obj1 != null && obj1.equals(obj2);
         }
     }
 
@@ -61,9 +62,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         int strLen = getGBKLen(str);
         if (strLen < strLength) {
             while(strLen < strLength) {
-                StringBuffer sb = new StringBuffer();
-                sb.append(padChar).append(str);
-                str = sb.toString();
+                str = padChar + str;
                 strLen = getGBKLen(str);
             }
         }
@@ -79,9 +78,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         int strLen = str.length();
         if (strLen < strLength) {
             while(strLen < strLength) {
-                StringBuffer sb = new StringBuffer();
-                sb.append(str).append("0");
-                str = sb.toString();
+                str = str + "0";
                 strLen = str.length();
             }
         }
@@ -104,7 +101,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             try {
                 return str.getBytes(charset).length;
             } catch (UnsupportedEncodingException var3) {
-                logger.error(var3.getMessage(), var3);
+                log.error(var3.getMessage(), var3);
                 return 0;
             }
         }
@@ -170,7 +167,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
                 ret[i] = uniteBytes(tmp[i * 2], tmp[i * 2 + 1]);
             }
         } catch (UnsupportedEncodingException var6) {
-            logger.error(var6.getMessage());
+            log.error(var6.getMessage());
         }
 
         return ret;
@@ -247,7 +244,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
                     return buff.toString();
                 }
             } catch (UnsupportedEncodingException var7) {
-                logger.error("字符串截取错误[{}]", new Object[]{var7.getMessage()});
+                log.error("字符串截取错误[{}]", var7.getMessage());
             }
         }
 
@@ -321,14 +318,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     public static boolean collectionIn(String str, List<String> strList) {
-        Iterator var2 = strList.iterator();
+        Iterator<String> var2 = strList.iterator();
 
         String _str;
         do {
             if (!var2.hasNext()) {
                 return false;
             }
-
             _str = (String)var2.next();
         } while(!equals(str, _str));
 
@@ -336,11 +332,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     public static String getFirstNotBlank(String... strs) {
-        String[] var1 = strs;
         int var2 = strs.length;
 
         for(int var3 = 0; var3 < var2; ++var3) {
-            String str = var1[var3];
+            String str = strs[var3];
             if (isNotBlank(str)) {
                 return str;
             }
@@ -364,11 +359,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     public static boolean equalsAny(String obj, String... objs) {
-        String[] var2 = objs;
         int var3 = objs.length;
 
         for(int var4 = 0; var4 < var3; ++var4) {
-            String obj1 = var2[var4];
+            String obj1 = objs[var4];
             if (equals(obj, obj1)) {
                 return true;
             }

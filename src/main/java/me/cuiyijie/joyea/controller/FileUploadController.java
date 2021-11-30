@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.config.Constants;
@@ -19,12 +20,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("file")
 @Api(tags = "文件上传模块")
 public class FileUploadController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadController.class);
 
     @Value("${file.upload.base-path}")
     private String baseUploadPath;
@@ -64,7 +64,7 @@ public class FileUploadController {
             transBaseResponse.setObj(fileSaveId);
 
         } catch (IOException e) {
-            LOGGER.error("文件上传出现错误：", e);
+            log.error("文件上传出现错误：", e);
         }
         return transBaseResponse;
     }
