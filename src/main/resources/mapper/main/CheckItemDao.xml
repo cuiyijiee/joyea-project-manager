@@ -4,9 +4,6 @@
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItem">
 
         <id property="id" column="id"/>
-        <!--        <id property="checkModuleType" column="check_module_type"/>-->
-        <!--        <id property="checkCategoryType" column="check_category_type"/>-->
-        <!--        <id property="checkStageType" column="check_stage_type"/>-->
         <id property="checkName" column="check_name"/>
         <id property="checkNameVisible" column="check_name_visible"/>
         <id property="checkStandard" column="check_standard"/>
@@ -58,15 +55,6 @@
 
         LEFT JOIN t_checkitem_property tcp on ci.id = tcp.checkitem_id
         WHERE 1=1
-        <!--        <if test="item.checkModuleType != null ">-->
-        <!--            AND ci.check_module_type = #{item.checkModuleType}-->
-        <!--        </if>-->
-        <!--        <if test="item.checkCategoryType != null">-->
-        <!--            AND ci.check_category_type = #{item.checkCategoryType}-->
-        <!--        </if>-->
-        <!--        <if test="item.checkStageType != null">-->
-        <!--            AND ci.check_stage_type = #{item.checkStageType}-->
-        <!--        </if>-->
         <if test="item.checkCategoryTypes != null">
             AND tcp.property_value in
             <foreach collection="item.checkCategoryTypes" item="property" index="index" open="(" close=")"
@@ -116,7 +104,6 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_checkitem(
---                                 check_module_type, check_category_type, check_stage_type,
             check_name, check_standard, check_method, check_tool, check_standard_from,
             check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,
             check_standard_from_visible,
@@ -128,7 +115,6 @@
             third_check_person_id, third_check_remark,
             created_at, enabled)
         VALUES (
---                 #{item.checkModuleType}, #{item.checkCategoryType}, #{item.checkStageType},
                    #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
                    #{item.checkStandardFrom},
                    #{item.checkNameVisible}, #{item.checkStandardVisible}, #{item.checkMethodVisible},
@@ -145,15 +131,6 @@
     <update id="update">
         UPDATE t_checkitem
         <set>
-            <!--            <if test="item.checkModuleType != null ">-->
-            <!--                check_module_type = #{item.checkModuleType},-->
-            <!--            </if>-->
-            <!--            <if test="item.checkCategoryType != null">-->
-            <!--                check_category_type = #{item.checkCategoryType},-->
-            <!--            </if>-->
-            <!--            <if test="item.checkStageType != null">-->
-            <!--                check_stage_type = #{item.checkStageType},-->
-            <!--            </if>-->
             <if test="item.checkName != null and item.checkName != ''">
                 check_name = #{item.checkName},
             </if>
