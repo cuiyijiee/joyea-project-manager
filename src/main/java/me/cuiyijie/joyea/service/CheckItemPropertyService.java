@@ -57,12 +57,12 @@ public class CheckItemPropertyService {
                         break;
                 }
             }
-            resultMap.put(CheckItemPropertyType.CATEGORY, categoryTypes);
-            resultMap.put(CheckItemPropertyType.STAGE, stageTypes);
-            resultMap.put(CheckItemPropertyType.MODULE, moduleTypes);
         } catch (Exception exception) {
             logger.error("获取点检项属性失败：", exception);
         }
+        resultMap.put(CheckItemPropertyType.CATEGORY, categoryTypes);
+        resultMap.put(CheckItemPropertyType.STAGE, stageTypes);
+        resultMap.put(CheckItemPropertyType.MODULE, moduleTypes);
         return resultMap;
     }
 
@@ -71,21 +71,21 @@ public class CheckItemPropertyService {
         if (checkItem.getCheckCategoryTypes() != null) {
             for (int jndex = 0; jndex < checkItem.getCheckCategoryTypes().size(); jndex++) {
                 BaseEnum baseEnum = checkItem.getCheckCategoryTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.CATEGORY, baseEnum.getValue());
+                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.CATEGORY, baseEnum.getKey());
                 properties.add(checkItemProperty);
             }
         }
         if (checkItem.getCheckModuleTypes() != null) {
             for (int jndex = 0; jndex < checkItem.getCheckModuleTypes().size(); jndex++) {
                 BaseEnum baseEnum = checkItem.getCheckModuleTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.MODULE, baseEnum.getValue());
+                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.MODULE, baseEnum.getKey());
                 properties.add(checkItemProperty);
             }
         }
         if (checkItem.getCheckStageTypes() != null) {
             for (int jndex = 0; jndex < checkItem.getCheckStageTypes().size(); jndex++) {
                 BaseEnum baseEnum = checkItem.getCheckStageTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.STAGE, baseEnum.getValue());
+                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.STAGE, baseEnum.getKey());
                 properties.add(checkItemProperty);
             }
         }

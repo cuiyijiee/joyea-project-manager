@@ -52,10 +52,11 @@ public class CheckItemService {
         checkItem.setTags(checkItemTags);
 
         Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem.getId(), null);
-        checkItem.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
-        checkItem.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
-        checkItem.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
-
+        if (propertyMap != null) {
+            checkItem.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
+            checkItem.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
+            checkItem.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
+        }
     }
 
     public Integer update(CheckItem checkItem) {
