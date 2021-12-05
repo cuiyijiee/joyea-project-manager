@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.main.CheckItemDao;
 import me.cuiyijie.joyea.dao.main.ProjectStageDao;
@@ -9,6 +10,8 @@ import me.cuiyijie.joyea.dao.main.ProjectStageOperationDao;
 import me.cuiyijie.joyea.model.*;
 import me.cuiyijie.joyea.model.StageProduct;
 import me.cuiyijie.joyea.model.vo.ProjectStageVo;
+import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,6 +111,35 @@ public class ProjectStageService {
         List<CheckItem> checkItems = checkItemDao.listChild(operation.getId());
         for (int index = 0; index < checkItems.size(); index++) {
             projectStageOperationDao.insertCheckItemRel(projectStageOperation.getId(), checkItems.get(index).getId());
+        }
+    }
+
+    @Transactional
+    public void addProductOperations(List<ProjectStageOperation> projectStageOperations) {
+        for (int index = 0; index < projectStageOperations.size(); index++) {
+            ProjectStageOperation projectStageOperation = projectStageOperations.get(index);
+            List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "parentId:工序父文件夹id（parentId）", "operationId:工序id（operationId）");
+            String errorMsg = CheckParamsUtil.checkAll(projectStageOperation, paramsCheck, null, null);
+            if (errorMsg != null) {
+                throw new RuntimeException("请求参数缺少：" + errorMsg);
+            }
+            Template parentTemplate = templateService.listById(projectStageOperation.getParentId());
+            if (parentTemplate == null) {
+                throw new RuntimeException("父文件夹不存在！");
+            }
+            Template operation = templateService.listById(projectStageOperation.getOperationId());
+            if (operation == null) {
+                throw new RuntimeException("当前工序不存在！");
+            }
+            projectStageOperation.setParentName(parentTemplate.getName());
+            projectStageOperation.setOperationName(operation.getName());
+            projectStageOperationDao.insert(projectStageOperation);
+
+            //重新建立索引
+            List<CheckItem> checkItems = checkItemDao.listChild(operation.getId());
+            for (int jndex = 0; jndex < checkItems.size(); jndex++) {
+                projectStageOperationDao.insertCheckItemRel(projectStageOperation.getId(), checkItems.get(jndex).getId());
+            }
         }
     }
 
