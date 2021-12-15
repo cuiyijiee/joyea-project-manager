@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemTag;
 

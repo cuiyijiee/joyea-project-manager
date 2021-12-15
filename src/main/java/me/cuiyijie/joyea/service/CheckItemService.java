@@ -1,7 +1,9 @@
 package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.dao.main.CheckItemDao;
+import me.cuiyijie.joyea.dao.main.SysFileUploadDao;
 import me.cuiyijie.joyea.dao.main.TemplateDao;
+import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.enums.*;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemTag;
@@ -11,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -29,11 +32,19 @@ public class CheckItemService {
     @Autowired
     private CheckItemPropertyService checkItemPropertyService;
 
+    @Autowired
+    private SysFileUploadDao sysFileUploadDao;
+
     public List<CheckItem> listChild(Integer id) {
         List<CheckItem> checkItems = checkItemDao.listChild(id);
         for (int index = 0; index < checkItems.size(); index++) {
             CheckItem checkItem1 = checkItems.get(index);
             addCheckItemAttributes(checkItem1);
+            //获取文件说明
+            if(StringUtils.hasLength(checkItem1.getFileExplanation())){
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(checkItem1.getFileExplanation());
+                checkItem1.setFileExplanationFile(sysFileUpload);
+            }
         }
         return checkItems;
     }
@@ -43,6 +54,11 @@ public class CheckItemService {
         for (int index = 0; index < checkItems.size(); index++) {
             CheckItem checkItem1 = checkItems.get(index);
             addCheckItemAttributes(checkItem1);
+            //获取文件说明
+            if(StringUtils.hasLength(checkItem1.getFileExplanation())){
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(checkItem1.getFileExplanation());
+                checkItem1.setFileExplanationFile(sysFileUpload);
+            }
         }
         return checkItems;
     }

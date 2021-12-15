@@ -9,4 +9,6 @@ public interface SysFileUploadDao {
 
     Integer insert(@Param("item") SysFileUpload sysFileUpload);
 
+    SysFileUpload selectById(@Param("id")String id);
+
 }

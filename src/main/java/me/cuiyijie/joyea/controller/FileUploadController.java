@@ -54,7 +54,7 @@ public class FileUploadController {
             transBaseResponse.setCode(Constants.SUCCESS_CODE);
 
             SysFileUpload sysFileUpload = new SysFileUpload();
-            sysFileUpload.setFileSaveId(fileSaveId);
+            sysFileUpload.setId(fileSaveId);
             sysFileUpload.setFileSuffix(fileSuffix);
             sysFileUpload.setCreatedBy(currentUserInfo.getId());
             sysFileUpload.setOriginFileName(multipartFile.getOriginalFilename());

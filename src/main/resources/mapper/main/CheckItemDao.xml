@@ -35,6 +35,7 @@
 
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
+        <id property="fileExplanation" column="file_explanation"/>
         <id property="enabled" column="enabled"/>
 
     </resultMap>
@@ -113,7 +114,7 @@
             second_check_person_id, second_check_remark,
             third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
             third_check_person_id, third_check_remark,
-            created_at, enabled)
+            created_at,file_explanation, enabled)
         VALUES (
                    #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
                    #{item.checkStandardFrom},
@@ -125,7 +126,7 @@
                    #{item.secondCheckPersonId}, #{item.secondCheckRemark},
                    #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifyResult}, #{item.thirdCheckVerifySheetId},
                    #{item.thirdCheckPersonId}, #{item.thirdCheckRemark},
-                   NOW(), 1)
+                   NOW(), #{item.fileExplanation},1)
     </insert>
 
     <update id="update">
@@ -208,6 +209,9 @@
             </if>
             <if test="item.enabled != null and item.enabled != ''">
                 enabled = #{item.enabled},
+            </if>
+            <if test="item.fileExplanation != null and item.fileExplanation != ''">
+                file_explanation = #{item.fileExplanation},
             </if>
             updated_at = NOW()
         </set>

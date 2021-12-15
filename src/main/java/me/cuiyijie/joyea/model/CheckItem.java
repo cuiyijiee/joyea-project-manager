@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.enums.CheckCategoryType;
 import me.cuiyijie.joyea.enums.CheckModuleType;
 import me.cuiyijie.joyea.enums.CheckStageType;
@@ -63,6 +64,9 @@ public class CheckItem {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean enabled;
+
+    private String fileExplanation;
+    private SysFileUpload fileExplanationFile;
 
 //    public String getCheckModuleTypeValue(){
 //        return checkModuleType == null ? "" :checkModuleType.getValue();
