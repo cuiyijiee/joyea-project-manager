@@ -70,22 +70,22 @@ public class CheckItemPropertyService {
         List<CheckItemProperty> properties = new ArrayList<>();
         if (checkItem.getCheckCategoryTypes() != null) {
             for (int jndex = 0; jndex < checkItem.getCheckCategoryTypes().size(); jndex++) {
-                BaseEnum baseEnum = checkItem.getCheckCategoryTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.CATEGORY, baseEnum.getKey());
+                CheckCategoryType checkCategoryType = checkItem.getCheckCategoryTypes().get(jndex);
+                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.CATEGORY, checkCategoryType.name());
                 properties.add(checkItemProperty);
             }
         }
         if (checkItem.getCheckModuleTypes() != null) {
             for (int jndex = 0; jndex < checkItem.getCheckModuleTypes().size(); jndex++) {
-                BaseEnum baseEnum = checkItem.getCheckModuleTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.MODULE, baseEnum.getKey());
+                CheckModuleType checkModuleType = checkItem.getCheckModuleTypes().get(jndex);
+                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.MODULE, checkModuleType.name());
                 properties.add(checkItemProperty);
             }
         }
         if (checkItem.getCheckStageTypes() != null) {
             for (int jndex = 0; jndex < checkItem.getCheckStageTypes().size(); jndex++) {
-                BaseEnum baseEnum = checkItem.getCheckStageTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.STAGE, baseEnum.getKey());
+                CheckStageType checkStageType = checkItem.getCheckStageTypes().get(jndex);
+                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.STAGE, checkStageType.name());
                 properties.add(checkItemProperty);
             }
         }

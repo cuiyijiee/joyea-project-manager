@@ -19,6 +19,7 @@ import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.ProjectStageService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -117,7 +118,7 @@ public class ProjectStageController {
     @RequestMapping(value = "addProductOperation", method = RequestMethod.POST)
     public TransBaseResponse addProductOperation(@RequestBody ProjectStageOperation projectStageOperation) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）","parentId:工序父文件夹id（parentId）", "operationId:工序id（operationId）");
+        List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "parentId:工序父文件夹id（parentId）", "operationId:工序id（operationId）");
         String errorMsg = CheckParamsUtil.checkAll(projectStageOperation, paramsCheck, null, null);
         if (errorMsg != null) {
             return TransBaseResponse.failed(errorMsg);
@@ -127,6 +128,22 @@ public class ProjectStageController {
         } catch (Exception exception) {
             log.error("新增项目阶段工序失败：" + exception.getMessage());
             return TransBaseResponse.failed("新增项目阶段工序失败：" + exception.getMessage());
+        }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "产品批量新增工序", notes = "产品批量新增工序")
+    @RequestMapping(value = "addBatchProductOperation", method = RequestMethod.POST)
+    public TransBaseResponse addBatchProductOperation(@RequestBody List<ProjectStageOperation> projectStageOperations) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        if (projectStageOperations == null || projectStageOperations.size() == 0) {
+            return TransBaseResponse.failed("批量新增项目阶段工序失败：待添加工序列表为空");
+        }
+        try {
+            projectStageService.addProductOperations(projectStageOperations);
+        } catch (Exception exception) {
+            log.error("批量新增项目阶段工序失败：" + exception.getMessage());
+            return TransBaseResponse.failed("批量新增项目阶段工序失败：" + exception.getMessage());
         }
         return transBaseResponse;
     }
