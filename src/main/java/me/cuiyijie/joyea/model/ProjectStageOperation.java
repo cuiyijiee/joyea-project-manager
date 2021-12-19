@@ -2,6 +2,8 @@ package me.cuiyijie.joyea.model;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ProjectStageOperation {
 
@@ -11,6 +13,9 @@ public class ProjectStageOperation {
     private String parentName;
     private Integer operationId;
     private String operationName;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 //    private List<CheckItem> checkItems;
 }

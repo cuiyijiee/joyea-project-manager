@@ -9,17 +9,19 @@
         <id property="parentName" column="parent_name"/>
         <id property="operationId" column="operation_id"/>
         <id property="operationName" column="operation_name"/>
-
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
     </resultMap>
 
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO t_project_stage_operation(stage_rel_id, parent_id, parent_name, operation_id, operation_name)
+        INSERT INTO t_project_stage_operation(stage_rel_id, parent_id, parent_name, operation_id, operation_name,created_at)
         VALUES (#{item.stageRelId},
                 #{item.parentId},
                 #{item.parentName},
                 #{item.operationId},
-                #{item.operationName})
+                #{item.operationName},
+                NOW())
     </insert>
 
     <delete id="delete">

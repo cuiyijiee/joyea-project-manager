@@ -7,12 +7,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.CheckItem;
+import me.cuiyijie.joyea.model.CheckItemAnswer;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.service.CheckItemAnswerService;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.CheckItemTagService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +36,10 @@ public class CheckItemController {
     private CheckItemService checkItemService;
     @Autowired
     private CheckItemTagService checkItemTagService;
+    @Autowired
+    private CheckItemAnswerService checkItemAnswerService;
+
+    private final static Logger logger = LoggerFactory.getLogger(CheckItemController.class);
 
 
     @ApiOperation(value = "获取点检项", notes = "获取点检项")
@@ -151,6 +159,57 @@ public class CheckItemController {
             transBaseResponse.setMsg(exception.getMessage());
             transBaseResponse.setCode("-1");
         }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "点检项结果录入", notes = "点检项结果录入")
+    @RequestMapping(value = "updateResult", method = RequestMethod.POST)
+    public TransBaseResponse updateResult(@RequestBody CheckItemAnswer checkItemAnswer){
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "checkItemId:点检项ID（checkItemId）");
+        String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setCode("0");
+            transBaseResponse.setMsg(errorMsg);
+            return transBaseResponse;
+        }
+
+        try {
+            checkItemAnswerService.updateResult(checkItemAnswer);
+            transBaseResponse.setCode("0");
+        } catch (Exception exception) {
+            logger.error("点检项结果录入失败：", exception);
+            transBaseResponse.setMsg("点检项结果录入失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+        }
+
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "点检项结果查询", notes = "点检项结果查询")
+    @RequestMapping(value = "selectResult", method = RequestMethod.POST)
+    public TransBaseResponse select(@RequestBody CheckItemAnswer checkItemAnswer){
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "checkItemId:点检项ID（checkItemId）");
+        String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setCode("0");
+            transBaseResponse.setMsg(errorMsg);
+            return transBaseResponse;
+        }
+
+        try {
+            CheckItemAnswer result = checkItemAnswerService.select(checkItemAnswer);
+            transBaseResponse.setObj(result == null ? new CheckItemAnswer():result);
+            transBaseResponse.setCode("0");
+        } catch (Exception exception) {
+            logger.error("点检项结果查询失败：", exception);
+            transBaseResponse.setMsg("点检项结果查询失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+        }
+
         return transBaseResponse;
     }
 }

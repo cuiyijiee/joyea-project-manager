@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.CheckItemAnswerDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItemAnswer">
+        <id property="id" column="id"/>
+        <id property="stageRelId" column="stage_rel_id"/>
+        <id property="checkItemId" column="checkitem_id"/>
+
+        <id property="firstCheckVerifyResult" column="first_check_verify_result"/>
+        <id property="firstCheckRemark" column="first_check_remark"/>
+
+        <id property="secondCheckVerifyResult" column="second_check_verify_result"/>
+        <id property="secondCheckRemark" column="second_check_remark"/>
+
+        <id property="thirdCheckVerifyResult" column="third_check_verify_result"/>
+        <id property="thirdCheckRemark" column="third_check_remark"/>
+
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO t_checkitem_answer(stage_rel_id, checkitem_id,
+                                       first_check_verify_result, first_check_remark,
+                                       second_check_verify_result, second_check_remark,
+                                       third_check_verify_result, third_check_remark,
+                                       created_at)
+        VALUES (#{item.stageRelId},
+                #{item.checkItemId},
+                #{item.firstCheckVerifyResult},
+                #{item.firstCheckRemark},
+                #{item.secondCheckVerifyResult},
+                #{item.secondCheckRemark},
+                #{item.thirdCheckVerifyResult},
+                #{item.thirdCheckRemark},
+                NOW())
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_checkitem_answer
+        WHERE id = #{id}
+    </select>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_checkitem_answer
+        WHERE stage_rel_id = #{item.stageRelId}
+          AND checkitem_id = #{item.checkItemId}
+    </select>
+
+    <update id="update">
+        UPDATE t_checkitem_answer
+        <set>
+            <if test="item.firstCheckVerifyResult != null">
+                first_check_verify_result = #{item.firstCheckVerifyResult},
+            </if>
+            <if test="item.firstCheckRemark != null and item.firstCheckRemark != ''">
+                first_check_remark = #{item.firstCheckRemark},
+            </if>
+            <if test="item.secondCheckVerifyResult != null">
+                second_check_verify_result = #{item.secondCheckVerifyResult},
+            </if>
+            <if test="item.secondCheckRemark != null and item.secondCheckRemark != ''">
+                second_check_remark = #{item.secondCheckRemark},
+            </if>
+            <if test="item.thirdCheckVerifyResult != null">
+                third_check_verify_result = #{item.thirdCheckVerifyResult},
+            </if>
+            <if test="item.thirdCheckRemark != null and item.thirdCheckRemark != ''">
+                third_check_remark = #{item.thirdCheckRemark},
+            </if>
+            updated_at = NOW()
+        </set>
+        WHERE stage_rel_id = #{item.stageRelId}
+        AND checkitem_id = #{item.checkItemId}
+    </update>
+</mapper>

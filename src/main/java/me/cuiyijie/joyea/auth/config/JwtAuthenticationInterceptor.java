@@ -3,7 +3,11 @@ package me.cuiyijie.joyea.auth.config;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.auth.util.JwtUtil;
+import me.cuiyijie.joyea.dao.main.UserDao;
 import me.cuiyijie.joyea.exception.UserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +22,8 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
     @Value("${server.allow-user}")
     private List<String> allowUsers;
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationInterceptor.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
