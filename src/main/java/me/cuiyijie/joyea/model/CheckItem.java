@@ -42,24 +42,18 @@ public class CheckItem {
 
     //自检人
     private CheckVerifyType firstCheckVerifyType;
-    private Boolean firstCheckVerifyResult;
     private String firstCheckVerifySheetId;
     private String firstCheckPersonId;
-    private String firstCheckRemark;
 
     //互检人
     private CheckVerifyType secondCheckVerifyType;
-    private Boolean secondCheckVerifyResult;
     private String secondCheckVerifySheetId;
     private String secondCheckPersonId;
-    private String secondCheckRemark;
 
     //第三方检验人
     private CheckVerifyType thirdCheckVerifyType;
-    private Boolean thirdCheckVerifyResult;
     private String thirdCheckVerifySheetId;
     private String thirdCheckPersonId;
-    private String thirdCheckRemark;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -16,22 +16,16 @@
         <id property="checkStandardFromVisible" column="check_standard_from_visible"/>
 
         <id property="firstCheckVerifyType" column="first_check_verify_type"/>
-        <id property="firstCheckVerifyResult" column="first_check_verify_result"/>
         <id property="firstCheckVerifySheetId" column="first_check_verify_sheet_id"/>
         <id property="firstCheckPersonId" column="first_check_person_id"/>
-        <id property="firstCheckRemark" column="first_check_remark"/>
 
         <id property="secondCheckVerifyType" column="second_check_verify_type"/>
-        <id property="secondCheckVerifyResult" column="second_check_verify_result"/>
         <id property="secondCheckVerifySheetId" column="second_check_verify_sheet_id"/>
         <id property="secondCheckPersonId" column="second_check_person_id"/>
-        <id property="secondCheckRemark" column="second_check_remark"/>
 
         <id property="thirdCheckVerifyType" column="third_check_verify_type"/>
-        <id property="thirdCheckVerifyResult" column="third_check_verify_result"/>
         <id property="thirdCheckVerifySheetId" column="third_check_verify_sheet_id"/>
         <id property="thirdCheckPersonId" column="third_check_person_id"/>
-        <id property="thirdCheckRemark" column="third_check_remark"/>
 
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
@@ -108,24 +102,18 @@
             check_name, check_standard, check_method, check_tool, check_standard_from,
             check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,
             check_standard_from_visible,
-            first_check_verify_type, first_check_verify_result, first_check_verify_sheet_id,
-            first_check_person_id, first_check_remark,
-            second_check_verify_type, second_check_verify_result, second_check_verify_sheet_id,
-            second_check_person_id, second_check_remark,
-            third_check_verify_type, third_check_verify_result, third_check_verify_sheet_id,
-            third_check_person_id, third_check_remark,
+            first_check_verify_type, first_check_verify_sheet_id,first_check_person_id,
+            second_check_verify_type, second_check_verify_sheet_id,second_check_person_id,
+            third_check_verify_type, third_check_verify_sheet_id,third_check_person_id,
             created_at,file_explanation, enabled)
         VALUES (
                    #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
                    #{item.checkStandardFrom},
                    #{item.checkNameVisible}, #{item.checkStandardVisible}, #{item.checkMethodVisible},
                    #{item.checkToolVisible}, #{item.checkStandardFromVisible},
-                   #{item.firstCheckVerifyType}, #{item.firstCheckVerifyResult}, #{item.firstCheckVerifySheetId},
-                   #{item.firstCheckPersonId}, #{item.firstCheckRemark},
-                   #{item.secondCheckVerifyType}, #{item.secondCheckVerifyResult}, #{item.secondCheckVerifySheetId},
-                   #{item.secondCheckPersonId}, #{item.secondCheckRemark},
-                   #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifyResult}, #{item.thirdCheckVerifySheetId},
-                   #{item.thirdCheckPersonId}, #{item.thirdCheckRemark},
+                   #{item.firstCheckVerifyType}, #{item.firstCheckVerifySheetId}, #{item.firstCheckPersonId},
+                   #{item.secondCheckVerifyType}, #{item.secondCheckVerifySheetId}, #{item.secondCheckPersonId},
+                   #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifySheetId}, #{item.thirdCheckPersonId},
                    NOW(), #{item.fileExplanation},1)
     </insert>
 
@@ -165,23 +153,14 @@
             <if test="item.firstCheckVerifyType != null">
                 first_check_verify_type = #{item.firstCheckVerifyType},
             </if>
-            <if test="item.firstCheckVerifyResult != null and item.firstCheckVerifyResult != ''">
-                first_check_verify_result = #{item.firstCheckVerifyResult},
-            </if>
             <if test="item.firstCheckVerifySheetId != null and item.firstCheckVerifySheetId != ''">
                 first_check_verify_sheet_id = #{item.firstCheckVerifySheetId},
             </if>
             <if test="item.firstCheckPersonId != null and item.firstCheckPersonId != ''">
                 first_check_person_id = #{item.firstCheckPersonId},
             </if>
-            <if test="item.firstCheckRemark != null and item.firstCheckRemark != ''">
-                first_check_remark = #{item.firstCheckRemark},
-            </if>
             <if test="item.secondCheckVerifyType != null">
                 second_check_verify_type = #{item.secondCheckVerifyType},
-            </if>
-            <if test="item.secondCheckVerifyResult != null and item.secondCheckVerifyResult != ''">
-                second_check_verify_result = #{item.secondCheckVerifyResult},
             </if>
             <if test="item.secondCheckVerifySheetId != null and item.secondCheckVerifySheetId != ''">
                 second_check_verify_sheet_id = #{item.secondCheckVerifySheetId},
@@ -189,23 +168,14 @@
             <if test="item.secondCheckPersonId != null and item.secondCheckPersonId != ''">
                 second_check_person_id = #{item.secondCheckPersonId},
             </if>
-            <if test="item.secondCheckRemark != null and item.secondCheckRemark != ''">
-                second_check_remark = #{item.secondCheckRemark},
-            </if>
             <if test="item.thirdCheckVerifyType != null">
                 third_check_verify_type = #{item.thirdCheckVerifyType},
-            </if>
-            <if test="item.thirdCheckVerifyResult != null and item.thirdCheckVerifyResult != ''">
-                third_check_verify_result = #{item.thirdCheckVerifyResult},
             </if>
             <if test="item.thirdCheckVerifySheetId != null and item.thirdCheckVerifySheetId != ''">
                 third_check_verify_sheet_id = #{item.thirdCheckVerifySheetId},
             </if>
             <if test="item.thirdCheckPersonId != null and item.thirdCheckPersonId != ''">
                 third_check_person_id = #{item.thirdCheckPersonId},
-            </if>
-            <if test="item.thirdCheckRemark != null and item.thirdCheckRemark != ''">
-                third_check_remark = #{item.thirdCheckRemark},
             </if>
             <if test="item.enabled != null and item.enabled != ''">
                 enabled = #{item.enabled},

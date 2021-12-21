@@ -5,9 +5,12 @@ import me.cuiyijie.joyea.enums.base.BaseEnum;
 
 public enum CheckVerifyType implements BaseEnum {
 
-    SWITCH("1", "选项"),  //选择是否
-    SHEET("2", "表格");   //表格
-
+    SHEET("1", "表格"),
+    TEXT("2", "文字"),
+    NUMBER("3", "数值"),
+    IMAGE("4", "图片"),
+    VIDEO("5", "视频"),
+    FILE("6", "附件");
 
     private String key;
     private String value;
