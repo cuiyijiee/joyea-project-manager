@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.main.SheetColumnDao">
+
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.SheetColumn">
+
+        <id property="id" column="id"/>
+        <id property="sheetId" column="sheet_id"/>
+        <id property="columnIndex" column="column_index"/>
+        <id property="columnName" column="column_name"/>
+        <id property="columnType" column="column_type"/>
+        <id property="columnValueStandard" column="column_value_standard"/>
+        <id property="columnValueMax" column="column_value_max"/>
+        <id property="columnValueMin" column="column_value_min"/>
+        <id property="columnValueMaxInclude" column="column_value_max_include"/>
+        <id property="columnValueMinInclude" column="column_value_min_include"/>
+
+    </resultMap>
+
+    <insert id="insert">
+        INSERT INTO t_sheet_column (sheet_id,
+                                    column_index,
+                                    `column_name`,
+                                    column_type,
+                                    column_value_standard,
+                                    column_value_max,
+                                    column_value_min,
+                                    column_value_max_include,
+                                    column_value_min_include)
+        VALUES (#{item.sheetId},
+                #{item.columnIndex},
+                #{item.columnName},
+                #{item.columnType},
+                #{item.columnValueStandard},
+                #{item.columnValueMax},
+                #{item.columnValueMin},
+                #{item.columnValueMaxInclude},
+                #{item.columnValueMinInclude})
+    </insert>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_sheet_column
+        WHERE 1=1
+        <if test="item.id != null">
+            AND id = #{item.id}
+        </if>
+        <if test="item.sheetId != null">
+            AND sheet_id = #{item.sheetId}
+        </if>
+    </select>
+
+    <update id="update">
+        UPDATE t_sheet_column
+        <set>
+            <if test="item.columnIndex != null">
+                column_index = #{item.columnIndex},
+            </if>
+            <if test="item.columnName != null and item.columnName != ''">
+                column_name = #{item.columnName},
+            </if>
+            <if test="item.columnType != null">
+                column_type = #{item.columnType},
+            </if>
+            <if test="item.columnValueStandard != null and item.columnValueStandard != ''">
+                column_standard = #{item.columnValueStandard},
+            </if>
+            <if test="item.columnValueMax != null">
+                column_value_max = #{item.columnValueMax},
+            </if>
+            <if test="item.columnValueMin != null">
+                column_value_min = #{item.columnValueMin},
+            </if>
+            <if test="item.columnValueMaxInclude != null">
+                column_value_max_include = #{item.columnValueMaxInclude},
+            </if>
+            <if test="item.columnValueMinInclude != null">
+                column_value_min_include = #{item.columnValueMinInclude},
+            </if>
+        </set>
+        WHERE id = #{item.id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM t_sheet_column
+        WHERE id = #{item.id}
+    </delete>
+
+</mapper>

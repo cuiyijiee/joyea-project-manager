@@ -4,14 +4,14 @@
 
 
     <insert id="insert">
-        INSERT INTO sheet (name)
+        INSERT INTO t_sheet (name)
         VALUES (#{item.name})
     </insert>
 
-    <select id="findAll" resultType="me.cuiyijie.joyea.domain.Sheet">
+    <select id="findAll" resultType="me.cuiyijie.joyea.model.Sheet">
         SELECT id AS id,
         name AS name
-        FROM sheet
+        FROM t_sheet
         WHERE 1=1
         <if test="item.id != null">
             AND id = #{item.id}
@@ -25,14 +25,14 @@
     </select>
 
     <update id="update">
-        UPDATE sheet
+        UPDATE t_sheet
         SET name = #{item.name}
         WHERE id = #{item.id}
     </update>
 
     <delete id="delete">
         DELETE
-        FROM sheet
+        FROM t_sheet
         WHERE id = #{item.id}
     </delete>
 

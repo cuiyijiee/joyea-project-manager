@@ -1,4 +1,4 @@
-package me.cuiyijie.joyea.domain;
+package me.cuiyijie.joyea.model;
 
 import lombok.Data;
 

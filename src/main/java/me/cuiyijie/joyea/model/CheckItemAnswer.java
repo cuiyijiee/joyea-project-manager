@@ -16,12 +16,27 @@ public class CheckItemAnswer {
     private Integer checkItemId;
 
     private Boolean firstCheckVerifyResult;
+    private String firstCheckVerifyTextValue;
+    private String firstCheckVerifyNumberValue;
+    private String firstCheckVerifyImageId;
+    private String firstCheckVerifyVideoId;
+    private String firstCheckVerifyFileId;
     private String firstCheckRemark;
 
     private Boolean secondCheckVerifyResult;
+    private String secondCheckVerifyTextValue;
+    private String secondCheckVerifyNumberValue;
+    private String secondCheckVerifyImageId;
+    private String secondCheckVerifyVideoId;
+    private String secondCheckVerifyFileId;
     private String secondCheckRemark;
 
     private Boolean thirdCheckVerifyResult;
+    private String thirdCheckVerifyTextValue;
+    private String thirdCheckVerifyNumberValue;
+    private String thirdCheckVerifyImageId;
+    private String thirdCheckVerifyVideoId;
+    private String thirdCheckVerifyFileId;
     private String thirdCheckRemark;
 
     private LocalDateTime createdAt;

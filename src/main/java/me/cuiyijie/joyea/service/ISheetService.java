@@ -2,7 +2,7 @@ package me.cuiyijie.joyea.service;
 
 
 import com.github.pagehelper.PageInfo;
-import me.cuiyijie.joyea.domain.Sheet;
+import me.cuiyijie.joyea.model.Sheet;
 
 public interface ISheetService {
 

@@ -5,8 +5,10 @@ import me.cuiyijie.joyea.dao.joyea.JoyeaAssemblyProblemDao;
 import me.cuiyijie.joyea.dao.joyea.JoyeaPersonDao;
 import me.cuiyijie.joyea.dao.joyea.JoyeaUrsDao;
 import me.cuiyijie.joyea.dao.main.CheckItemFormDataDao;
+import me.cuiyijie.joyea.dao.main.SheetColumnDao;
 import me.cuiyijie.joyea.dao.main.TestSheetDao;
 import me.cuiyijie.joyea.domain.TestSheet;
+import me.cuiyijie.joyea.model.SheetColumn;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,15 @@ class JoyeaProjectManagerApplicationTests {
     @Autowired
     TestSheetDao testSheetDao;
 
+    @Autowired
+    SheetColumnDao sheetColumnDao;
+
     @Test
     void contextLoads() {
+
+        List<SheetColumn> columns = sheetColumnDao.findAll(new SheetColumn());
+        System.out.println(columns);
+
 //        JoyeaAccessToken result = userService.getAccessTokenByTicket("ST-891-eHFF6mckJVZZ9bUaDz4r-c01");
 //        JoyeaUserProfile userInfo = userService.getUserInfoByToken(result.getAccessToken());
 //        System.out.println(userInfo);

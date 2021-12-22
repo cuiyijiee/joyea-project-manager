@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.dao.main;
 
-import me.cuiyijie.joyea.domain.Sheet;
+import me.cuiyijie.joyea.model.Sheet;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

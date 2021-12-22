@@ -1,4 +1,4 @@
-package me.cuiyijie.joyea.domain;
+package me.cuiyijie.joyea.model;
 
 import lombok.Data;
 
@@ -18,9 +18,9 @@ public class SheetColumn {
     //如果type=1，则是否合格标准是以是否与该值相等
     private String columnValueStandard;
     //最大值
-    private String columnValueMax;
+    private Integer columnValueMax;
     //最小值
-    private String columnValueMin;
+    private Integer columnValueMin;
     //是否包括最大值
     private Boolean columnValueMaxInclude;
     //是否包括最小值
