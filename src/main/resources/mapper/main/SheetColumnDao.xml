@@ -48,6 +48,7 @@
         <if test="item.sheetId != null">
             AND sheet_id = #{item.sheetId}
         </if>
+        ORDER BY column_index ASC
     </select>
 
     <update id="update">

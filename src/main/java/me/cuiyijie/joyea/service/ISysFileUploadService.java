@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.domain.SysFileUpload;
+import me.cuiyijie.joyea.model.SysFileUpload;
 
 public interface ISysFileUploadService {
 

@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.dao.main;
 
 import me.cuiyijie.joyea.config.UserFileType;
-import me.cuiyijie.joyea.domain.SysFileUpload;
+import me.cuiyijie.joyea.model.SysFileUpload;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

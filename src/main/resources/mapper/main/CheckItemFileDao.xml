@@ -8,7 +8,7 @@
                 #{fileId}, #{fileType}, #{checkType})
     </insert>
 
-    <select id="selectByCheckItemId" resultType="me.cuiyijie.joyea.domain.SysFileUpload">
+    <select id="selectByCheckItemId" resultType="me.cuiyijie.joyea.model.SysFileUpload">
         SELECT cif.id AS id,
         cif.file_type AS fileType,
         sfu.origin_file_name AS originFileName,

@@ -147,7 +147,7 @@ public class CheckItemController {
         String errorMsg = CheckParamsUtil.checkAll(checkItem, paramsCheck, null, null);
         if (errorMsg != null) {
             log.error("参数检查错误：" + errorMsg);
-            transBaseResponse.setCode("0");
+            transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(errorMsg);
             return transBaseResponse;
         }
@@ -170,7 +170,7 @@ public class CheckItemController {
         String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
         if (errorMsg != null) {
             logger.error("参数检查错误：" + errorMsg);
-            transBaseResponse.setCode("0");
+            transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(errorMsg);
             return transBaseResponse;
         }
@@ -195,12 +195,13 @@ public class CheckItemController {
         String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
         if (errorMsg != null) {
             logger.error("参数检查错误：" + errorMsg);
-            transBaseResponse.setCode("0");
+            transBaseResponse.setCode("-1");
             transBaseResponse.setMsg(errorMsg);
             return transBaseResponse;
         }
 
         try {
+
             CheckItemAnswer result = checkItemAnswerService.select(checkItemAnswer);
             transBaseResponse.setObj(result == null ? new CheckItemAnswer():result);
             transBaseResponse.setCode("0");

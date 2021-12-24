@@ -2,12 +2,10 @@ package me.cuiyijie.joyea.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import me.cuiyijie.joyea.domain.SysFileUpload;
 import me.cuiyijie.joyea.enums.CheckCategoryType;
 import me.cuiyijie.joyea.enums.CheckModuleType;
 import me.cuiyijie.joyea.enums.CheckStageType;
 import me.cuiyijie.joyea.enums.CheckVerifyType;
-import me.cuiyijie.joyea.enums.base.BaseEnum;
 
 import java.time.LocalDateTime;
 import java.util.List;

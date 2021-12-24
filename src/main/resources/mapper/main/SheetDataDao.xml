@@ -26,6 +26,15 @@
                 #{item.columnValue}, NOW())
     </insert>
 
+    <select id="find" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_sheet_data
+        WHERE stage_rel_id = #{item.stageRelId}
+          AND sheet_id = #{item.sheetId}
+          AND column_id = #{item.columnId}
+          AND row_index = #{item.rowIndex} LIMIT 1
+    </select>
+
     <select id="list" resultMap="BaseResultMap">
         SELECT *
         FROM t_sheet_data
@@ -42,6 +51,7 @@
         <if test="item.rowIndex != null">
             AND row_index = #{item.rowIndex}
         </if>
+        ORDER BY row_index ASC
     </select>
 
     <update id="update">

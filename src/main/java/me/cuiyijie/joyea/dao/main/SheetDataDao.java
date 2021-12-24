@@ -20,6 +20,8 @@ public interface SheetDataDao {
 
     Integer delete(@Param("item") SheetData sheetData);
 
-    List<SheetDao> list(@Param("item") SheetData sheetData);
+    List<SheetData> list(@Param("item") SheetData sheetData);
+
+    SheetData find(@Param("item") SheetData sheetData);
 
 }

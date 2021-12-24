@@ -5,7 +5,7 @@
 //import io.swagger.annotations.ApiOperation;
 //import me.cuiyijie.joyea.config.UserFileType;
 //import me.cuiyijie.joyea.domain.JoyeaUrs;
-//import me.cuiyijie.joyea.domain.SysFileUpload;
+//import me.cuiyijie.joyea.model.SysFileUpload;
 //import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 //import me.cuiyijie.joyea.pojo.TransBaseResponse;
 //import me.cuiyijie.joyea.pojo.request.assemblyproblem.TransAssemblyProblemFileRequest;

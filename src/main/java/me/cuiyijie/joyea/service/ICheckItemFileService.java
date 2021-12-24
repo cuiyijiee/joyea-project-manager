@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.config.UserFileType;
-import me.cuiyijie.joyea.domain.SysFileUpload;
+import me.cuiyijie.joyea.model.SysFileUpload;
 
 import java.util.List;
 

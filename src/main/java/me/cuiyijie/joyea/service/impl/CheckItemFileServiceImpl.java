@@ -2,7 +2,7 @@ package me.cuiyijie.joyea.service.impl;
 
 import me.cuiyijie.joyea.config.UserFileType;
 import me.cuiyijie.joyea.dao.main.CheckItemFileDao;
-import me.cuiyijie.joyea.domain.SysFileUpload;
+import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.service.ICheckItemFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

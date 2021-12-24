@@ -7,7 +7,7 @@
 //import me.cuiyijie.joyea.domain.CheckItemFormData;
 //import me.cuiyijie.joyea.domain.CheckItemFormSetting;
 //import me.cuiyijie.joyea.domain.JoyeaCheckItem;
-//import me.cuiyijie.joyea.domain.SysFileUpload;
+//import me.cuiyijie.joyea.model.SysFileUpload;
 //import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 //import me.cuiyijie.joyea.pojo.TransBaseResponse;
 //import me.cuiyijie.joyea.pojo.request.*;
