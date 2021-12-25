@@ -14,6 +14,7 @@ import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -49,6 +50,42 @@ public class SheetService {
         return sheetDao.delete(sheet);
     }
 
+    public List<SheetColumn> listAllColumns(Integer sheetId) {
+        SheetColumn sheetColumn = new SheetColumn();
+        sheetColumn.setSheetId(sheetId);
+        return sheetColumnDao.findAll(sheetColumn);
+    }
+
+
+    @Transactional
+    public void updateAllColumns(Integer sheetId, List<SheetColumn> sheetColumns) {
+        for (int index = 0; index < sheetColumns.size(); index++) {
+            SheetColumn sheetColumn = sheetColumns.get(index);
+            sheetColumn.setSheetId(sheetId);
+
+            List<String> paramsCheck = Lists.newArrayList(
+                    "sheetId:表格ID（sheetId）",
+                    "columnIndex:第几列（columnIndex）",
+                    "columnName:列名（columnName）",
+                    "columnType:列的类型（columnType）"
+            );
+            String errorMsg = CheckParamsUtil.checkAll(sheetColumn, paramsCheck, null, null);
+            if (StringUtils.hasLength(errorMsg)) {
+                throw new RuntimeException("参数检查错误：" + errorMsg);
+            }
+
+            sheetColumnDao.deleteSheetColumn(sheetId);
+            sheetColumnDao.insert(sheetColumn);
+
+//            SheetColumn existSheetColumn = sheetColumnDao.find(sheetColumn);
+//            if (existSheetColumn == null) {
+//                sheetColumnDao.insert(sheetColumn);
+//            } else {
+//                sheetColumnDao.update(sheetColumn);
+//            }
+        }
+    }
+
 
     public List<SheetColumnVo> listAllData(SheetData sheetData) {
         List<SheetColumnVo> result = new ArrayList<>();
@@ -74,6 +111,8 @@ public class SheetService {
         return result;
     }
 
+
+    @Transactional
     public void updateAllData(Integer sheetId, Integer stageRelId, List<SheetData> sheetDataList) {
 
         for (int index = 0; index < sheetDataList.size(); index++) {

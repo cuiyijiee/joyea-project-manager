@@ -19,6 +19,10 @@ public interface SheetColumnDao {
 
     List<SheetColumn> findAll(@Param("item") SheetColumn sheetColumn);
 
+    SheetColumn find(@Param("item") SheetColumn sheetColumn);
+
     Integer delete(@Param("item") SheetColumn sheetColumn);
+
+    Integer deleteSheetColumn(@Param("sheetId") Integer sheetId);
 
 }

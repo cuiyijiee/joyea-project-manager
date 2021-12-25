@@ -51,6 +51,13 @@
         ORDER BY column_index ASC
     </select>
 
+    <select id="find" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_sheet_column
+        WHERE sheet_id = #{item.sheetId}
+          AND column_index = #{item.columnIndex} LIMIT 1
+    </select>
+
     <update id="update">
         UPDATE t_sheet_column
         <set>
@@ -86,6 +93,12 @@
         DELETE
         FROM t_sheet_column
         WHERE id = #{item.id}
+    </delete>
+
+    <delete id="deleteSheetColumn">
+        DELETE
+        FROM t_sheet_column
+        WHERE sheet_id = #{sheetId}
     </delete>
 
 </mapper>

@@ -5,12 +5,10 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.model.Sheet;
+import me.cuiyijie.joyea.model.SheetColumn;
 import me.cuiyijie.joyea.model.SheetData;
 import me.cuiyijie.joyea.model.vo.SheetColumnVo;
-import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
-import me.cuiyijie.joyea.pojo.TransSheetDataRequest;
-import me.cuiyijie.joyea.pojo.TransSheetRequest;
+import me.cuiyijie.joyea.pojo.*;
 import me.cuiyijie.joyea.service.impl.SheetService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.slf4j.Logger;
@@ -57,6 +55,62 @@ public class CheckItemSheetController {
         return transBasePageResponse;
     }
 
+    @ApiOperation(value = "获取表格所有表头", notes = "获取表格所有表头")
+    @RequestMapping(value = "listAllColumn", method = RequestMethod.POST)
+    public TransBaseResponse listAllColumn(@RequestBody TransSheetRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        List<String> paramsCheck = Lists.newArrayList("id:表格ID（id）");
+        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setMsg(errorMsg);
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        try {
+
+            List<SheetColumn> sheets = sheetService.listAllColumns(request.getId());
+            transBaseResponse.setList(sheets);
+            transBaseResponse.setCode("0");
+
+        } catch (Exception exception) {
+            logger.error("获取表格所有表头失败：", exception);
+            transBaseResponse.setMsg("获取表格所有表头失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "获取表格所有表头", notes = "获取表格所有表头")
+    @RequestMapping(value = "updateAllColumn", method = RequestMethod.POST)
+    public TransBaseResponse updateAllColumn(@RequestBody TransSheetColumnRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        List<String> paramsCheck = Lists.newArrayList("sheetId:表格ID（sheetId）");
+        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setMsg(errorMsg);
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        try {
+
+            if (request.getSheetColumn() == null || request.getSheetColumn().size() <= 0) {
+                throw new RuntimeException("待更新的表头为空！");
+            }
+
+            sheetService.updateAllColumns(request.getSheetId(), request.getSheetColumn());
+            transBaseResponse.setCode("0");
+
+        } catch (Exception exception) {
+            logger.error("获取表格所有表头失败：", exception);
+            transBaseResponse.setMsg("获取表格所有表头失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        return transBaseResponse;
+    }
 
     @ApiOperation(value = "获取表格所有的数据", notes = "获取表格所有的数据")
     @RequestMapping(value = "listAllSheetData", method = RequestMethod.POST)
@@ -98,7 +152,7 @@ public class CheckItemSheetController {
         }
         try {
 
-            if(request.getSheetData() == null || request.getSheetData().size() <= 0) {
+            if (request.getSheetData() == null || request.getSheetData().size() <= 0) {
                 throw new RuntimeException("待更新的表格数据为空！");
             }
 
