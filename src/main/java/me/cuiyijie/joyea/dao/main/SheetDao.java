@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface SheetDao {
 
+    List<String> listAllCategory();
+
     List<Sheet> findAll(@Param("item") Sheet sheet);
 
     Integer insert(@Param("item") Sheet sheet);

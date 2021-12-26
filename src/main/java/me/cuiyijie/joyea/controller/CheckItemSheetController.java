@@ -36,6 +36,26 @@ public class CheckItemSheetController {
     @Autowired
     private SheetService sheetService;
 
+    @ApiOperation(value = "获取所有的表格分类", notes = "获取所有的表格分类")
+    @RequestMapping(value = "listAllCategory", method = RequestMethod.POST)
+    public TransBaseResponse listAllCategory(@RequestBody TransSheetRequest request) {
+        TransBasePageResponse transBasePageResponse = new TransBasePageResponse();
+        try {
+
+            List<String> categories = sheetService.listAllCategory();
+            transBasePageResponse.setList(categories);
+            transBasePageResponse.setCode("0");
+
+        } catch (Exception exception) {
+            logger.error("列出表格失败：", exception);
+            transBasePageResponse.setMsg("列出表格失败：" + exception.getMessage());
+            transBasePageResponse.setCode("-1");
+            return transBasePageResponse;
+        }
+        return transBasePageResponse;
+    }
+
+
     @ApiOperation(value = "获取所有的表格", notes = "获取所有的表格")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransSheetRequest request) {
@@ -54,6 +74,101 @@ public class CheckItemSheetController {
         }
         return transBasePageResponse;
     }
+
+
+    @ApiOperation(value = "新增表格", notes = "新增表格")
+    @RequestMapping(value = "insert", method = RequestMethod.POST)
+    public TransBaseResponse insert(@RequestBody TransSheetRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+
+        List<String> paramsCheck = Lists.newArrayList(
+                "name:表格名称（name）",
+                "category:表格分类（category）"
+                );
+        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setMsg(errorMsg);
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+
+        try {
+
+            sheetService.insert(request);
+            transBaseResponse.setCode("0");
+
+        } catch (Exception exception) {
+            logger.error("新增表格失败：", exception);
+            transBaseResponse.setMsg("新增表格失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "更新表格", notes = "更新表格")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public TransBaseResponse update(@RequestBody TransSheetRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+
+        List<String> paramsCheck = Lists.newArrayList(
+                "id:表格ID（id）",
+                "name:表格名称（name）",
+                "category:表格分类（category）"
+        );
+        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setMsg(errorMsg);
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+
+        try {
+
+            sheetService.update(request);
+            transBaseResponse.setCode("0");
+
+        } catch (Exception exception) {
+            logger.error("新增表格失败：", exception);
+            transBaseResponse.setMsg("新增表格失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "删除表格", notes = "删除表格")
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public TransBaseResponse delete(@RequestBody TransSheetRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+
+        List<String> paramsCheck = Lists.newArrayList(
+                "id:表格ID（id）"
+        );
+        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
+        if (errorMsg != null) {
+            logger.error("参数检查错误：" + errorMsg);
+            transBaseResponse.setMsg(errorMsg);
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+
+        try {
+
+            sheetService.delete(request);
+            transBaseResponse.setCode("0");
+
+        } catch (Exception exception) {
+            logger.error("新增表格失败：", exception);
+            transBaseResponse.setMsg("新增表格失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+            return transBaseResponse;
+        }
+        return transBaseResponse;
+    }
+
 
     @ApiOperation(value = "获取表格所有表头", notes = "获取表格所有表头")
     @RequestMapping(value = "listAllColumn", method = RequestMethod.POST)

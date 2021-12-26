@@ -50,6 +50,10 @@ public class SheetService {
         return sheetDao.delete(sheet);
     }
 
+    public List<String> listAllCategory() {
+        return sheetDao.listAllCategory();
+    }
+
     public List<SheetColumn> listAllColumns(Integer sheetId) {
         SheetColumn sheetColumn = new SheetColumn();
         sheetColumn.setSheetId(sheetId);

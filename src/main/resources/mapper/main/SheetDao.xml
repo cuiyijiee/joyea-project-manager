@@ -24,6 +24,12 @@
         </if>
     </select>
 
+    <select id="listAllCategory" resultType="java.lang.String">
+        SELECT category
+        FROM t_sheet
+        GROUP BY category
+    </select>
+
     <update id="update">
         UPDATE t_sheet
         SET name = #{item.name}

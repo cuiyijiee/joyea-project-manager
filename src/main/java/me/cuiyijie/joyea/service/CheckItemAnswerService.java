@@ -52,9 +52,9 @@ public class CheckItemAnswerService {
             SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyVideoId());
             answerVo.setFirstCheckVerifyVideo(sysFileUpload);
         }
-        if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyVideoId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyVideoId());
-            answerVo.setFirstCheckVerifyVideo(sysFileUpload);
+        if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyFileId())) {
+            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyFileId());
+            answerVo.setFirstCheckVerifyFile(sysFileUpload);
         }
         if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyImageId())) {
             SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyImageId());
@@ -64,9 +64,9 @@ public class CheckItemAnswerService {
             SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyVideoId());
             answerVo.setSecondCheckVerifyVideo(sysFileUpload);
         }
-        if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyVideoId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyVideoId());
-            answerVo.setSecondCheckVerifyVideo(sysFileUpload);
+        if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyFileId())) {
+            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyFileId());
+            answerVo.setSecondCheckVerifyFile(sysFileUpload);
         }
         if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyImageId())) {
             SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyImageId());
@@ -76,9 +76,9 @@ public class CheckItemAnswerService {
             SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyVideoId());
             answerVo.setThirdCheckVerifyVideo(sysFileUpload);
         }
-        if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyVideoId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyVideoId());
-            answerVo.setThirdCheckVerifyVideo(sysFileUpload);
+        if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyFileId())) {
+            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyFileId());
+            answerVo.setThirdCheckVerifyFile(sysFileUpload);
         }
         return answerVo;
     }
