@@ -63,6 +63,9 @@ public class SheetService {
 
     @Transactional
     public void updateAllColumns(Integer sheetId, List<SheetColumn> sheetColumns) {
+        //先删除之前所有的列
+        sheetColumnDao.deleteSheetColumn(sheetId);
+        //逐个新增
         for (int index = 0; index < sheetColumns.size(); index++) {
             SheetColumn sheetColumn = sheetColumns.get(index);
             sheetColumn.setSheetId(sheetId);
@@ -77,8 +80,6 @@ public class SheetService {
             if (StringUtils.hasLength(errorMsg)) {
                 throw new RuntimeException("参数检查错误：" + errorMsg);
             }
-
-            sheetColumnDao.deleteSheetColumn(sheetId);
             sheetColumnDao.insert(sheetColumn);
 
 //            SheetColumn existSheetColumn = sheetColumnDao.find(sheetColumn);

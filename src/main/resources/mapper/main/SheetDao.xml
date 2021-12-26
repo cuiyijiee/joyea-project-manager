@@ -5,9 +5,9 @@
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Sheet">
 
         <id property="id" column="id"/>
-        <id property="name" column="stage_rel_id"/>
-        <id property="category" column="sheet_id"/>
-        <id property="remark" column="column_id"/>
+        <id property="name" column="name"/>
+        <id property="category" column="category"/>
+        <id property="remark" column="remark"/>
 
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
