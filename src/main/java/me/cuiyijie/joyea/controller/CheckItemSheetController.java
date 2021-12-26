@@ -47,8 +47,8 @@ public class CheckItemSheetController {
             transBasePageResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("列出表格失败：", exception);
-            transBasePageResponse.setMsg("列出表格失败：" + exception.getMessage());
+            logger.error("获取所有的表格分类失败：", exception);
+            transBasePageResponse.setMsg("获取所有的表格分类失败：" + exception.getMessage());
             transBasePageResponse.setCode("-1");
             return transBasePageResponse;
         }
@@ -131,8 +131,8 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("新增表格失败：", exception);
-            transBaseResponse.setMsg("新增表格失败：" + exception.getMessage());
+            logger.error("更新表格失败：", exception);
+            transBaseResponse.setMsg("更新表格失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
         }
@@ -161,8 +161,8 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("新增表格失败：", exception);
-            transBaseResponse.setMsg("新增表格失败：" + exception.getMessage());
+            logger.error("删除表格失败：", exception);
+            transBaseResponse.setMsg("删除表格失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
         }
