@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.CheckItemAnswerDao;
-import me.cuiyijie.joyea.dao.main.SysFileUploadDao;
+import me.cuiyijie.joyea.dao.CheckItemAnswerDao;
+import me.cuiyijie.joyea.dao.SysFileUploadDao;
 import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.model.CheckItemAnswer;
 import me.cuiyijie.joyea.model.vo.CheckItemAnswerVo;

@@ -1,8 +1,6 @@
 package me.cuiyijie.joyea.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.models.auth.In;
-import me.cuiyijie.joyea.dao.main.CheckItemTagDao;
+import me.cuiyijie.joyea.dao.CheckItemTagDao;
 import me.cuiyijie.joyea.enums.CheckItemTagType;
 import me.cuiyijie.joyea.model.CheckItemTag;
 import org.springframework.beans.factory.annotation.Autowired;

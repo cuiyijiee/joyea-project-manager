@@ -1,8 +1,8 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.CheckItemDao;
-import me.cuiyijie.joyea.dao.main.SysFileUploadDao;
-import me.cuiyijie.joyea.dao.main.TemplateDao;
+import me.cuiyijie.joyea.dao.CheckItemDao;
+import me.cuiyijie.joyea.dao.SysFileUploadDao;
+import me.cuiyijie.joyea.dao.TemplateDao;
 import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.enums.*;
 import me.cuiyijie.joyea.model.CheckItem;

@@ -1,18 +1,14 @@
 package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
 import me.cuiyijie.joyea.model.Template;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.TemplateService;
 import me.cuiyijie.joyea.model.vo.TemplateVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

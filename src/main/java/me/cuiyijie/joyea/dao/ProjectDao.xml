@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.ProjectDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Project">
+
+        <id property="id" column="id"/>
+        <id property="projectName" column="project_name"/>
+        <id property="projectNumber" column="project_number"/>
+        <id property="projectManager" column="project_manager"/>
+        <id property="projectCommissioner" column="project_commissioner"/>
+        <id property="projectPrincipal" column="project_principal"/>
+        <id property="department" column="department"/>
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
+
+    </resultMap>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_project
+        WHERE 1=1
+        <if test="item.projectName != null and item.projectName != ''">
+            AND project_name LIKE CONCAT('%',CONCAT(#{item.projectName},'%'))
+        </if>
+        <if test="item.projectNumber != null and item.projectNumber != ''">
+            AND project_number LIKE CONCAT('%',CONCAT(#{item.projectNumber},'%'))
+        </if>
+        <if test="item.projectManager != null and item.projectManager != ''">
+            AND project_manager LIKE CONCAT('%',CONCAT(#{item.projectManager},'%'))
+        </if>
+        <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
+            AND project_commissioner LIKE CONCAT('%',CONCAT(#{item.projectCommissioner},'%'))
+        </if>
+        <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
+            AND project_principal LIKE CONCAT('%',CONCAT(#{item.projectPrincipal},'%'))
+        </if>
+        <if test="item.department != null and item.department != ''">
+            AND department LIKE CONCAT('%',CONCAT(#{item.department},'%'))
+        </if>
+        ORDER BY created_at DESC
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_project(project_name, project_number, project_manager, project_commissioner,
+                              project_principal, department, created_at)
+        VALUES (#{item.projectName},
+                #{item.projectNumber},
+                #{item.projectManager},
+                #{item.projectCommissioner},
+                #{item.projectPrincipal},
+                #{item.department},
+                NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE t_project
+        <set>
+            <if test="item.projectName != null and item.projectName != ''">
+                project_name = #{item.projectName},
+            </if>
+            <if test="item.projectNumber != null and item.projectNumber != ''">
+                project_number = #{item.projectNumber},
+            </if>
+            <if test="item.projectManager != null and item.projectManager != ''">
+                project_manager = #{item.projectManager},
+            </if>
+            <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
+                project_commissioner = #{item.projectCommissioner},
+            </if>
+            <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
+                project_principal = #{item.projectPrincipal},
+            </if>
+            <if test="item.department != null and item.department != ''">
+                department = #{item.department},
+            </if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{item.id}
+    </update>
+
+</mapper>

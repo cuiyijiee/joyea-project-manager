@@ -1,20 +1,18 @@
 package me.cuiyijie.joyea.controller;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.Project;
-import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
-import me.cuiyijie.joyea.pojo.TransProductRequest;
-import me.cuiyijie.joyea.pojo.TransProjectRequest;
+import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProjectService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,12 +36,9 @@ public class ProjectController {
         TransBasePageResponse response = new TransBasePageResponse();
         Project selection = new Project();
         selection.setProjectNumber(request.getProjectNumber());
-        Page<Project> resultList = projectService.list(selection, request.getPageNumber(), request.getPageSize());
-        response.setList(resultList.getResult());
-        response.setPageNum(resultList.getPageNum());
-        response.setPageSize(resultList.getPageSize());
-        response.setTotal(resultList.getTotal());
-        return response;
+        PageHelper.startPage(request.getPageNumber(), request.getPageSize());
+        List<Project> list = projectService.list(selection);
+        return new TransBasePageResponse(new PageInfo<Project>(list));
     }
 
 

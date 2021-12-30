@@ -5,34 +5,34 @@ import lombok.Data;
 @Data
 public class TransProjectRequest {
 
-    private Integer pageNum = 1;
     private Integer pageSize = 10;
+    private Integer pageNumber = 1;
 
-    //项目编号
+    private Integer id;
+
+    private String projectName;
     private String projectNumber;
-    /**
-     * 生产单号
-     */
-    private String manufactureNumber;
 
     /**
-     * 产品编号
+     * 项目经理
      */
-    private String materialNumber;
+    private String projectManager;
 
     /**
-     * 主任务开始时间
+     * 项目专员
      */
-    private String taskStartTime;
+    private String projectCommissioner;
 
     /**
-     * 主任务结束时间
+     * 项目负责人
      */
-    private String taskEndTime;
+    private String projectPrincipal;
 
     /**
-     * 任务类型
+     * 项目所属部门
      */
-    private String taskCategory;
+    private String department;
+
+
 
 }

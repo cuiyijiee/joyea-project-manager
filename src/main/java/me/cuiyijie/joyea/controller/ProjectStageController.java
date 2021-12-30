@@ -11,15 +11,14 @@ import me.cuiyijie.joyea.model.ProjectStage;
 import me.cuiyijie.joyea.model.ProjectStageOperation;
 import me.cuiyijie.joyea.model.StageProduct;
 import me.cuiyijie.joyea.model.vo.ProjectStageVo;
-import me.cuiyijie.joyea.pojo.ProjectStageOperationRequest;
-import me.cuiyijie.joyea.pojo.StageProductRequest;
-import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.TransProjectStageOperationRequest;
+import me.cuiyijie.joyea.pojo.TransStageProductRequest;
+import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.ProjectStageService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -168,7 +167,7 @@ public class ProjectStageController {
 
     @ApiOperation(value = "列出阶段产品所有工序", notes = "列出阶段产品所有工序，传入stageProductRelId")
     @RequestMapping(value = "listProductOperation", method = RequestMethod.POST)
-    public TransBaseResponse listOperation(@RequestBody StageProductRequest stageProductRequest) {
+    public TransBaseResponse listOperation(@RequestBody TransStageProductRequest stageProductRequest) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("stageProductRelId:工序索引id（stageProductRelId）");
         String errorMsg = CheckParamsUtil.checkAll(stageProductRequest, paramsCheck, null, null);
@@ -187,7 +186,7 @@ public class ProjectStageController {
 
     @ApiOperation(value = "列出阶段产品工序下点检项", notes = "列出阶段产品工序下点检项，传入id")
     @RequestMapping(value = "listCheckItem", method = RequestMethod.POST)
-    public TransBaseResponse listCheckItems(@RequestBody ProjectStageOperationRequest projectStageOperation) {
+    public TransBaseResponse listCheckItems(@RequestBody TransProjectStageOperationRequest projectStageOperation) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("id:工序索引id（id）");
         String errorMsg = CheckParamsUtil.checkAll(projectStageOperation, paramsCheck, null, null);

@@ -1,12 +1,11 @@
 package me.cuiyijie.joyea.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import io.swagger.models.auth.In;
-import me.cuiyijie.joyea.dao.main.ProductDao;
+import me.cuiyijie.joyea.dao.ProductDao;
 import me.cuiyijie.joyea.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author: cuiyijie
@@ -23,10 +22,8 @@ public class ProductService {
         return productDao.insert(product);
     }
 
-    public Page<Product> list(Product product, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        Page<Product> result = (Page<Product>) productDao.list(product);
-        return result;
+    public List<Product> list(Product product) {
+        return productDao.list(product);
     }
 
     public Integer delete(Integer id){

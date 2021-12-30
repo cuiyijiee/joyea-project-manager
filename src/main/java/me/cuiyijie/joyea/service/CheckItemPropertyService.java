@@ -1,11 +1,10 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.CheckItemPropertyDao;
+import me.cuiyijie.joyea.dao.CheckItemPropertyDao;
 import me.cuiyijie.joyea.enums.CheckCategoryType;
 import me.cuiyijie.joyea.enums.CheckItemPropertyType;
 import me.cuiyijie.joyea.enums.CheckModuleType;
 import me.cuiyijie.joyea.enums.CheckStageType;
-import me.cuiyijie.joyea.enums.base.BaseEnum;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemProperty;
 import org.slf4j.Logger;

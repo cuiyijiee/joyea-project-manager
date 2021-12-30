@@ -4,7 +4,7 @@ package me.cuiyijie.joyea.controller;
 import io.swagger.annotations.Api;
 import me.cuiyijie.joyea.enums.*;
 import me.cuiyijie.joyea.enums.base.BaseEnum;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

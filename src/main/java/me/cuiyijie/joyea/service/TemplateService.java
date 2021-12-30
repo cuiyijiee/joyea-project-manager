@@ -1,11 +1,9 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.TemplateDao;
+import me.cuiyijie.joyea.dao.TemplateDao;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
 import me.cuiyijie.joyea.model.Template;
 import me.cuiyijie.joyea.model.vo.TemplateVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

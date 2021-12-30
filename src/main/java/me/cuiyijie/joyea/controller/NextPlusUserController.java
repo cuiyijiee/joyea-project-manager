@@ -1,30 +1,33 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.config.Constants;
-import me.cuiyijie.joyea.domain.Department;
+import me.cuiyijie.joyea.model.Department;
 import me.cuiyijie.joyea.model.User;
-import me.cuiyijie.joyea.pojo.*;
+import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
+import me.cuiyijie.joyea.pojo.NextPlusTicketResp;
+import me.cuiyijie.joyea.pojo.NextPlusUserProfileResp;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransJoyeaPersonRequest;
 import me.cuiyijie.joyea.pojo.request.TransNextPlusUserRequest;
-import me.cuiyijie.joyea.service.INextPlusService;
-import me.cuiyijie.joyea.service.IUserService;
+import me.cuiyijie.joyea.service.NextPlusService;
 import me.cuiyijie.joyea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("nextplus")
@@ -32,10 +35,10 @@ import java.util.stream.Collectors;
 public class NextPlusUserController {
 
     @Autowired
-    IUserService iUserService;
+    UserService iUserService;
 
     @Autowired
-    private INextPlusService nextPlusService;
+    private NextPlusService nextPlusService;
 
     @Autowired
     private UserService userService;

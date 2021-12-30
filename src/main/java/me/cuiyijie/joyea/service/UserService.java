@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.UserDao;
+import me.cuiyijie.joyea.dao.UserDao;
 import me.cuiyijie.joyea.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

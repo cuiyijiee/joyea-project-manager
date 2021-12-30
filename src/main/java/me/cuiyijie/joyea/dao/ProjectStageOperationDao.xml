@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.ProjectStageOperationDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.ProjectStageOperation">
+
+        <id property="id" column="id"/>
+        <id property="stageRelId" column="stage_rel_id"/>
+        <id property="parentId" column="parent_id"/>
+        <id property="parentName" column="parent_name"/>
+        <id property="operationId" column="operation_id"/>
+        <id property="operationName" column="operation_name"/>
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO t_project_stage_operation(stage_rel_id, parent_id, parent_name, operation_id, operation_name,created_at)
+        VALUES (#{item.stageRelId},
+                #{item.parentId},
+                #{item.parentName},
+                #{item.operationId},
+                #{item.operationName},
+                NOW())
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM t_project_stage_operation
+        WHERE id = #{item.id}
+    </delete>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_project_stage_operation
+        WHERE stage_rel_id = #{item.stageProductRelId}
+    </select>
+
+    <insert id="insertCheckItemRel">
+        INSERT INTO t_project_stage_operation_checkitem_rel (pid, cid)
+        VALUES (#{operationId}, #{checkItemId})
+    </insert>
+
+    <delete id="deleteRelByOperationId">
+        DELETE
+        FROM t_project_stage_operation_checkitem_rel
+        WHERE pid = #{operationId}
+    </delete>
+
+    <select id="listCheckItems" resultMap="me.cuiyijie.joyea.dao.CheckItemDao.BaseResultMap">
+        SELECT c.*
+        FROM t_project_stage_operation_checkitem_rel tcl
+                 LEFT JOIN t_checkitem c ON tcl.cid = c.id
+        WHERE tcl.pid = #{operationRelId}
+    </select>
+
+</mapper>
