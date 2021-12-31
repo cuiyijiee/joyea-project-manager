@@ -12,6 +12,7 @@ import me.cuiyijie.joyea.pojo.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.TransProductRequest;
 import me.cuiyijie.joyea.pojo.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProjectService;
+import me.cuiyijie.joyea.service.ProjectStageService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,19 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private ProjectStageService projectStageService;
+
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProjectRequest request) {
         TransBasePageResponse response = new TransBasePageResponse();
         Project selection = new Project();
         selection.setProjectNumber(request.getProjectNumber());
         Page<Project> resultList = projectService.list(selection, request.getPageNumber(), request.getPageSize());
+        for (int index = 0; index < resultList.size(); index++) {
+            Project project = resultList.get(index);
+            project.setStageCount(projectStageService.countProjectStage(project.getId()));
+        }
         response.setList(resultList.getResult());
         response.setPageNum(resultList.getPageNum());
         response.setPageSize(resultList.getPageSize());

@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.dao.main.CheckItemAnswerDao;
 import me.cuiyijie.joyea.dao.main.SysFileUploadDao;
+import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.model.CheckItemAnswer;
 import me.cuiyijie.joyea.model.vo.CheckItemAnswerVo;
@@ -87,4 +88,21 @@ public class CheckItemAnswerService {
         return checkItemAnswerDao.selectById(checkItemAnswer.getId());
     }
 
+    public void updateStatus(Integer stageRelId, CheckItem checkItem) {
+        CheckItemAnswer answer1 = new CheckItemAnswer();
+        answer1.setStageRelId(stageRelId);
+        answer1.setCheckItemId(checkItem.getId());
+        CheckItemAnswer answer = checkItemAnswerDao.select(answer1);
+
+        boolean isChecked = answer != null && answer.getFirstCheckVerifyResult() != null &&
+                answer.getSecondCheckVerifyResult() != null &&
+                answer.getThirdCheckVerifyResult() != null;
+
+        checkItem.setChecked(isChecked);
+        if(isChecked){
+            checkItem.setIsGood(answer.getFirstCheckVerifyResult() && answer.getSecondCheckVerifyResult() &&  answer.getThirdCheckVerifyResult());
+        }else{
+            checkItem.setIsGood(false);
+        }
+    }
 }
