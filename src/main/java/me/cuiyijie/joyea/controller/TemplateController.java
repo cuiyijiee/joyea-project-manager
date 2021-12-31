@@ -1,11 +1,17 @@
 package me.cuiyijie.joyea.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
+import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.Template;
+import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransOperationRequest;
+import me.cuiyijie.joyea.pojo.request.TransTemplateRequest;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.TemplateService;
 import me.cuiyijie.joyea.model.vo.TemplateVo;
@@ -14,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -50,17 +58,20 @@ public class TemplateController {
 //            @ApiImplicitParam(name = "id", value = "当前文件夹ID", required = true, dataType = "Integer"),
 //    })
     @RequestMapping(value = "listChild", method = RequestMethod.POST)
-    public TransBaseResponse list(@RequestBody Template template) {
-        TransBaseResponse transBaseResponse = new TransBaseResponse();
+    public TransBaseResponse list(@RequestBody TransTemplateRequest request) {
+        TransBasePageResponse transBaseResponse = new TransBasePageResponse();
         try {
-            Template template1 = templateService.listById(template.getId());
+            Template template1 = templateService.listById(request.getId());
             if (template1 == null) {
                 throw new RuntimeException("该节点不存在！");
             }
+            PageHelper.startPage(request.getPageNum(),request.getPageSize());
             if (template1.getLevelType() == TemplateLevelType.DIR) {
-                transBaseResponse.setList(templateService.listChild(template.getId()));
+                List<Template> templates = templateService.listChild(request.getId());
+                transBaseResponse = new TransBasePageResponse(new PageInfo(templates));
             } else {
-                transBaseResponse.setList(checkItemService.listChild(template.getId()));
+                List<CheckItem> checkItems = checkItemService.listChild(request.getId());
+                transBaseResponse = new TransBasePageResponse(new PageInfo(checkItems));
             }
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
@@ -73,10 +84,16 @@ public class TemplateController {
 
     @ApiOperation(value = "获取全部的工序", notes = "获取全部的工序")
     @RequestMapping(value = "listAllOperation", method = RequestMethod.POST)
-    public TransBaseResponse listAllOperation() {
+    public TransBaseResponse listAllOperation(@RequestBody TransOperationRequest request) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         try {
-            transBaseResponse.setList(templateService.listAllOperation());
+
+            if(request.getPageNum() != null && request.getPageNum() != -1) {
+                PageHelper.startPage(request.getPageNum(),request.getPageSize());
+                List<TemplateVo> operations = templateService.listAllOperation();
+                transBaseResponse = new TransBasePageResponse(new PageInfo<TemplateVo>(operations));
+            }
+            //transBaseResponse.setList(templateService.listAllOperation());
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
             log.error("获取全部根节点：", exception);

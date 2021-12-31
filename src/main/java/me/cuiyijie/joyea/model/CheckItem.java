@@ -59,6 +59,8 @@ public class CheckItem {
 
     private String fileExplanation;
     private SysFileUpload fileExplanationFile;
+    private Boolean checked;
+    private Boolean isGood;
 
 //    public String getCheckModuleTypeValue(){
 //        return checkModuleType == null ? "" :checkModuleType.getValue();

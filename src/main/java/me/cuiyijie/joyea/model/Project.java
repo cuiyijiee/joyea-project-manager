@@ -33,6 +33,8 @@ public class Project {
      */
     private String department;
 
+    private Integer stageCount;
+
     /**
      * 创建时间
      */

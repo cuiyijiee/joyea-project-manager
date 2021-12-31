@@ -12,6 +12,7 @@ import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProjectService;
+import me.cuiyijie.joyea.service.ProjectStageService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,21 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private ProjectStageService projectStageService;
+
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProjectRequest request) {
         TransBasePageResponse response = new TransBasePageResponse();
         Project selection = new Project();
         selection.setProjectNumber(request.getProjectNumber());
         PageHelper.startPage(request.getPageNumber(), request.getPageSize());
-        List<Project> list = projectService.list(selection);
-        return new TransBasePageResponse(new PageInfo<Project>(list));
+        List<Project> resultList = projectService.list(selection);
+        for (int index = 0; index < resultList.size(); index++) {
+            Project project = resultList.get(index);
+            project.setStageCount(projectStageService.countProjectStage(project.getId()));
+        }
+        return new TransBasePageResponse(new PageInfo<Project>(resultList));
     }
 
 

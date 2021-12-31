@@ -71,6 +71,12 @@
         WHERE stage_id = #{stageId}
     </delete>
 
+    <select id="countProjectStage" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_project_stage
+        WHERE project_id = #{projectId}
+    </select>
+
     <select id="list" resultMap="BaseResultMap">
         SELECT *
         FROM t_project_stage
@@ -86,7 +92,7 @@
 
     <select id="listProductByStageId" resultMap="me.cuiyijie.joyea.dao.ProjectStageDao.ProductVoResultMap">
         SELECT p.*,
-               pspr.id stage_product_rel_id,
+               pspr.id         stage_product_rel_id,
                pspr.is_project is_project
         FROM t_project_stage_product_rel pspr
                  LEFT JOIN t_product p on p.id = pspr.product_id

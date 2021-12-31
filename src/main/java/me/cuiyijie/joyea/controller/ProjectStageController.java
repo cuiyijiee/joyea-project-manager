@@ -15,6 +15,7 @@ import me.cuiyijie.joyea.pojo.TransProjectStageOperationRequest;
 import me.cuiyijie.joyea.pojo.TransStageProductRequest;
 import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
+import me.cuiyijie.joyea.service.CheckItemAnswerService;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.ProjectStageService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
@@ -42,6 +43,9 @@ public class ProjectStageController {
 
     @Autowired
     private CheckItemService checkItemService;
+
+    @Autowired
+    private CheckItemAnswerService checkItemAnswerService;
 
     @ApiOperation(value = "新增点检阶段", notes = "新增点检阶段")
     @RequestMapping(value = "insert", method = RequestMethod.POST)
@@ -200,6 +204,7 @@ public class ProjectStageController {
             for (int index = 0; index < checkItems.size(); index++) {
                 CheckItem checkItem = checkItems.get(index);
                 checkItemService.addCheckItemAttributes(checkItem);
+                checkItemAnswerService.updateStatus(projectStageOperation.getStageRelId(),checkItem);
             }
             transBaseResponse = new TransBasePageResponse(new PageInfo<>(checkItems));
         } catch (Exception exception) {

@@ -86,6 +86,10 @@ public class ProjectStageService {
         return pageInfo;
     }
 
+    public Integer countProjectStage(Integer projectId){
+        return projectStageDao.countProjectStage(projectId);
+    }
+
     @Transactional
     public void delete(ProjectStage projectStage) {
         projectStageDao.deleteStageProductByStageId(projectStage.getId());

@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.service;
 
 import me.cuiyijie.joyea.dao.CheckItemAnswerDao;
 import me.cuiyijie.joyea.dao.SysFileUploadDao;
+import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.model.CheckItemAnswer;
 import me.cuiyijie.joyea.model.vo.CheckItemAnswerVo;
@@ -42,43 +43,45 @@ public class CheckItemAnswerService {
         CheckItemAnswer answer = checkItemAnswerDao.select(checkItemAnswer);
 
         CheckItemAnswerVo answerVo = new CheckItemAnswerVo();
-        BeanUtils.copyProperties(answer, answerVo);
+        if(answer != null ) {
+            BeanUtils.copyProperties(answer, answerVo);
 
-        if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyImageId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyImageId());
-            answerVo.setFirstCheckVerifyImage(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyVideoId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyVideoId());
-            answerVo.setFirstCheckVerifyVideo(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyFileId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyFileId());
-            answerVo.setFirstCheckVerifyFile(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyImageId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyImageId());
-            answerVo.setSecondCheckVerifyImage(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyVideoId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyVideoId());
-            answerVo.setSecondCheckVerifyVideo(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyFileId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyFileId());
-            answerVo.setSecondCheckVerifyFile(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyImageId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyImageId());
-            answerVo.setThirdCheckVerifyImage(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyVideoId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyVideoId());
-            answerVo.setThirdCheckVerifyVideo(sysFileUpload);
-        }
-        if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyFileId())) {
-            SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyFileId());
-            answerVo.setThirdCheckVerifyFile(sysFileUpload);
+            if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyImageId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyImageId());
+                answerVo.setFirstCheckVerifyImage(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyVideoId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyVideoId());
+                answerVo.setFirstCheckVerifyVideo(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getFirstCheckVerifyFileId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getFirstCheckVerifyFileId());
+                answerVo.setFirstCheckVerifyFile(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyImageId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyImageId());
+                answerVo.setSecondCheckVerifyImage(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyVideoId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyVideoId());
+                answerVo.setSecondCheckVerifyVideo(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getSecondCheckVerifyFileId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getSecondCheckVerifyFileId());
+                answerVo.setSecondCheckVerifyFile(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyImageId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyImageId());
+                answerVo.setThirdCheckVerifyImage(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyVideoId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyVideoId());
+                answerVo.setThirdCheckVerifyVideo(sysFileUpload);
+            }
+            if (StringUtils.isNotBlank(answerVo.getThirdCheckVerifyFileId())) {
+                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(answerVo.getThirdCheckVerifyFileId());
+                answerVo.setThirdCheckVerifyFile(sysFileUpload);
+            }
         }
         return answerVo;
     }
@@ -87,4 +90,21 @@ public class CheckItemAnswerService {
         return checkItemAnswerDao.selectById(checkItemAnswer.getId());
     }
 
+    public void updateStatus(Integer stageRelId, CheckItem checkItem) {
+        CheckItemAnswer answer1 = new CheckItemAnswer();
+        answer1.setStageRelId(stageRelId);
+        answer1.setCheckItemId(checkItem.getId());
+        CheckItemAnswer answer = checkItemAnswerDao.select(answer1);
+
+        boolean isChecked = answer != null && answer.getFirstCheckVerifyResult() != null &&
+                answer.getSecondCheckVerifyResult() != null &&
+                answer.getThirdCheckVerifyResult() != null;
+
+        checkItem.setChecked(isChecked);
+        if(isChecked){
+            checkItem.setIsGood(answer.getFirstCheckVerifyResult() && answer.getSecondCheckVerifyResult() &&  answer.getThirdCheckVerifyResult());
+        }else{
+            checkItem.setIsGood(false);
+        }
+    }
 }
