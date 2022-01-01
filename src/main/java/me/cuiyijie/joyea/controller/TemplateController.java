@@ -70,13 +70,23 @@ public class TemplateController {
             if (template1 == null) {
                 throw new RuntimeException("该节点不存在！");
             }
-            PageHelper.startPage(request.getPageNum(),request.getPageSize());
-            if (template1.getLevelType() == TemplateLevelType.DIR) {
-                List<Template> templates = templateService.listChild(request.getId());
-                transBaseResponse = new TransBasePageResponse(new PageInfo(templates));
-            } else {
-                List<CheckItem> checkItems = checkItemService.listChild(request.getId());
-                transBaseResponse = new TransBasePageResponse(new PageInfo(checkItems));
+            if(request.getPageNum() != null) {
+                PageHelper.startPage(request.getPageNum(),request.getPageSize());
+                if (template1.getLevelType() == TemplateLevelType.DIR) {
+                    List<Template> templates = templateService.listChild(request.getId());
+                    transBaseResponse = new TransBasePageResponse(new PageInfo(templates));
+                } else {
+                    List<CheckItem> checkItems = checkItemService.listChild(request.getId());
+                    transBaseResponse = new TransBasePageResponse(new PageInfo(checkItems));
+                }
+            }else{
+                if (template1.getLevelType() == TemplateLevelType.DIR) {
+                    List<Template> templates = templateService.listChild(request.getId());
+                    transBaseResponse.setList(templates);
+                } else {
+                    List<CheckItem> checkItems = checkItemService.listChild(request.getId());
+                    transBaseResponse.setList(checkItems);
+                }
             }
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
