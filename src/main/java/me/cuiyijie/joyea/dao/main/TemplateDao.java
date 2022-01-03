@@ -16,7 +16,7 @@ public interface TemplateDao {
 
     List<Template> listChild(@Param("id") Integer id);
 
-    List<TemplateVo> listAllOperation();
+    List<TemplateVo> listAllOperation(@Param("item") Template template);
 
     Integer insert(@Param("item") Template template);
 

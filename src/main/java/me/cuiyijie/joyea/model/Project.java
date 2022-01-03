@@ -13,6 +13,8 @@ public class Project {
     private String projectName;
     private String projectNumber;
 
+    private String productionNumber;
+
     /**
      * 项目经理
      */

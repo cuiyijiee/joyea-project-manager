@@ -42,6 +42,11 @@ public class ProjectController {
         TransBasePageResponse response = new TransBasePageResponse();
         Project selection = new Project();
         selection.setProjectNumber(request.getProjectNumber());
+        selection.setProjectName(request.getProjectName());
+        selection.setProjectManager(request.getProjectManager());
+        selection.setProjectPrincipal(request.getProjectPrincipal());
+        selection.setDepartment(request.getDepartment());
+        selection.setProductionNumber(request.getProductionNumber());
         Page<Project> resultList = projectService.list(selection, request.getPageNumber(), request.getPageSize());
         for (int index = 0; index < resultList.size(); index++) {
             Project project = resultList.get(index);

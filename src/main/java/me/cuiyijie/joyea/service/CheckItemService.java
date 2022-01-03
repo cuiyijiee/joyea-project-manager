@@ -35,6 +35,10 @@ public class CheckItemService {
     @Autowired
     private SysFileUploadDao sysFileUploadDao;
 
+    public Integer countChild(Integer id) {
+        return checkItemDao.countChild(id);
+    }
+
     public List<CheckItem> listChild(Integer id) {
         List<CheckItem> checkItems = checkItemDao.listChild(id);
         for (int index = 0; index < checkItems.size(); index++) {

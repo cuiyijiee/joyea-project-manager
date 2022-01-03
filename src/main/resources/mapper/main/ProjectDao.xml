@@ -16,28 +16,34 @@
     </resultMap>
 
     <select id="list" resultMap="BaseResultMap">
-        SELECT *
-        FROM t_project
+        SELECT project.*
+        FROM t_project project
+        <if test="item.productionNumber != null and item.productionNumber != ''">
+            LEFT JOIN t_product product on project.id = product.project_id
+        </if>
         WHERE 1=1
         <if test="item.projectName != null and item.projectName != ''">
-            AND project_name LIKE CONCAT('%',CONCAT(#{item.projectName},'%'))
+            AND project.project_name LIKE CONCAT('%',CONCAT(#{item.projectName},'%'))
         </if>
         <if test="item.projectNumber != null and item.projectNumber != ''">
-            AND project_number LIKE CONCAT('%',CONCAT(#{item.projectNumber},'%'))
+            AND project.project_number LIKE CONCAT('%',CONCAT(#{item.projectNumber},'%'))
         </if>
         <if test="item.projectManager != null and item.projectManager != ''">
-            AND project_manager LIKE CONCAT('%',CONCAT(#{item.projectManager},'%'))
+            AND project.project_manager LIKE CONCAT('%',CONCAT(#{item.projectManager},'%'))
         </if>
         <if test="item.projectCommissioner != null and item.projectCommissioner != ''">
-            AND project_commissioner LIKE CONCAT('%',CONCAT(#{item.projectCommissioner},'%'))
+            AND project.project_commissioner LIKE CONCAT('%',CONCAT(#{item.projectCommissioner},'%'))
         </if>
         <if test="item.projectPrincipal != null and item.projectPrincipal != ''">
-            AND project_principal LIKE CONCAT('%',CONCAT(#{item.projectPrincipal},'%'))
+            AND project.project_principal LIKE CONCAT('%',CONCAT(#{item.projectPrincipal},'%'))
         </if>
         <if test="item.department != null and item.department != ''">
-            AND department LIKE CONCAT('%',CONCAT(#{item.department},'%'))
+            AND project.department LIKE CONCAT('%',CONCAT(#{item.department},'%'))
         </if>
-        ORDER BY created_at DESC
+        <if test="item.productionNumber != null and item.productionNumber != ''">
+            AND product.production_number LIKE CONCAT('%',CONCAT(#{item.productionNumber},'%'))
+        </if>
+        ORDER BY project.created_at DESC
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">

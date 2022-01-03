@@ -226,6 +226,15 @@ public class ProjectStageController {
             for (int j = 0; j < projectStage.getProducts().size(); j++) {
                 StageProduct stageProduct = projectStage.getProducts().get(j);
                 List<ProjectStageOperation> projectStageOperations = projectStageService.listOperation(stageProduct);
+                for (int k = 0; k < projectStageOperations.size(); k++) {
+                    ProjectStageOperation projectStageOperation = projectStageOperations.get(k);
+                    if(projectStageOperation.getOperationId() != null) {
+                        Integer checkItemCount = checkItemService.countChild(projectStageOperation.getOperationId());
+                        projectStageOperation.setCheckItemCount(checkItemCount);
+                    }else{
+                        projectStageOperation.setCheckItemCount(0);
+                    }
+                }
                 stageProduct.setProjectStageOperations(projectStageOperations);
             }
         }

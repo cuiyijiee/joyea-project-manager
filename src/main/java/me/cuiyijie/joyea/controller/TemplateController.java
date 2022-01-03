@@ -105,7 +105,9 @@ public class TemplateController {
 
             if(request.getPageNum() != null && request.getPageNum() != -1) {
                 PageHelper.startPage(request.getPageNum(),request.getPageSize());
-                List<TemplateVo> operations = templateService.listAllOperation();
+                Template template = new Template();
+                template.setName(request.getOperationName());
+                List<TemplateVo> operations = templateService.listAllOperation(template);
                 transBaseResponse = new TransBasePageResponse(new PageInfo<TemplateVo>(operations));
             }
             //transBaseResponse.setList(templateService.listAllOperation());
@@ -177,16 +179,23 @@ public class TemplateController {
     public TransBaseResponse delete(@RequestBody Template template) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         try {
-            //判断要删除的节点下有没有子节点，如果有子节点不允许删除
-            Integer childCount = templateService.selectChildCount(template.getId());
-            if (childCount > 0) {
-                log.error("删除节点，存在子节点无法删除");
-                transBaseResponse.setCode("-1");
-                transBaseResponse.setMsg("该节点存在子节点，无法删除！");
-                return transBaseResponse;
-            }
-            templateService.deleteRelByCid(template);
-            transBaseResponse.setCode(templateService.delete(template) == 1 ? "0" : "-1");
+            templateService.deleteTemplate(template);
+            transBaseResponse.setCode("0");
+        } catch (Exception exception) {
+            log.error("删除节点：", exception);
+            transBaseResponse.setCode("-1");
+            transBaseResponse.setMsg(exception.toString());
+        }
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "批量删除节点", notes = "批量删除节点")
+    @RequestMapping(value = "batchDelete", method = RequestMethod.POST)
+    public TransBaseResponse batchDelete(@RequestBody TransTemplateRequest request) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        try {
+            templateService.batchDeleteTemplate(request.getIds());
+            transBaseResponse.setCode("0");
         } catch (Exception exception) {
             log.error("删除节点：", exception);
             transBaseResponse.setCode("-1");

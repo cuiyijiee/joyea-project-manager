@@ -202,4 +202,11 @@
         WHERE id = #{item.id}
     </update>
 
+    <select id="countChild" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM t_template_checkitem_rel tcl
+                 LEFT JOIN t_checkitem c ON tcl.cid = c.id
+        WHERE tcl.pid = #{id}
+    </select>
+
 </mapper>

@@ -1,17 +1,18 @@
 package me.cuiyijie.joyea.service;
 
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.main.TemplateDao;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
 import me.cuiyijie.joyea.model.Template;
 import me.cuiyijie.joyea.model.vo.TemplateVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import me.cuiyijie.joyea.pojo.request.TransOperationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class TemplateService {
 
@@ -26,8 +27,8 @@ public class TemplateService {
         return templateDao.listAll(template);
     }
 
-    public List<TemplateVo> listAllOperation() {
-        return templateDao.listAllOperation();
+    public List<TemplateVo> listAllOperation(Template template) {
+        return templateDao.listAllOperation(template);
     }
 
 
@@ -77,7 +78,28 @@ public class TemplateService {
         return templateDao.addTemplateRel(pid, cid);
     }
 
-    public Integer selectChildCount(Integer templateId){
+    public Integer selectChildCount(Integer templateId) {
         return templateDao.selectChildCount(templateId);
+    }
+
+
+    @Transactional
+    public void deleteTemplate(Template template) {
+        //判断要删除的节点下有没有子节点，如果有子节点不允许删除
+        Integer childCount = selectChildCount(template.getId());
+        if (childCount > 0) {
+            throw new RuntimeException("删除节点，存在子节点无法删除");
+        }
+        deleteRelByCid(template);
+        delete(template);
+    }
+
+    @Transactional
+    public void batchDeleteTemplate(List<Integer> ids) {
+        for (int index = 0; index < ids.size(); index++) {
+            Template template = new Template();
+            template.setId(ids.get(index));
+            deleteTemplate(template);
+        }
     }
 }

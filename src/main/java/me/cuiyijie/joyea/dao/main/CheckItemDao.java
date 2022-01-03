@@ -28,4 +28,5 @@ public interface CheckItemDao {
 
     Integer updateState(@Param("item") CheckItem checkItem);
 
+    Integer countChild(@Param("id")Integer id);
 }

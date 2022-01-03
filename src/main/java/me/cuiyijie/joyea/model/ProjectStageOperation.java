@@ -14,6 +14,8 @@ public class ProjectStageOperation {
     private Integer operationId;
     private String operationName;
 
+    private Integer checkItemCount;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
