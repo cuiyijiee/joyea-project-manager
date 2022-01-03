@@ -6,10 +6,8 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import me.cuiyijie.joyea.model.CheckItem;
-import me.cuiyijie.joyea.model.ProjectStage;
-import me.cuiyijie.joyea.model.ProjectStageOperation;
-import me.cuiyijie.joyea.model.StageProduct;
+import me.cuiyijie.joyea.dao.main.CheckItemRecordDao;
+import me.cuiyijie.joyea.model.*;
 import me.cuiyijie.joyea.model.vo.ProjectStageVo;
 import me.cuiyijie.joyea.pojo.ProjectStageOperationRequest;
 import me.cuiyijie.joyea.pojo.StageProductRequest;
@@ -47,6 +45,9 @@ public class ProjectStageController {
 
     @Autowired
     private CheckItemAnswerService checkItemAnswerService;
+
+    @Autowired
+    private CheckItemRecordDao checkItemRecordDao;
 
     @ApiOperation(value = "新增点检阶段", notes = "新增点检阶段")
     @RequestMapping(value = "insert", method = RequestMethod.POST)
@@ -206,6 +207,12 @@ public class ProjectStageController {
                 CheckItem checkItem = checkItems.get(index);
                 checkItemService.addCheckItemAttributes(checkItem);
                 checkItemAnswerService.updateStatus(projectStageOperation.getStageRelId(),checkItem);
+
+                CheckItemRecord checkItemRecord = new CheckItemRecord();
+                checkItemRecord.setStageRelId(projectStageOperation.getStageRelId());
+                checkItemRecord.setCheckItemId(checkItem.getId());
+                List<CheckItemRecord> records = checkItemRecordDao.select(checkItemRecord);
+                checkItem.setRecords(records);
             }
             transBaseResponse = new TransBasePageResponse(new PageInfo<>(checkItems));
         } catch (Exception exception) {

@@ -62,6 +62,7 @@ public class CheckItem {
     private Boolean checked;
     private Boolean isGood;
 
+    private List<CheckItemRecord> records;
 //    public String getCheckModuleTypeValue(){
 //        return checkModuleType == null ? "" :checkModuleType.getValue();
 //    }

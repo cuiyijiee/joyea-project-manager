@@ -11,6 +11,8 @@ public interface UserDao {
 
     List<User> listAll(@Param("item") User user);
 
+    User listById(@Param("id") String id);
+
     Integer insert(@Param("item") User user);
 
     Integer update(@Param("item") User user);
