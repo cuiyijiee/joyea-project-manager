@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.joyea.auth.CurrentUser;
+import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAnswer;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
@@ -154,8 +156,8 @@ public class CheckItemController {
         try {
             checkItemService.updateState(checkItem);
             transBaseResponse.setCode("0");
-        }catch (Exception exception){
-            log.error("更新点检项状态失败：",exception);
+        } catch (Exception exception) {
+            log.error("更新点检项状态失败：", exception);
             transBaseResponse.setMsg(exception.getMessage());
             transBaseResponse.setCode("-1");
         }
@@ -164,7 +166,8 @@ public class CheckItemController {
 
     @ApiOperation(value = "点检项结果录入", notes = "点检项结果录入")
     @RequestMapping(value = "updateResult", method = RequestMethod.POST)
-    public TransBaseResponse updateResult(@RequestBody CheckItemAnswer checkItemAnswer){
+    public TransBaseResponse updateResult(@RequestBody CheckItemAnswer checkItemAnswer,
+                                          @CurrentUser CurrentUserInfo currentUser) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "checkItemId:点检项ID（checkItemId）");
         String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
@@ -176,7 +179,7 @@ public class CheckItemController {
         }
 
         try {
-            checkItemAnswerService.updateResult(checkItemAnswer);
+            checkItemAnswerService.updateResult(checkItemAnswer, currentUser);
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
             logger.error("点检项结果录入失败：", exception);
@@ -189,7 +192,7 @@ public class CheckItemController {
 
     @ApiOperation(value = "点检项结果查询", notes = "点检项结果查询")
     @RequestMapping(value = "selectResult", method = RequestMethod.POST)
-    public TransBaseResponse select(@RequestBody CheckItemAnswer checkItemAnswer){
+    public TransBaseResponse select(@RequestBody CheckItemAnswer checkItemAnswer) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "checkItemId:点检项ID（checkItemId）");
         String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
@@ -203,7 +206,7 @@ public class CheckItemController {
         try {
 
             CheckItemAnswer result = checkItemAnswerService.select(checkItemAnswer);
-            transBaseResponse.setObj(result == null ? new CheckItemAnswer():result);
+            transBaseResponse.setObj(result == null ? new CheckItemAnswer() : result);
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
             logger.error("点检项结果查询失败：", exception);

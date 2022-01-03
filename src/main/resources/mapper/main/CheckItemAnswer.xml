@@ -13,6 +13,7 @@
         <id property="firstCheckVerifyVideoId" column="first_check_verify_video_id"/>
         <id property="firstCheckVerifyFileId" column="first_check_verify_file_id"/>
         <id property="firstCheckRemark" column="first_check_remark"/>
+        <id property="firstCheckOperator" column="first_check_operator"/>
 
         <id property="secondCheckVerifyResult" column="second_check_verify_result"/>
         <id property="secondCheckVerifyTextValue" column="second_check_verify_text_value"/>
@@ -21,6 +22,7 @@
         <id property="secondCheckVerifyVideoId" column="second_check_verify_video_id"/>
         <id property="secondCheckVerifyFileId" column="second_check_verify_file_id"/>
         <id property="secondCheckRemark" column="second_check_remark"/>
+        <id property="secondCheckOperator" column="second_check_operator"/>
 
         <id property="thirdCheckVerifyResult" column="third_check_verify_result"/>
         <id property="thirdCheckVerifyTextValue" column="third_check_verify_text_value"/>
@@ -29,6 +31,7 @@
         <id property="thirdCheckVerifyVideoId" column="third_check_verify_video_id"/>
         <id property="thirdCheckVerifyFileId" column="third_check_verify_file_id"/>
         <id property="thirdCheckRemark" column="third_check_remark"/>
+        <id property="thirdCheckOperator" column="third_check_operator"/>
 
         <id property="createdAt" column="created_at"/>
         <id property="updatedAt" column="updated_at"/>
@@ -39,13 +42,16 @@
                                        first_check_verify_result, first_check_verify_text_value,
                                        first_check_verify_number_value, first_check_verify_image_id,
                                        first_check_verify_video_id, first_check_verify_file_id, first_check_remark,
+                                       first_check_operator,
                                        second_check_verify_result, second_check_verify_text_value,
                                        second_check_verify_number_value, second_check_verify_image_id,
                                        second_check_verify_video_id, second_check_verify_file_id, second_check_remark,
+                                       second_check_operator,
                                        third_check_verify_result, third_check_verify_text_value,
                                        third_check_verify_number_value, third_check_verify_image_id,
                                        third_check_verify_video_id,
                                        third_check_verify_file_id, third_check_remark,
+                                       third_check_operator,
                                        created_at)
         VALUES (#{item.stageRelId},
                 #{item.checkItemId},
@@ -56,6 +62,7 @@
                 #{item.firstCheckVerifyVideoId},
                 #{item.firstCheckVerifyFileId},
                 #{item.firstCheckRemark},
+                #{item.firstCheckOperator},
                 #{item.secondCheckVerifyResult},
                 #{item.secondCheckVerifyTextValue},
                 #{item.secondCheckVerifyNumberValue},
@@ -63,6 +70,7 @@
                 #{item.secondCheckVerifyVideoId},
                 #{item.secondCheckVerifyFileId},
                 #{item.secondCheckRemark},
+                #{item.secondCheckOperator},
                 #{item.thirdCheckVerifyResult},
                 #{item.thirdCheckVerifyTextValue},
                 #{item.thirdCheckVerifyNumberValue},
@@ -70,6 +78,7 @@
                 #{item.thirdCheckVerifyVideoId},
                 #{item.thirdCheckVerifyFileId},
                 #{item.thirdCheckRemark},
+                #{item.thirdCheckOperator},
                 NOW())
     </insert>
 
@@ -110,6 +119,9 @@
             <if test="item.firstCheckRemark != null and item.firstCheckRemark != ''">
                 first_check_remark = #{item.firstCheckRemark},
             </if>
+            <if test="item.firstCheckOperator != null and item.firstCheckOperator != ''">
+                first_check_operator = #{item.firstCheckOperator},
+            </if>
             <if test="item.secondCheckVerifyResult != null">
                 second_check_verify_result = #{item.secondCheckVerifyResult},
             </if>
@@ -131,6 +143,9 @@
             <if test="item.secondCheckRemark != null and item.secondCheckRemark != ''">
                 second_check_remark = #{item.secondCheckRemark},
             </if>
+            <if test="item.secondCheckOperator != null and item.secondCheckOperator != ''">
+                second_check_operator = #{item.secondCheckOperator},
+            </if>
             <if test="item.thirdCheckVerifyResult != null">
                 third_check_verify_result = #{item.thirdCheckVerifyResult},
             </if>
@@ -151,6 +166,9 @@
             </if>
             <if test="item.thirdCheckRemark != null and item.thirdCheckRemark != ''">
                 third_check_remark = #{item.thirdCheckRemark},
+            </if>
+            <if test="item.thirdCheckOperator != null and item.thirdCheckOperator != ''">
+                third_check_operator = #{item.thirdCheckOperator},
             </if>
             updated_at = NOW()
         </set>

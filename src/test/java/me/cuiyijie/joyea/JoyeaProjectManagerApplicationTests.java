@@ -10,6 +10,7 @@ import me.cuiyijie.joyea.dao.main.TestSheetDao;
 import me.cuiyijie.joyea.domain.TestSheet;
 import me.cuiyijie.joyea.model.SheetColumn;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
+import me.cuiyijie.joyea.util.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,8 +44,13 @@ class JoyeaProjectManagerApplicationTests {
     @Test
     void contextLoads() {
 
-        List<SheetColumn> columns = sheetColumnDao.findAll(new SheetColumn());
-        System.out.println(columns);
+
+        System.out.println(
+                StringUtils.equals("1",null)
+        );
+
+//        List<SheetColumn> columns = sheetColumnDao.findAll(new SheetColumn());
+//        System.out.println(columns);
 
 //        JoyeaAccessToken result = userService.getAccessTokenByTicket("ST-891-eHFF6mckJVZZ9bUaDz4r-c01");
 //        JoyeaUserProfile userInfo = userService.getUserInfoByToken(result.getAccessToken());

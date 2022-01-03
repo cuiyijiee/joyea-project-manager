@@ -22,6 +22,7 @@ public class CheckItemAnswer {
     private String firstCheckVerifyVideoId;
     private String firstCheckVerifyFileId;
     private String firstCheckRemark;
+    private String firstCheckOperator;
 
     private Boolean secondCheckVerifyResult;
     private String secondCheckVerifyTextValue;
@@ -30,6 +31,7 @@ public class CheckItemAnswer {
     private String secondCheckVerifyVideoId;
     private String secondCheckVerifyFileId;
     private String secondCheckRemark;
+    private String secondCheckOperator;
 
     private Boolean thirdCheckVerifyResult;
     private String thirdCheckVerifyTextValue;
@@ -38,6 +40,7 @@ public class CheckItemAnswer {
     private String thirdCheckVerifyVideoId;
     private String thirdCheckVerifyFileId;
     private String thirdCheckRemark;
+    private String thirdCheckOperator;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
