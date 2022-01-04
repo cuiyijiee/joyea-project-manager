@@ -1,9 +1,9 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.cuiyijie.joyea.config.Constants;
+import me.cuiyijie.joyea.dao.main.NextPlusUserProfileDao;
 import me.cuiyijie.joyea.domain.Department;
 import me.cuiyijie.joyea.model.User;
 import me.cuiyijie.joyea.pojo.*;
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("nextplus")
@@ -39,6 +38,9 @@ public class NextPlusUserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NextPlusUserProfileDao nextPlusUserProfileDao;
 
     @Autowired
     RestTemplate restTemplate;
@@ -102,13 +104,21 @@ public class NextPlusUserController {
 
         TransBaseResponse response = new TransBaseResponse();
 
-        ResponseEntity<NextPlusUserProfileResp> profileResp = restTemplate.getForEntity(
+        ResponseEntity<NextPlusUserProfile> profileResp = restTemplate.getForEntity(
                 String.format("%s%s", Constants.NEXT_PLUS_PROFILE_URL, request.getAuthCode()),
-                NextPlusUserProfileResp.class
+                NextPlusUserProfile.class
         );
 
+        NextPlusUserProfile profile = profileResp.getBody();
+
+        NextPlusUserProfile existProfile = nextPlusUserProfileDao.selectById(profile.getId());
+        if(existProfile == null) {
+            nextPlusUserProfileDao.insert(profile);
+        }else{
+            nextPlusUserProfileDao.update(profile);
+        }
         response.setCode("0");
-        response.setObj(profileResp.getBody());
+        response.setObj(profile);
 
         return response;
     }

@@ -4,7 +4,10 @@ import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.dao.main.*;
 import me.cuiyijie.joyea.model.*;
 import me.cuiyijie.joyea.model.vo.CheckItemAnswerVo;
+import me.cuiyijie.joyea.pojo.NextPlusUserProfile;
 import me.cuiyijie.joyea.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,11 @@ public class CheckItemAnswerService {
 
     @Autowired
     private CheckItemRecordDao checkItemRecordDao;
+
+    @Autowired
+    private NextPlusUserProfileDao nextPlusUserProfileDao;
+
+    private Logger logger = LoggerFactory.getLogger(CheckItemAnswerService.class);
 
     public Integer insert(CheckItemAnswer checkItemAnswer) {
         return checkItemAnswerDao.insert(checkItemAnswer);
@@ -123,13 +131,15 @@ public class CheckItemAnswerService {
         if (checkItem == null) {
             return;
         }
+        logger.info("get record people id:{}",currentUserInfo.getId());
 
-        User user = userDao.listById(currentUserInfo.getId());
-        if (user == null) {
+        NextPlusUserProfile existProfile = nextPlusUserProfileDao.selectById(currentUserInfo.getId());
+        //logger.info("get record people: {}",user.toString());
+        if (existProfile == null) {
             if(currentUserInfo.getId().equals("admin") || currentUserInfo.getId().equals("test")) {
-                user = new User();
-                user.setId(currentUserInfo.getId());
-                user.setName(currentUserInfo.getId());
+                existProfile = new NextPlusUserProfile();
+                existProfile.setId(currentUserInfo.getId());
+                existProfile.setName(currentUserInfo.getId());
             }else{
                 return;
             }
@@ -138,106 +148,106 @@ public class CheckItemAnswerService {
 //        if (oldAnswer == null) {
         if (isFirstChanged) {
             if (newAnswer.getFirstCheckVerifyResult() != null) {
-                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getFirstCheckVerifyResult() ? "合格" : "不合格"));
+                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录", newAnswer.getFirstCheckVerifyResult() ? "合格" : "不合格"));
             }
             if (StringUtils.isNotBlank(newAnswer.getFirstCheckRemark())) {
-                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录备注", newAnswer.getFirstCheckRemark()));
+                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录备注", newAnswer.getFirstCheckRemark()));
             }
             switch (checkItem.getFirstCheckVerifyType()) {
                 case TEXT:
                     if (StringUtils.isNotBlank(newAnswer.getFirstCheckVerifyTextValue()))
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getFirstCheckVerifyTextValue()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录", newAnswer.getFirstCheckVerifyTextValue()));
                     break;
                 case NUMBER:
                     if (StringUtils.isNotBlank(newAnswer.getFirstCheckVerifyNumberValue()))
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getFirstCheckVerifyNumberValue()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录", newAnswer.getFirstCheckVerifyNumberValue()));
                     break;
                 case IMAGE:
                     SysFileUpload imageFile = sysFileUploadDao.selectById(newAnswer.getFirstCheckVerifyImageId());
                     if (imageFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", imageFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录", imageFile.getFullName()));
                     }
                     break;
                 case FILE:
                     SysFileUpload fileFile = sysFileUploadDao.selectById(newAnswer.getFirstCheckVerifyImageId());
                     if (fileFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", fileFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录", fileFile.getFullName()));
                     }
                     break;
                 case VIDEO:
                     SysFileUpload videoFile = sysFileUploadDao.selectById(newAnswer.getFirstCheckVerifyImageId());
                     if (videoFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", videoFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "自检记录", videoFile.getFullName()));
                     }
                     break;
             }
         } else if (isSecondChanged) {
             if (newAnswer.getSecondCheckVerifyResult() != null) {
-                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getSecondCheckVerifyResult() ? "合格" : "不合格"));
+                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录", newAnswer.getSecondCheckVerifyResult() ? "合格" : "不合格"));
             }
             if (StringUtils.isNotBlank(newAnswer.getSecondCheckRemark())) {
-                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录备注", newAnswer.getSecondCheckRemark()));
+                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录备注", newAnswer.getSecondCheckRemark()));
             }
             switch (checkItem.getSecondCheckVerifyType()) {
                 case TEXT:
                     if (StringUtils.isNotBlank(newAnswer.getSecondCheckVerifyTextValue()))
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getSecondCheckVerifyTextValue()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录", newAnswer.getSecondCheckVerifyTextValue()));
                     break;
                 case NUMBER:
                     if (StringUtils.isNotBlank(newAnswer.getSecondCheckVerifyNumberValue()))
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getSecondCheckVerifyNumberValue()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录", newAnswer.getSecondCheckVerifyNumberValue()));
                     break;
                 case IMAGE:
                     SysFileUpload imageFile = sysFileUploadDao.selectById(newAnswer.getSecondCheckVerifyImageId());
                     if (imageFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", imageFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录", imageFile.getFullName()));
                     }
                     break;
                 case FILE:
                     SysFileUpload fileFile = sysFileUploadDao.selectById(newAnswer.getSecondCheckVerifyImageId());
                     if (fileFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", fileFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录", fileFile.getFullName()));
                     }
                     break;
                 case VIDEO:
                     SysFileUpload videoFile = sysFileUploadDao.selectById(newAnswer.getSecondCheckVerifyImageId());
                     if (videoFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", videoFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "互检记录", videoFile.getFullName()));
                     }
                     break;
             }
         } else if (isThirdChanged) {
             if (newAnswer.getThirdCheckVerifyResult() != null) {
-                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getThirdCheckVerifyResult() ? "合格" : "不合格"));
+                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录", newAnswer.getThirdCheckVerifyResult() ? "合格" : "不合格"));
             }
             if (StringUtils.isNotBlank(newAnswer.getThirdCheckRemark())) {
-                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录备注", newAnswer.getThirdCheckRemark()));
+                recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录备注", newAnswer.getThirdCheckRemark()));
             }
             switch (checkItem.getThirdCheckVerifyType()) {
                 case TEXT:
                     if (StringUtils.isNotBlank(newAnswer.getThirdCheckVerifyTextValue()))
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getThirdCheckVerifyTextValue()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录", newAnswer.getThirdCheckVerifyTextValue()));
                     break;
                 case NUMBER:
                     if (StringUtils.isNotBlank(newAnswer.getThirdCheckVerifyNumberValue()))
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", newAnswer.getThirdCheckVerifyNumberValue()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录", newAnswer.getThirdCheckVerifyNumberValue()));
                     break;
                 case IMAGE:
                     SysFileUpload imageFile = sysFileUploadDao.selectById(newAnswer.getThirdCheckVerifyImageId());
                     if (imageFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", imageFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录", imageFile.getFullName()));
                     }
                     break;
                 case FILE:
                     SysFileUpload fileFile = sysFileUploadDao.selectById(newAnswer.getThirdCheckVerifyImageId());
                     if (fileFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", fileFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录", fileFile.getFullName()));
                     }
                     break;
                 case VIDEO:
                     SysFileUpload videoFile = sysFileUploadDao.selectById(newAnswer.getThirdCheckVerifyImageId());
                     if (videoFile != null) {
-                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", user.getName(), "自检记录", videoFile.getFullName()));
+                        recordStr.add(String.format("%s 操作了 %s 操作值为: %s", existProfile.getName(), "专检记录", videoFile.getFullName()));
                     }
                     break;
             }

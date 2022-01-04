@@ -9,7 +9,9 @@ import me.cuiyijie.joyea.dao.main.SheetColumnDao;
 import me.cuiyijie.joyea.dao.main.TestSheetDao;
 import me.cuiyijie.joyea.domain.TestSheet;
 import me.cuiyijie.joyea.model.SheetColumn;
+import me.cuiyijie.joyea.pojo.NextPlusTenant;
 import me.cuiyijie.joyea.service.ICheckItemFormSettingService;
+import me.cuiyijie.joyea.service.INextPlusService;
 import me.cuiyijie.joyea.util.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +43,15 @@ class JoyeaProjectManagerApplicationTests {
     @Autowired
     SheetColumnDao sheetColumnDao;
 
+    @Autowired
+    INextPlusService nextPlusService;
+
     @Test
     void contextLoads() {
 
+        NextPlusTenant tenant = nextPlusService.getTenantInfo();
 
-        System.out.println(
-                StringUtils.equals("1",null)
-        );
+        System.out.println(tenant);
 
 //        List<SheetColumn> columns = sheetColumnDao.findAll(new SheetColumn());
 //        System.out.println(columns);

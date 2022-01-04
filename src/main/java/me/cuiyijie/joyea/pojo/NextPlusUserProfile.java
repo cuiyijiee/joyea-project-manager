@@ -3,12 +3,14 @@ package me.cuiyijie.joyea.pojo;
 import lombok.Data;
 import me.cuiyijie.joyea.auth.util.JwtUtil;
 
+import java.time.LocalDateTime;
+
 /**
  * @author cyj976655@gmail.com
  * @date 2021/7/11 20:47
  */
 @Data
-public class NextPlusUserProfileResp {
+public class NextPlusUserProfile {
 
     //当前id
     private String id;
@@ -22,6 +24,8 @@ public class NextPlusUserProfileResp {
     private String ytmOpenId;
     //一森组织id
     private String tenantId;
+
+    private LocalDateTime lastLoginTime;
 
 
     public String getToken() {
