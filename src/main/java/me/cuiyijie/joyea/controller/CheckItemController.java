@@ -8,14 +8,18 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
+import me.cuiyijie.joyea.dao.main.NextPlusUserProfileDao;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAnswer;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
+import me.cuiyijie.joyea.pojo.NextPlusUserProfile;
 import me.cuiyijie.joyea.pojo.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.TransNotifyRequest;
 import me.cuiyijie.joyea.service.CheckItemAnswerService;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.CheckItemTagService;
+import me.cuiyijie.joyea.service.INextPlusService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +44,10 @@ public class CheckItemController {
     private CheckItemTagService checkItemTagService;
     @Autowired
     private CheckItemAnswerService checkItemAnswerService;
+    @Autowired
+    private INextPlusService nextPlusService;
+    @Autowired
+    private NextPlusUserProfileDao nextPlusUserProfileDao;
 
     private final static Logger logger = LoggerFactory.getLogger(CheckItemController.class);
 
@@ -214,6 +222,25 @@ public class CheckItemController {
             transBaseResponse.setCode("-1");
         }
 
+        return transBaseResponse;
+    }
+
+    @ApiOperation(value = "点检项结果查询", notes = "点检项结果查询")
+    @RequestMapping(value = "sendNotify", method = RequestMethod.POST)
+    public TransBaseResponse sendNotify(@RequestBody TransNotifyRequest request, @CurrentUser CurrentUserInfo currentUserInfo) {
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        try {
+            NextPlusUserProfile profile = nextPlusUserProfileDao.selectById(currentUserInfo.getId());
+            if (profile == null) {
+                throw new RuntimeException("当前登录用户未鉴权！");
+            }
+            String content = String.format("质量管理平台提醒您：%s＠了你一条点检项，请尽快查看。", profile.getName());
+            nextPlusService.sendNotify(request.getIds(), content);
+        } catch (Exception exception) {
+            logger.error("发送通知失败：", exception);
+            transBaseResponse.setMsg("发送通知失败：" + exception.getMessage());
+            transBaseResponse.setCode("-1");
+        }
         return transBaseResponse;
     }
 }
