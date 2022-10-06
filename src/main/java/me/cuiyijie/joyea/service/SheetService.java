@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import me.cuiyijie.joyea.dao.SheetColumnDao;
 import me.cuiyijie.joyea.dao.SheetDao;
@@ -31,12 +29,6 @@ public class SheetService {
 
     @Autowired
     private SheetDataDao sheetDataDao;
-
-    public PageInfo<Sheet> findAll(Sheet sheet, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Sheet> sheets = sheetDao.findAll(sheet);
-        return new PageInfo<>(sheets);
-    }
 
     public Integer insert(Sheet sheet) {
         return sheetDao.insert(sheet);

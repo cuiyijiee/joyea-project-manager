@@ -2,39 +2,44 @@
   <div class="project-card">
     <div class="container">
       <van-row>
-        <van-col span="12">{{ item.projectName }}</van-col>
-        <van-col span="12">{{ item.fNumber }}</van-col>
+        <van-col span="24">{{ item.projectName }}</van-col>
+        <van-col span="24">{{ item.fnumber }}</van-col>
       </van-row>
       <van-row>
-        <van-col span="12">装调负责人：{{ item.projectFzr || '' }}</van-col>
-        <van-col span="12">项目经理：{{ '' }}</van-col>
+        <van-col span="24"><span class="desc">装调负责人：</span>{{ item.projectFzr || '' }}</van-col>
+        <van-col span="24"><span class="desc">所属部门：</span>{{ item.projectDepart || '' }}</van-col>
       </van-row>
       <van-row>
-        <van-col span="12">所属部门：{{ item.projectDepart || '' }}</van-col>
-        <van-col span="12">装调项目部：{{ '' }}</van-col>
+        <van-col span="24"><span class="desc">项目经理：</span>{{ '' }}</van-col>
+        <van-col span="24"><span class="desc">装调项目部：</span>{{ '' }}</van-col>
       </van-row>
       <van-divider></van-divider>
       <van-row>
         <van-col span="4"></van-col>
-        <van-col span="10">完成率</van-col>
-        <van-col span="10">合格率</van-col>
+        <van-col span="10"><span class="desc">完成率</span></van-col>
+        <van-col span="10"><span class="desc">合格率</span></van-col>
+      </van-row>
+
+      <van-row>
+        <van-col span="4"><span class="desc">自检</span></van-col>
+        <van-col span="10">
+          <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
+          <van-progress v-else :percentage="((projectSchedule.selfFinish / projectSchedule.self) * 100).toFixed(2)"/>
+        </van-col>
+        <van-col span="10">
+          <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
+          <van-progress v-else :percentage="((projectSchedule.selfGood / projectSchedule.self) * 100).toFixed(2)"/>
+        </van-col>
       </van-row>
       <van-row>
-        <van-col span="4">自检</van-col>
+        <van-col span="4"><span class="desc">互检</span></van-col>
         <van-col span="10">
-          <van-progress :percentage="100"/>
+          <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
+          <van-progress v-else :percentage="((projectSchedule.eachFinish / projectSchedule.each) * 100).toFixed(2)"/>
         </van-col>
         <van-col span="10">
-          <van-progress :percentage="80"/>
-        </van-col>
-      </van-row>
-      <van-row>
-        <van-col span="4">互检</van-col>
-        <van-col span="10">
-          <van-progress :percentage="50"/>
-        </van-col>
-        <van-col span="10">
-          <van-progress :percentage="20"/>
+          <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
+          <van-progress v-else :percentage="((projectSchedule.eachGood / projectSchedule.each) * 100).toFixed(2)"/>
         </van-col>
       </van-row>
     </div>
@@ -42,18 +47,28 @@
 </template>
 
 <script>
+
+import {findSchedule} from "../api";
+
 export default {
   name: "ProjectCard",
+  props: {
+    item: {
+      type: Object,
+    }
+  },
   data() {
     return {
-      item: {
-        fid: "123456",
-        fNumber: "J2012BJTRT01S",
-        projectName: "北京同仁堂",
-        projectFzr: "袁红星",
-        projectDepart: "李金国"
-      }
+      scheduleLoading: true,
+      projectSchedule: Object
     }
+  },
+  mounted() {
+    findSchedule(this.item.fnumber).then(data => {
+      this.projectSchedule = data.obj;
+    }).finally(() => {
+      this.scheduleLoading = false;
+    })
   }
 }
 </script>
@@ -63,14 +78,17 @@ div.project-card {
   margin: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  text-align: center;
 }
 
 div.container {
   padding: 10px;
 }
 
-.van-progress{
+.van-progress {
   margin: 10px 0;
+}
+
+span.desc {
+  color: dimgray;
 }
 </style>

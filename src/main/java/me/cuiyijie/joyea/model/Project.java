@@ -1,48 +1,42 @@
 package me.cuiyijie.joyea.model;
 
-
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
+/**
+ * @Author: yjcui3
+ * @Date: 2022/9/28 11:23
+ */
 @Data
+@TableName("VW_SYX_ZLGL_XMLB")
+@ApiModel(value = "项目信息")
 public class Project {
 
+    @ApiModelProperty(value = "项目ID")
+    @TableField("FID")
+    private String fid;
 
-    private Integer id;
+    @ApiModelProperty(value = "项目编号")
+    @TableField("FNUMBER")
+    private String fNumber;
+
+    @ApiModelProperty(value = "项目名称")
+    @TableField("PROJECTNAME")
     private String projectName;
-    private String projectNumber;
 
-    /**
-     * 项目经理
-     */
-    private String projectManager;
+    @ApiModelProperty(value = "项目负责人")
+    @TableField("XMFZR")
+    private String projectFzr;
 
-    /**
-     * 项目专员
-     */
-    private String projectCommissioner;
+    @ApiModelProperty(value = "项目所属部门")
+    @TableField("DEPART")
+    private String projectDepart;
 
-    /**
-     * 项目负责人
-     */
-    private String projectPrincipal;
-
-    /**
-     * 项目所属部门
-     */
-    private String department;
-
-    private Integer stageCount;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createdAt;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updatedAt;
+    @ApiModelProperty(value = "客户专员")
+    @TableField("KHZY")
+    private String proejctKhzy;
 
 }

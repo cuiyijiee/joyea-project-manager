@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.pojo.request;
 
 
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,17 +13,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TransBasePageResponse extends TransBaseResponse {
 
-    private Integer pageNum;
-    private Integer pageSize;
+    private Long pageNum;
+    private Long pageSize;
     private Long total;
+    private Boolean hasMore;
 
-
-    public TransBasePageResponse(PageInfo pageInfo) {
+    public TransBasePageResponse(Page page) {
         this.setCode("0");
-        this.setList(pageInfo.getList());
-        this.setPageNum(pageInfo.getPageNum());
-        this.setPageSize(pageInfo.getPageSize());
-        this.setTotal(pageInfo.getTotal());
+        this.setList(page.getRecords());
+        this.setPageNum(page.getCurrent());
+        this.setPageSize(page.getSize());
+        this.setTotal(page.getTotal());
+        this.setHasMore(page.getCurrent() < page.getPages());
     }
-
 }

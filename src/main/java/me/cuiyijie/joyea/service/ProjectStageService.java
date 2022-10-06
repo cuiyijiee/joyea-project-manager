@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemDao;
@@ -74,17 +72,6 @@ public class ProjectStageService {
 //            throw new RuntimeException("更新项目阶段失败！");
 //        }
 //    }
-
-    public PageInfo<ProjectStage> list(ProjectStageVo projectStageVo) {
-        PageHelper.startPage(projectStageVo.getPageNum(), projectStageVo.getPageSize());
-        PageInfo<ProjectStage> pageInfo = new PageInfo<ProjectStage>(projectStageDao.list(projectStageVo));
-        PageHelper.clearPage();
-        for (int index = 0; index < pageInfo.getList().size(); index++) {
-            ProjectStage tmp = pageInfo.getList().get(index);
-            tmp.setProducts(projectStageDao.listProductByStageId(tmp.getId()));
-        }
-        return pageInfo;
-    }
 
     public Integer countProjectStage(Integer projectId){
         return projectStageDao.countProjectStage(projectId);

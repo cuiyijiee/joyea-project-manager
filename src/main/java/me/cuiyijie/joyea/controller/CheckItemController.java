@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,9 +43,8 @@ public class CheckItemController {
     @ApiOperation(value = "获取点检项", notes = "获取点检项")
     @RequestMapping(value = "listAll", method = RequestMethod.POST)
     public TransBasePageResponse listAll(@RequestBody CheckItemVo checkItemVo) {
-        PageHelper.startPage(checkItemVo.getPageNum(), checkItemVo.getPageSize());
         List<CheckItem> result = checkItemService.listAll(checkItemVo);
-        return new TransBasePageResponse(new PageInfo<CheckItem>(result));
+        return null;
     }
 
     @ApiOperation(value = "新增点检项", notes = "新增点检项")

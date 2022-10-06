@@ -1,14 +1,14 @@
 <template>
   <div class="hello">
     <van-nav-bar title="项目信息"/>
-    <van-search v-model="searchKey" placeholder="搜索项目关键字"/>
+    <van-search v-model="searchKey" placeholder="搜索项目关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
       v-model="searchLoading"
       :finished="!searchHasMore"
       finished-text="没有更多了"
       @load="onLoad">
-      <ProjectCard v-for="item in projectList" :key="item.fid"/>
+      <ProjectCard v-for="item in projectList" :key="item.fid" :item="item"/>
     </van-list>
   </div>
 </template>
@@ -17,36 +17,48 @@
 <script>
 import ProjectCard from "./ProjectCard";
 
+import {listProject} from "../api";
+
 export default {
-  name: 'HelloWorld',
+  name: 'Project',
   components: {
     ProjectCard
   },
   data() {
     return {
       searchKey: "",
-      searchResultCount: 1875,
+      searchResultCount: 0,
       searchLoading: false,
       searchHasMore: true,
-      projectList: []
+      projectList: [],
+      current: 0,
+      pageSize: 5
     }
   },
   methods: {
+    onSearch(){
+      this.current = 0;
+      this.searchHasMore = true;
+      this.projectList = [];
+      this.listProject();
+    },
     onLoad() {
-// 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.projectList.push(this.projectList.length + 1);
-        }
+      this.listProject();
+    },
+    listProject(){
+      listProject(this.searchKey, this.current + 1, this.pageSize).then(data => {
+        this.projectList = this.projectList.concat(data.list);
+        this.searchResultCount = data.total;
+        this.searchHasMore = data.hasMore;
+
+        this.current = data.pageNum;
+      }).finally(() => {
         // 加载状态结束
         this.searchLoading = false;
-        // 数据全部加载完成
-        if (this.projectList.length >= 40) {
-          this.searchHasMore = false;
-        }
-      }, 1000);
+      })
     }
+  },
+  mounted() {
   }
 }
 </script>

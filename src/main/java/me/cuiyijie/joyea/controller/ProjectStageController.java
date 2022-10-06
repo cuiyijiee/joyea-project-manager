@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,7 +94,7 @@ public class ProjectStageController {
     @ApiOperation(value = "查找点检阶段", notes = "查找点检阶段")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse list(@RequestBody ProjectStageVo projectStageVo) {
-        return new TransBasePageResponse(projectStageService.list(projectStageVo));
+        return null;
     }
 
     @ApiOperation(value = "删除点检阶段", notes = "删除点检阶段")
@@ -179,8 +177,6 @@ public class ProjectStageController {
             return TransBaseResponse.failed(errorMsg);
         }
         try {
-            PageHelper.startPage(stageProductRequest.getPageNum(), stageProductRequest.getPageSize());
-            transBaseResponse = new TransBasePageResponse(new PageInfo<>(projectStageService.listOperation(stageProductRequest)));
         } catch (Exception exception) {
             log.error("列出项目阶段工序失败：" + exception.getMessage());
             return TransBaseResponse.failed("列出项目阶段工序失败：" + exception.getMessage());
@@ -198,15 +194,12 @@ public class ProjectStageController {
             return TransBaseResponse.failed(errorMsg);
         }
         try {
-            PageHelper.startPage(projectStageOperation.getPageNum(), projectStageOperation.getPageSize());
             List<CheckItem> checkItems = projectStageService.listCheckItems(projectStageOperation);
-            PageHelper.clearPage();
             for (int index = 0; index < checkItems.size(); index++) {
                 CheckItem checkItem = checkItems.get(index);
                 checkItemService.addCheckItemAttributes(checkItem);
                 checkItemAnswerService.updateStatus(projectStageOperation.getStageRelId(),checkItem);
             }
-            transBaseResponse = new TransBasePageResponse(new PageInfo<>(checkItems));
         } catch (Exception exception) {
             log.error("列出项目阶段工序失败：" + exception.getMessage());
             return TransBaseResponse.failed("列出项目阶段工序失败：" + exception.getMessage());
@@ -219,19 +212,6 @@ public class ProjectStageController {
     @RequestMapping(value = "preview", method = RequestMethod.POST)
     public TransBaseResponse preview(@RequestBody ProjectStageVo projectStageVo) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        PageInfo<ProjectStage> pageInfo = projectStageService.list(projectStageVo);
-        for (int index = 0; index < pageInfo.getList().size(); index++) {
-            ProjectStage projectStage = pageInfo.getList().get(index);
-            for (int j = 0; j < projectStage.getProducts().size(); j++) {
-                StageProduct stageProduct = projectStage.getProducts().get(j);
-                List<ProjectStageOperation> projectStageOperations = projectStageService.listOperation(stageProduct);
-                stageProduct.setProjectStageOperations(projectStageOperations);
-            }
-        }
-        transBaseResponse = new TransBasePageResponse(pageInfo);
-        //projectStageService.list()
         return transBaseResponse;
     }
-
-
 }

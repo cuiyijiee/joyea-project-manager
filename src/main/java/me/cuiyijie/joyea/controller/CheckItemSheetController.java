@@ -1,6 +1,5 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,9 +60,6 @@ public class CheckItemSheetController {
     public TransBaseResponse list(@RequestBody TransSheetRequest request) {
         TransBasePageResponse transBasePageResponse = new TransBasePageResponse();
         try {
-
-            PageInfo<Sheet> sheets = sheetService.findAll(request, request.getPageNum(), request.getPageSize());
-            transBasePageResponse = new TransBasePageResponse(sheets);
             transBasePageResponse.setCode("0");
 
         } catch (Exception exception) {

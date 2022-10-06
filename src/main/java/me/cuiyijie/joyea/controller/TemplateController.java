@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -65,13 +63,10 @@ public class TemplateController {
             if (template1 == null) {
                 throw new RuntimeException("该节点不存在！");
             }
-            PageHelper.startPage(request.getPageNum(),request.getPageSize());
             if (template1.getLevelType() == TemplateLevelType.DIR) {
                 List<Template> templates = templateService.listChild(request.getId());
-                transBaseResponse = new TransBasePageResponse(new PageInfo(templates));
             } else {
                 List<CheckItem> checkItems = checkItemService.listChild(request.getId());
-                transBaseResponse = new TransBasePageResponse(new PageInfo(checkItems));
             }
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
@@ -89,9 +84,7 @@ public class TemplateController {
         try {
 
             if(request.getPageNum() != null && request.getPageNum() != -1) {
-                PageHelper.startPage(request.getPageNum(),request.getPageSize());
                 List<TemplateVo> operations = templateService.listAllOperation();
-                transBaseResponse = new TransBasePageResponse(new PageInfo<TemplateVo>(operations));
             }
             //transBaseResponse.setList(templateService.listAllOperation());
             transBaseResponse.setCode("0");

@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,9 +37,7 @@ public class CheckItemTagController {
     public TransBasePageResponse list(@RequestBody TransPageCheckItemTagRequest request) {
         TransBasePageResponse transBasePageResponse = new TransBasePageResponse();
         try {
-            PageHelper.startPage(request.getPageNum(), request.getPageSize());
             List<CheckItemTag> result = checkItemTagService.list(request);
-            transBasePageResponse = new TransBasePageResponse(new PageInfo<>(result));
         } catch (Exception exception) {
             log.error("查询点检项标签失败:", exception);
             transBasePageResponse.setCode("-1");

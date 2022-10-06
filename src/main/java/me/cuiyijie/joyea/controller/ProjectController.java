@@ -1,27 +1,20 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.Project;
+import me.cuiyijie.joyea.model.ProjectSchedule;
 import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
+import me.cuiyijie.joyea.service.ProjectScheduleService;
 import me.cuiyijie.joyea.service.ProjectService;
-import me.cuiyijie.joyea.service.ProjectStageService;
-import me.cuiyijie.joyea.util.CheckParamsUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,70 +26,25 @@ public class ProjectController {
     private ProjectService projectService;
 
     @Autowired
-    private ProjectStageService projectStageService;
+    private ProjectScheduleService projectScheduleService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProjectRequest request) {
-        TransBasePageResponse response = new TransBasePageResponse();
-        Project selection = new Project();
-        selection.setProjectNumber(request.getProjectNumber());
-        PageHelper.startPage(request.getPageNumber(), request.getPageSize());
-        List<Project> resultList = projectService.list(selection);
-        for (int index = 0; index < resultList.size(); index++) {
-            Project project = resultList.get(index);
-            project.setStageCount(projectStageService.countProjectStage(project.getId()));
-        }
-        return new TransBasePageResponse(new PageInfo<Project>(resultList));
+        Project project = new Project();
+        project.setProjectName(request.getProjectName());
+        Page<Project> projectPage = projectService.list(project, request.getPageNum(), request.getPageSize());
+        return new TransBasePageResponse(projectPage);
     }
 
+    @RequestMapping(value = "findSchedule", method = RequestMethod.POST)
+    public TransBaseResponse findSchedule(@RequestBody TransProjectRequest request) {
+        ProjectSchedule projectSchedule = new ProjectSchedule();
+        projectSchedule.setFNumber(request.getFNumber());
 
-    @RequestMapping(value = "insert", method = RequestMethod.POST)
-    public TransBaseResponse insert(@RequestBody TransProjectRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        transBaseResponse.setObj(projectScheduleService.select(projectSchedule));
+        transBaseResponse.setCode("0");
 
-        List<String> paramsCheck = Lists.newArrayList("projectName:项目名称（projectName）", "projectNumber:项目编号（projectNumber）");
-        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
-        if (errorMsg != null) {
-            log.error("参数检查错误：" + errorMsg);
-            response.setCode("0");
-            response.setMsg(errorMsg);
-            return response;
-        }
-
-        Project selection = new Project();
-        BeanUtils.copyProperties(request, selection);
-        Integer result = projectService.insert(selection);
-        if (result == 1) {
-            response.setCode("0");
-        } else {
-            response.setCode("-1");
-        }
-        return response;
+        return transBaseResponse;
     }
-
-    @ApiOperation(value = "更新项目", notes = "传入id,其余同insert")
-    @RequestMapping(value = "update", method = RequestMethod.POST)
-    public TransBaseResponse update(@RequestBody TransProjectRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
-
-        List<String> paramsCheck = Lists.newArrayList("projectName:项目名称（projectName）", "projectNumber:项目编号（projectNumber）");
-        String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
-        if (errorMsg != null) {
-            log.error("参数检查错误：" + errorMsg);
-            response.setCode("0");
-            response.setMsg(errorMsg);
-            return response;
-        }
-
-        Project selection = new Project();
-        BeanUtils.copyProperties(request,selection);
-        Integer result = projectService.update(selection);
-        if (result == 1) {
-            response.setCode("0");
-        } else {
-            response.setCode("-1");
-        }
-        return response;
-    }
-
 }

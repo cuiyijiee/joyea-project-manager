@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Project from '@/components/Project'
+import Project from '@/components/Project';
+import VueRouter from 'vue-router';
+import Vue from "vue";
 
-Vue.use(Router)
+Vue.use(VueRouter);
 
-export default new Router({
+export default new VueRouter({
   routes: [
     {
       path: '/',

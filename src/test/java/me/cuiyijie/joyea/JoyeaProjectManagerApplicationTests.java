@@ -1,8 +1,8 @@
 package me.cuiyijie.joyea;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import me.cuiyijie.joyea.dao.NewProjectDao;
-import me.cuiyijie.joyea.model.NewProject;
+import me.cuiyijie.joyea.dao.ProjectDao;
+import me.cuiyijie.joyea.model.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,12 +14,12 @@ class JoyeaProjectManagerApplicationTests {
 
 
     @Autowired
-    private NewProjectDao newProjectDao;
+    private ProjectDao newProjectDao;
 
 
     @Test
     void contextLoads() {
-        List<NewProject> projectList = newProjectDao.selectList(new QueryWrapper<>());
+        List<Project> projectList = newProjectDao.selectList(new QueryWrapper<>());
         System.out.println(projectList);
     }
 

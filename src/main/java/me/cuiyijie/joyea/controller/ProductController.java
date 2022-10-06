@@ -1,7 +1,5 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,9 +38,7 @@ public class ProductController {
         TransBasePageResponse response = new TransBasePageResponse();
         Product selection = new Product();
         BeanUtils.copyProperties(request, selection);
-        PageHelper.startPage(request.getPageNumber(), request.getPageSize());
-        PageInfo<Product> resultList = new PageInfo<>(productService.list(selection));
-        return new TransBasePageResponse(resultList);
+        return response;
     }
 
     @ApiOperation(value = "新增新的项目产品", notes = "传入projectId，productNumber，productName")
