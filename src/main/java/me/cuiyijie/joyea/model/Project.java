@@ -1,6 +1,8 @@
 package me.cuiyijie.joyea.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +18,7 @@ import lombok.Data;
 public class Project {
 
     @ApiModelProperty(value = "项目ID")
-    @TableField("FID")
+    @TableId(type = IdType.ASSIGN_UUID, value = "FID")
     private String fid;
 
     @ApiModelProperty(value = "项目编号")

@@ -8,7 +8,8 @@
       :finished="!searchHasMore"
       finished-text="没有更多了"
       @load="onLoad">
-      <ProjectCard v-for="item in projectList" :key="item.fid" :item="item"/>
+      <ProjectCard v-for="item in projectList" :key="item.fid" :item="item"
+                   @click.native="handleClickProjectItem(item.fid)"/>
     </van-list>
   </div>
 </template>
@@ -36,7 +37,7 @@ export default {
     }
   },
   methods: {
-    onSearch(){
+    onSearch() {
       this.current = 0;
       this.searchHasMore = true;
       this.projectList = [];
@@ -45,7 +46,7 @@ export default {
     onLoad() {
       this.listProject();
     },
-    listProject(){
+    listProject() {
       listProject(this.searchKey, this.current + 1, this.pageSize).then(data => {
         this.projectList = this.projectList.concat(data.list);
         this.searchResultCount = data.total;
@@ -55,6 +56,12 @@ export default {
       }).finally(() => {
         // 加载状态结束
         this.searchLoading = false;
+      })
+    },
+    handleClickProjectItem(fid) {
+      this.$router.push({
+        path: "/product",
+        query: {projectId: fid}
       })
     }
   },

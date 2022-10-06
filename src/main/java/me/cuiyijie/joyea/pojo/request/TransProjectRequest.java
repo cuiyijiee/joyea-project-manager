@@ -8,6 +8,6 @@ public class TransProjectRequest {
     private Integer pageSize = 10;
     private Integer pageNum = 1;
 
-    private String fNumber;
+    private String fid;
     private String projectName;
 }

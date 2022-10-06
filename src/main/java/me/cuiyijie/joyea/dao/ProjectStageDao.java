@@ -26,7 +26,5 @@ public interface ProjectStageDao {
 
     Integer deleteStageProductByStageId(@Param("stageId") Integer stageId);
 
-    List<StageProduct> listProductByStageId(@Param("stageId")Integer stageId);
-
     Integer countProjectStage(@Param("projectId") Integer projectId);
 }

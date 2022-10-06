@@ -48,7 +48,7 @@
 
 <script>
 
-import {findSchedule} from "../api";
+import {findProjectSchedule} from "../api";
 
 export default {
   name: "ProjectCard",
@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    findSchedule(this.item.fnumber).then(data => {
+    findProjectSchedule(this.item.fid).then(data => {
       this.projectSchedule = data.obj;
     }).finally(() => {
       this.scheduleLoading = false;

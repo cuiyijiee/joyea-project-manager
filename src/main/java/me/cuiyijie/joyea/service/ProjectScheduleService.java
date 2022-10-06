@@ -17,9 +17,7 @@ public class ProjectScheduleService {
     private ProjectScheduleDao scheduleDao;
 
     public ProjectSchedule select(ProjectSchedule projectSchedule) {
-        QueryWrapper<ProjectSchedule> scheduleQueryWrapper = new QueryWrapper<>();
-        scheduleQueryWrapper.eq("FNUMBER", projectSchedule.getFNumber());
-        return scheduleDao.selectOne(scheduleQueryWrapper);
+        return scheduleDao.selectById(projectSchedule.getFid());
     }
 
 }

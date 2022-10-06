@@ -39,7 +39,7 @@ public class ProjectController {
     @RequestMapping(value = "findSchedule", method = RequestMethod.POST)
     public TransBaseResponse findSchedule(@RequestBody TransProjectRequest request) {
         ProjectSchedule projectSchedule = new ProjectSchedule();
-        projectSchedule.setFNumber(request.getFNumber());
+        projectSchedule.setFid(request.getFid());
 
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         transBaseResponse.setObj(projectScheduleService.select(projectSchedule));

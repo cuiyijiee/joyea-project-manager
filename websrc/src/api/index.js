@@ -17,14 +17,24 @@ service.interceptors.request.use(config => {
 
 export function listProject(searchKey, pageNum, pageSize) {
   return service.post("api/project/list", {
-    pageSize: pageSize,
-    pageNum: pageNum,
-    projectName: searchKey
+    pageSize: pageSize, pageNum: pageNum, projectName: searchKey
   }).then(resp => resp.data);
 }
 
-export function findSchedule(fnumber) {
+export function findProjectSchedule(fid) {
   return service.post("api/project/findSchedule", {
-    fnumber: fnumber
+    fid: fid
+  }).then(resp => resp.data);
+}
+
+export function listProduct(projectId, searchKey, pageNum, pageSize) {
+  return service.post("api/product/list", {
+    projectId: projectId, productName: searchKey, pageNum: pageNum, pageSize: pageSize
+  }).then(resp => resp.data);
+}
+
+export function findProductSchedule(orderId) {
+  return service.post("api/product/findSchedule", {
+    orderId: orderId
   }).then(resp => resp.data);
 }

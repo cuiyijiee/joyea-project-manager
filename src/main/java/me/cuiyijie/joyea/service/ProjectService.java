@@ -17,7 +17,9 @@ public class ProjectService {
         Page<Project> projectPage = new Page<>(pageNum, pageSize);
         QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
         if (project.getProjectName() != null && project.getProjectName().length() > 0) {
-            queryWrapper.like("PROJECTNAME", project.getProjectName());
+            queryWrapper = queryWrapper.like("PROJECTNAME", project.getProjectName())
+                    .or()
+                    .like("FNUMBER", project.getProjectName());
         }
         return projectDao.selectPage(projectPage, queryWrapper);
     }

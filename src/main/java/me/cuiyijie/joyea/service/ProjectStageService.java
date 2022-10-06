@@ -37,22 +37,7 @@ public class ProjectStageService {
 
     @Transactional
     public void insert(ProjectStage projectStage) {
-        projectStageDao.insert(projectStage);
-        if (projectStage.getId() != null) {
-            if (projectStage.getContainsProject() != null && projectStage.getContainsProject()) {
-                projectStageDao.insertStageProduct(projectStage.getId(), -1, true);
-            }
-            if (projectStage.getProducts() != null && projectStage.getProducts().size() > 0) {
-                for (int index = 0; index < projectStage.getProducts().size(); index++) {
-                    Product product = projectStage.getProducts().get(index);
-                    projectStageDao.insertStageProduct(projectStage.getId(), product.getId(), false);
-                }
-            } else {
-                log.info("该工程阶段不包含产品，无需处理");
-            }
-        } else {
-            throw new RuntimeException("插入项目阶段失败！");
-        }
+
     }
 
 //    @Transactional

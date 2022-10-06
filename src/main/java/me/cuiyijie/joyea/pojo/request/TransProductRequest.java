@@ -10,16 +10,11 @@ import lombok.Data;
 public class TransProductRequest {
 
     private Integer pageSize = 10;
-    private Integer pageNumber = 1;
-
-    private Integer id;
+    private Integer pageNum = 1;
 
     private String projectId;
-    private String productNumber;
     private String productName;
-    /**
-     * 生产单号
-     */
-    private String productionNumber;
+
+    private String orderId;
 
 }
