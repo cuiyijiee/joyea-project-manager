@@ -91,20 +91,5 @@ public class CheckItemAnswerService {
     }
 
     public void updateStatus(Integer stageRelId, CheckItem checkItem) {
-        CheckItemAnswer answer1 = new CheckItemAnswer();
-        answer1.setStageRelId(stageRelId);
-        answer1.setCheckItemId(checkItem.getId());
-        CheckItemAnswer answer = checkItemAnswerDao.select(answer1);
-
-        boolean isChecked = answer != null && answer.getFirstCheckVerifyResult() != null &&
-                answer.getSecondCheckVerifyResult() != null &&
-                answer.getThirdCheckVerifyResult() != null;
-
-        checkItem.setChecked(isChecked);
-        if(isChecked){
-            checkItem.setIsGood(answer.getFirstCheckVerifyResult() && answer.getSecondCheckVerifyResult() &&  answer.getThirdCheckVerifyResult());
-        }else{
-            checkItem.setIsGood(false);
-        }
     }
 }

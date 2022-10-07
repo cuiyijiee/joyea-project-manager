@@ -2,8 +2,8 @@
   <div class="project-card">
     <div class="container">
       <van-row>
-        <van-col span="24">{{ item.projectName }}</van-col>
-        <van-col span="24">{{ item.fnumber }}</van-col>
+        <van-col span="24"><span class="desc">项目名称：</span>{{ item.projectName }}</van-col>
+        <van-col span="24"><span class="desc">项目编码：</span>{{ item.fnumber }}</van-col>
       </van-row>
       <van-row>
         <van-col span="24"><span class="desc">装调负责人：</span>{{ item.projectFzr || '' }}</van-col>

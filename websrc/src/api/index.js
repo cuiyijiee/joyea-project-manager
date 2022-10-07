@@ -38,3 +38,15 @@ export function findProductSchedule(orderId) {
     orderId: orderId
   }).then(resp => resp.data);
 }
+
+export function listProcess(orderId, searchKey, pageNum, pageSize) {
+  return service.post("api/process/list", {
+    orderId: orderId, productName: searchKey, pageNum: pageNum, pageSize: pageSize
+  }).then(resp => resp.data);
+}
+
+export function listCheckItem(taskId, searchKey, pageNum, pageSize) {
+  return service.post("api/checkItem/list", {
+    taskId: taskId, productName: searchKey, pageNum: pageNum, pageSize: pageSize
+  }).then(resp => resp.data);
+}

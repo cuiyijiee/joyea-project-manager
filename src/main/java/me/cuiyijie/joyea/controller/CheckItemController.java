@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,18 +34,18 @@ public class CheckItemController {
     @Autowired
     private CheckItemService checkItemService;
     @Autowired
-    private CheckItemTagService checkItemTagService;
-    @Autowired
     private CheckItemAnswerService checkItemAnswerService;
 
     private final static Logger logger = LoggerFactory.getLogger(CheckItemController.class);
 
 
     @ApiOperation(value = "获取点检项", notes = "获取点检项")
-    @RequestMapping(value = "listAll", method = RequestMethod.POST)
+    @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse listAll(@RequestBody CheckItemVo checkItemVo) {
-        List<CheckItem> result = checkItemService.listAll(checkItemVo);
-        return null;
+        CheckItem checkItem = new CheckItem();
+        checkItem.setTaskId(checkItemVo.getTaskId());
+        Page<CheckItem> result = checkItemService.list(checkItem, checkItemVo.getPageNum(), checkItemVo.getPageSize());
+        return new TransBasePageResponse(result);
     }
 
     @ApiOperation(value = "新增点检项", notes = "新增点检项")
@@ -67,21 +68,6 @@ public class CheckItemController {
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public TransBaseResponse delete(@RequestBody CheckItem checkItem) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        Integer relCount = checkItemService.selectCheckItemRel(checkItem.getId());
-        if (relCount > 0) {
-            transBaseResponse.setCode("-1");
-            transBaseResponse.setMsg("请在工序中解除关联后删除！");
-            return transBaseResponse;
-        }
-        try {
-            checkItemService.delete(checkItem);
-            checkItemTagService.deleteAllCheckItemTagRel(checkItem.getId());
-            transBaseResponse.setCode("0");
-        } catch (Exception exception) {
-            log.error("删除点检项失败：", exception);
-            transBaseResponse.setMsg(exception.getMessage());
-            transBaseResponse.setCode("-1");
-        }
         return transBaseResponse;
     }
 
@@ -89,24 +75,6 @@ public class CheckItemController {
     @RequestMapping(value = "addCheckItemRel", method = RequestMethod.POST)
     public TransBaseResponse addCheckItemRel(@RequestBody CheckItemVo checkItemVo) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        try {
-            if (checkItemVo.getPid() == null) {
-                throw new RuntimeException("pid不能为空");
-            }
-            if (checkItemVo.getId() != null) {
-                checkItemService.addCheckItemRel(checkItemVo.getPid(), checkItemVo.getId());
-            }
-            if (checkItemVo.getIds() != null && checkItemVo.getIds().size() > 0) {
-                for (int index = 0; index < checkItemVo.getIds().size(); index++) {
-                    int id = checkItemVo.getIds().get(index);
-                    checkItemService.addCheckItemRel(checkItemVo.getPid(), id);
-                }
-            }
-        } catch (Exception exception) {
-            log.error("增加点检项关联：", exception);
-            transBaseResponse.setMsg(exception.toString());
-            transBaseResponse.setCode("-1");
-        }
         return transBaseResponse;
     }
 
@@ -115,24 +83,6 @@ public class CheckItemController {
     @RequestMapping(value = "deleteCheckItemRel", method = RequestMethod.POST)
     public TransBaseResponse deleteCheckItemRel(@RequestBody CheckItemVo checkItemVo) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        try {
-            if (checkItemVo.getPid() == null) {
-                throw new RuntimeException("pid不能为空");
-            }
-            if (checkItemVo.getId() != null) {
-                checkItemService.deleteCheckItemRel(checkItemVo.getPid(), checkItemVo.getId());
-            }
-            if (checkItemVo.getIds() != null && checkItemVo.getIds().size() > 0) {
-                for (int index = 0; index < checkItemVo.getIds().size(); index++) {
-                    int id = checkItemVo.getIds().get(index);
-                    checkItemService.deleteCheckItemRel(checkItemVo.getPid(), id);
-                }
-            }
-        } catch (Exception exception) {
-            log.error("删除点检项关联：", exception);
-            transBaseResponse.setMsg(exception.toString());
-            transBaseResponse.setCode("-1");
-        }
         return transBaseResponse;
     }
 
@@ -151,8 +101,8 @@ public class CheckItemController {
         try {
             checkItemService.updateState(checkItem);
             transBaseResponse.setCode("0");
-        }catch (Exception exception){
-            log.error("更新点检项状态失败：",exception);
+        } catch (Exception exception) {
+            log.error("更新点检项状态失败：", exception);
             transBaseResponse.setMsg(exception.getMessage());
             transBaseResponse.setCode("-1");
         }
@@ -161,7 +111,7 @@ public class CheckItemController {
 
     @ApiOperation(value = "点检项结果录入", notes = "点检项结果录入")
     @RequestMapping(value = "updateResult", method = RequestMethod.POST)
-    public TransBaseResponse updateResult(@RequestBody CheckItemAnswer checkItemAnswer){
+    public TransBaseResponse updateResult(@RequestBody CheckItemAnswer checkItemAnswer) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "checkItemId:点检项ID（checkItemId）");
         String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
@@ -186,7 +136,7 @@ public class CheckItemController {
 
     @ApiOperation(value = "点检项结果查询", notes = "点检项结果查询")
     @RequestMapping(value = "selectResult", method = RequestMethod.POST)
-    public TransBaseResponse select(@RequestBody CheckItemAnswer checkItemAnswer){
+    public TransBaseResponse select(@RequestBody CheckItemAnswer checkItemAnswer) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段-产品关联ID（stageRelId）", "checkItemId:点检项ID（checkItemId）");
         String errorMsg = CheckParamsUtil.checkAll(checkItemAnswer, paramsCheck, null, null);
@@ -200,7 +150,7 @@ public class CheckItemController {
         try {
 
             CheckItemAnswer result = checkItemAnswerService.select(checkItemAnswer);
-            transBaseResponse.setObj(result == null ? new CheckItemAnswer():result);
+            transBaseResponse.setObj(result == null ? new CheckItemAnswer() : result);
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
             logger.error("点检项结果查询失败：", exception);

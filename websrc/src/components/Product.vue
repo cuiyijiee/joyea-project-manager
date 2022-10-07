@@ -15,7 +15,7 @@
       finished-text="没有更多了"
       @load="onLoad">
       <ProductCard v-for="item in productList" :key="item.orderId + '_' + item.productNumber" :item="item"
-                   @click.native="handleClickProductItem(item.productNumber)"/>
+                   @click.native="handleClickProductItem(item.orderId)"/>
     </van-list>
   </div>
 </template>
@@ -61,8 +61,14 @@ export default {
         this.searchLoading = false;
       })
     },
-    handleClickProductItem() {
-
+    handleClickProductItem(orderId) {
+      this.$router.push({
+        path: "/process",
+        query: {
+          orderId: orderId,
+          projectId: this.projectId
+        }
+      })
     }
   },
   mounted() {

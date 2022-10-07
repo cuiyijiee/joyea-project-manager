@@ -188,22 +188,6 @@ public class ProjectStageController {
     @RequestMapping(value = "listCheckItem", method = RequestMethod.POST)
     public TransBaseResponse listCheckItems(@RequestBody TransProjectStageOperationRequest projectStageOperation) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        List<String> paramsCheck = Lists.newArrayList("id:工序索引id（id）");
-        String errorMsg = CheckParamsUtil.checkAll(projectStageOperation, paramsCheck, null, null);
-        if (errorMsg != null) {
-            return TransBaseResponse.failed(errorMsg);
-        }
-        try {
-            List<CheckItem> checkItems = projectStageService.listCheckItems(projectStageOperation);
-            for (int index = 0; index < checkItems.size(); index++) {
-                CheckItem checkItem = checkItems.get(index);
-                checkItemService.addCheckItemAttributes(checkItem);
-                checkItemAnswerService.updateStatus(projectStageOperation.getStageRelId(),checkItem);
-            }
-        } catch (Exception exception) {
-            log.error("列出项目阶段工序失败：" + exception.getMessage());
-            return TransBaseResponse.failed("列出项目阶段工序失败：" + exception.getMessage());
-        }
         return transBaseResponse;
     }
 

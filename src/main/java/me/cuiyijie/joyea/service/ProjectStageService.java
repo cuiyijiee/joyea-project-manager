@@ -40,24 +40,6 @@ public class ProjectStageService {
 
     }
 
-//    @Transactional
-//    public void update(ProjectStage projectStage) {
-//        projectStageDao.update(projectStage);
-//        projectStageDao.deleteStageProductByStageId(projectStage.getId());
-//        if (projectStage.getId() != null) {
-//            if (projectStage.getProducts() != null && projectStage.getProducts().size() > 0) {
-//                for (int index = 0; index < projectStage.getProducts().size(); index++) {
-//                    Product product = projectStage.getProducts().get(index);
-//                    projectStageDao.insertStageProduct(projectStage.getId(), product.getId());
-//                }
-//            } else {
-//                log.info("该工程阶段不包含产品，无需处理");
-//            }
-//        } else {
-//            throw new RuntimeException("更新项目阶段失败！");
-//        }
-//    }
-
     public Integer countProjectStage(Integer projectId){
         return projectStageDao.countProjectStage(projectId);
     }
@@ -81,12 +63,6 @@ public class ProjectStageService {
         projectStageOperation.setParentName(parentTemplate.getName());
         projectStageOperation.setOperationName(operation.getName());
         projectStageOperationDao.insert(projectStageOperation);
-
-        //重新建立索引
-        List<CheckItem> checkItems = checkItemDao.listChild(operation.getId());
-        for (int index = 0; index < checkItems.size(); index++) {
-            projectStageOperationDao.insertCheckItemRel(projectStageOperation.getId(), checkItems.get(index).getId());
-        }
     }
 
     @Transactional
@@ -109,12 +85,6 @@ public class ProjectStageService {
             projectStageOperation.setParentName(parentTemplate.getName());
             projectStageOperation.setOperationName(operation.getName());
             projectStageOperationDao.insert(projectStageOperation);
-
-            //重新建立索引
-            List<CheckItem> checkItems = checkItemDao.listChild(operation.getId());
-            for (int jndex = 0; jndex < checkItems.size(); jndex++) {
-                projectStageOperationDao.insertCheckItemRel(projectStageOperation.getId(), checkItems.get(jndex).getId());
-            }
         }
     }
 

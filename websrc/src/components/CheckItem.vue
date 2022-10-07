@@ -1,0 +1,80 @@
+<template>
+  <div>
+    <van-nav-bar left-arrow left-text="返回" title="点检项信息"
+                 @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
+    <van-tabs v-model="typeActive">
+      <van-tab title="自检"></van-tab>
+      <van-tab title="互检"></van-tab>
+      <van-tab title="第三方"></van-tab>
+    </van-tabs>
+    <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
+    <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
+    <van-list
+      v-model="searchLoading"
+      :finished="!searchHasMore"
+      finished-text="没有更多了"
+      @load="onLoad">
+      <CheckItemCard v-for="item in checkItemList" :key="item.taskId" :item="item"
+                   @click.native="handleClickCheckItem(item.taskId)">
+      </CheckItemCard>
+    </van-list>
+  </div>
+</template>
+
+<script>
+
+import {listCheckItem} from "../api";
+import CheckItemCard from "./CheckItemCard";
+
+export default {
+  name: "CheckItem",
+  components:{
+    CheckItemCard
+  },
+  data() {
+    return {
+      projectId: "",
+      orderId: "",
+      taskId: "",
+      typeActive: "自检",
+      searchKey: "",
+      current: 0,
+      pageSize: 5,
+      checkItemList: [],
+      searchResultCount: 0,
+      searchLoading: false,
+      searchHasMore: true
+    }
+  },
+  methods: {
+    onSearch() {
+
+    },
+    onLoad() {
+      this.listCheckItem();
+    },
+    listCheckItem() {
+      listCheckItem(this.taskId, this.searchKey, this.current + 1, this.pageSize).then(data => {
+        this.checkItemList = this.checkItemList.concat(data.list);
+        this.searchResultCount = data.total;
+        this.searchHasMore = data.hasMore;
+        this.current = data.pageNum;
+      }).finally(() => {
+        this.searchLoading = false;
+      })
+    },
+    handleClickCheckItem() {
+
+    }
+  },
+  mounted() {
+    this.projectId = this.$route.query.projectId;
+    this.orderId = this.$route.query.orderId;
+    this.taskId = this.$route.query.taskId;
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

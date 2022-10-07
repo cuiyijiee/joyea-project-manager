@@ -67,35 +67,6 @@ public class CheckItemPropertyService {
 
     public void updateCheckItemProperty(CheckItem checkItem) {
         List<CheckItemProperty> properties = new ArrayList<>();
-        if (checkItem.getCheckCategoryTypes() != null) {
-            for (int jndex = 0; jndex < checkItem.getCheckCategoryTypes().size(); jndex++) {
-                CheckCategoryType checkCategoryType = checkItem.getCheckCategoryTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.CATEGORY, checkCategoryType.name());
-                properties.add(checkItemProperty);
-            }
-        }
-        if (checkItem.getCheckModuleTypes() != null) {
-            for (int jndex = 0; jndex < checkItem.getCheckModuleTypes().size(); jndex++) {
-                CheckModuleType checkModuleType = checkItem.getCheckModuleTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.MODULE, checkModuleType.name());
-                properties.add(checkItemProperty);
-            }
-        }
-        if (checkItem.getCheckStageTypes() != null) {
-            for (int jndex = 0; jndex < checkItem.getCheckStageTypes().size(); jndex++) {
-                CheckStageType checkStageType = checkItem.getCheckStageTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.STAGE, checkStageType.name());
-                properties.add(checkItemProperty);
-            }
-        }
 
-        CheckItemProperty checkItemProperty = new CheckItemProperty();
-        checkItemProperty.setCheckItemId(checkItem.getId());
-        checkItemPropertyDao.deleteByCheckItemIdAndType(checkItemProperty);
-        for (int index = 0; index < properties.size(); index++) {
-            CheckItemProperty temp = properties.get(index);
-            temp.setCheckItemId(checkItem.getId());
-            checkItemPropertyDao.insert(temp);
-        }
     }
 }
