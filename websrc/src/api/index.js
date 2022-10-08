@@ -27,9 +27,9 @@ export function findProjectSchedule(fid) {
   }).then(resp => resp.data);
 }
 
-export function listProduct(projectId, searchKey, pageNum, pageSize) {
+export function listProduct(xmId, searchKey, pageNum, pageSize) {
   return service.post("api/product/list", {
-    projectId: projectId, productName: searchKey, pageNum: pageNum, pageSize: pageSize
+    xmId: xmId, productName: searchKey, pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }
 
@@ -48,5 +48,11 @@ export function listProcess(orderId, searchKey, pageNum, pageSize) {
 export function listCheckItem(taskId, searchKey, pageNum, pageSize) {
   return service.post("api/checkItem/list", {
     taskId: taskId, checkStandard: searchKey, pageNum: pageNum, pageSize: pageSize
+  }).then(resp => resp.data);
+}
+
+export function listCheckItemResult(cfCheckEntryId, pageNum, pageSize) {
+  return service.post("api/checkItemResult/list", {
+    cfCheckEntryId: cfCheckEntryId, pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }

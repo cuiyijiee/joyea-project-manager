@@ -67,8 +67,15 @@ export default {
         this.searchLoading = false;
       })
     },
-    handleClickCheckItem() {
-
+    handleClickCheckItem(fid) {
+      this.$router.push({
+        path: "/checkItemResult",
+        query: {
+          orderId: this.orderId,
+          projectId: this.projectId,
+          checkItemId: fid
+        }
+      })
     }
   },
   mounted() {

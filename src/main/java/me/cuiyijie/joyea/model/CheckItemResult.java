@@ -15,66 +15,69 @@ public class CheckItemResult {
     @TableField("FNUMBER")
     private String fNumber;
 
-    @TableField("FSIMPLENAME")
-    private String simpleName;
+    @TableField(value = "FSIMPLENAME")
+    private String fSimpleName;
 
     @TableField("FID")
     private String fId;
 
     @TableField("FCREATORID")
-    private String creatorId;
+    private String fCreatorId;
 
     @TableField("FCREATETIME")
-    private Date createTime;
+    private Date fCreateTime;
 
     @TableField("FLASTUPDATEUSERID")
-    private String lastUpdateUserId;
+    private String fLastUpdateUserId;
 
     @TableField("FLASTUPDATETIME")
-    private Date lastUpdateTime;
+    private Date fLastUpdateTime;
 
     @TableField("FCONTROLUNITID")
-    private String controlUnitId;
+    private String fControlUnitId;
 
     @TableField("CFCHECKENTRYID")
-    private String checkEntryId;
+    private String cfCheckEntryId;
 
     @TableField("CFCHECKTYPE")
-    private String checkType;
+    private String fCheckType;
 
-    @TableField("CFCHECKRESULT")
-    private String checkResult;
+    @TableField(value = "CFCHECKRESULT")
+    private String cfCheckResult;
 
-    @TableField("CFREMARK")
-    private String remark;
+    @TableField(value = "CFREMARK")
+    private String cfRemark;
 
     @TableField("CFCHECKPERSONID")
-    private String checkPersonId;
+    private String cfCheckPersonId;
+
+    @TableField(exist = false)
+    private String cfCheckPersonName;
 
     @TableField("CFCHECKDATE")
-    private Date checkDate;
+    private Date cfCheckDate;
 
     @TableField("CFCHECKRECORDS")
-    private String checkRecords;
+    private String cfCheckRecords;
 
     @TableField("FNAME_L1")
-    private String nameL1;
+    private String fNameL1;
 
     @TableField("FNAME_L2")
-    private String nameL2;
+    private String fNameL2;
 
     @TableField("FNAME_L3")
-    private String nameL3;
+    private String fNameL3;
 
     @TableField("FDESCRIPTION_L1")
-    private String descriptionL1;
+    private String fDescriptionL1;
 
     @TableField("FDESCRIPTION_L2")
-    private String descriptionL2;
+    private String fDescriptionL2;
 
     @TableField("FDESCRIPTION_L3")
-    private String descriptionL3;
+    private String fDescriptionL3;
 
     @TableField("CFFIELDTYPE")
-    private String fieldType;
+    private String cfFieldType;
 }

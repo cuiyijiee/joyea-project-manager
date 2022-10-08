@@ -44,7 +44,7 @@ public class ProductController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProductRequest request) {
         Product product = new Product();
-        product.setProjectId(request.getProjectId());
+        product.setXmId(request.getXmId());
         product.setProductName(request.getProductName());
         Page<Product> productPage = productService.list(product, request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(productPage);

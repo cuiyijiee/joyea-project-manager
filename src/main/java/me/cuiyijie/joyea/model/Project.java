@@ -31,22 +31,22 @@ public class Project {
 
     @ApiModelProperty(value = "项目负责人")
     @TableField("XMFZR")
-    private String projectFzr;
+    private String xmFzr;
 
     @ApiModelProperty(value = "项目所属部门")
     @TableField("DEPART")
-    private String projectDepart;
+    private String depart;
 
-    @ApiModelProperty(value = "客户专员")
-    @TableField("KHZY")
-    private String proejctKhzy;
+//    @ApiModelProperty(value = "客户专员")
+//    @TableField("KHZY")
+//    private String proejctKhzy;
 
     @ApiModelProperty(value = "装调部门")
     @TableField("ZDDEPT")
-    private String ZdDept;
+    private String zdDept;
 
     @ApiModelProperty(value = "装调部门负责人")
     @TableField("ZDDEPTMANS")
-    private String ZdDeptMans;
+    private String zdDeptMans;
 
 }

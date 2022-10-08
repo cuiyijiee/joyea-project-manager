@@ -6,8 +6,8 @@
         <van-col span="24"><span class="desc">项目编码：</span>{{ item.fnumber }}</van-col>
       </van-row>
       <van-row>
-        <van-col span="24"><span class="desc">项目经理：</span>{{ item.projectFzr || '' }}</van-col>
-        <van-col span="24"><span class="desc">所属部门：</span>{{ item.projectDepart || '' }}</van-col>
+        <van-col span="24"><span class="desc">项目经理：</span>{{ item.xmFzr || '' }}</van-col>
+        <van-col span="24"><span class="desc">所属部门：</span>{{ item.depart || '' }}</van-col>
       </van-row>
       <van-row>
         <van-col span="24"><span class="desc">装调部门：</span>{{ item.zdDept || '' }}</van-col>

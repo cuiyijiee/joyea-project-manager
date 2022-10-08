@@ -12,7 +12,7 @@ public class TransProductRequest {
     private Integer pageSize = 10;
     private Integer pageNum = 1;
 
-    private String projectId;
+    private String xmId;
     private String productName;
 
     private String orderId;

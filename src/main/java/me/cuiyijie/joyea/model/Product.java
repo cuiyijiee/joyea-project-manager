@@ -18,7 +18,7 @@ public class Product {
 
     @ApiModelProperty(value = "项目ID")
     @TableField("XMID")
-    private String projectId;
+    private String xmId;
 
     @ApiModelProperty(value = "生产订单ID")
     @TableId(value = "ORDERID")

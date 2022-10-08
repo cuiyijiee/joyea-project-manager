@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,8 +30,8 @@ public class CheckItemResultController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse listAll(@RequestBody CheckItemResultVo checkItemResultVo) {
         CheckItemResult checkItemResult = new CheckItemResult();
-        checkItemResult.setCheckEntryId(checkItemResultVo.getCheckEntryId());
-        Page<CheckItemResult> result = checkItemResultService.list(checkItemResult, checkItemResultVo.getPageNum(), checkItemResultVo.getPageSize());
+        checkItemResult.setCfCheckEntryId(checkItemResultVo.getCfCheckEntryId());
+        IPage<CheckItemResult> result = checkItemResultService.list(checkItemResult, checkItemResultVo.getPageNum(), checkItemResultVo.getPageSize());
         return new TransBasePageResponse(result);
     }
 

@@ -21,8 +21,8 @@ public class ProductService {
     public Page<Product> list(Product product, Integer pageNum, Integer pageSize) {
         Page<Product> productPage = new Page<>(pageNum, pageSize);
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.hasLength(product.getProjectId())) {
-            queryWrapper.eq("XMID", product.getProjectId());
+        if (StringUtils.hasLength(product.getXmId())) {
+            queryWrapper.eq("XMID", product.getXmId());
         }
         if (StringUtils.hasLength(product.getProductName())) {
             queryWrapper.and(productQueryWrapper -> {
