@@ -21,6 +21,15 @@ public class ProcessService {
         if (StringUtils.hasLength(process.getOrderId())) {
             processQueryWrapper.eq("ORDERID", process.getOrderId());
         }
+
+        if (StringUtils.hasLength(process.getProcessName())) {
+            processQueryWrapper.and(queryWrapper -> {
+                queryWrapper.like("GXNO",process.getProcessName())
+                        .or()
+                        .like("GXNAME",process.getProcessName());
+            });
+        }
+
         processQueryWrapper.orderByAsc("CFSEQ");
 
         return processDao.selectPage(processPage, processQueryWrapper);

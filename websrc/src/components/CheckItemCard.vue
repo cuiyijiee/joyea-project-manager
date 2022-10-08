@@ -5,12 +5,12 @@
         <van-col span="24"><span class="desc">检验类型：</span>{{ item.typeName || '' }}</van-col>
         <van-col span="24"><span class="desc">
           <van-icon v-if="item.keyItem === 1" name="star"/>
-<!--          <van-icon v-else name="star-o"/>-->
+          <!--          <van-icon v-else name="star-o"/>-->
           检验标准：</span>{{ item.checkStandard || '' }}
         </van-col>
       </van-row>
       <van-row>
-        <van-col span="24"><span class="desc">检验方法：</span>{{ item.typeName1 || 'XXX' }}</van-col>
+        <van-col span="24"><span class="desc">检验方法：</span>{{ item.checkMethod || '' }}</van-col>
       </van-row>
     </div>
   </div>

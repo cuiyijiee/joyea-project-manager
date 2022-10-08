@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar left-arrow left-text="返回" title="产品信息" @click-left="() => {this.$router.push('/')}"/>
-    <van-tabs v-model="typeActive">
+    <van-tabs v-model="typeActive" color="#1989fa">
       <van-tab title="全部"></van-tab>
       <van-tab title="未开始"></van-tab>
       <van-tab title="验证中"></van-tab>
@@ -10,6 +10,7 @@
     <van-search v-model="searchKey" placeholder="搜索产品关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
+      ref="productList"
       v-model="searchLoading"
       :finished="!searchHasMore"
       finished-text="没有更多了"
@@ -45,7 +46,10 @@ export default {
   },
   methods: {
     onSearch() {
-
+      this.current = 0;
+      this.searchHasMore = true;
+      this.productList = [];
+      this.$refs.productList.check();
     },
     onLoad() {
       this.listProduct();

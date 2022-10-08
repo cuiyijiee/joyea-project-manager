@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar left-arrow left-text="返回" title="点检项信息"
                  @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
-    <van-tabs v-model="typeActive">
+    <van-tabs v-model="typeActive" color="#1989fa">
       <van-tab title="自检"></van-tab>
       <van-tab title="互检"></van-tab>
       <van-tab title="第三方"></van-tab>
@@ -10,12 +10,13 @@
     <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
+      ref="checkItemList"
       v-model="searchLoading"
       :finished="!searchHasMore"
       finished-text="没有更多了"
       @load="onLoad">
-      <CheckItemCard v-for="item in checkItemList" :key="item.taskId" :item="item"
-                   @click.native="handleClickCheckItem(item.taskId)">
+      <CheckItemCard v-for="item in checkItemList" :key="item.fid" :item="item"
+                   @click.native="handleClickCheckItem(item.fid)">
       </CheckItemCard>
     </van-list>
   </div>
@@ -48,7 +49,10 @@ export default {
   },
   methods: {
     onSearch() {
-
+      this.current = 0;
+      this.searchHasMore = true;
+      this.checkItemList = [];
+      this.$refs.checkItemList.check();
     },
     onLoad() {
       this.listCheckItem();

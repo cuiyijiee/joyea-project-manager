@@ -25,6 +25,9 @@ public class CheckItemService {
         if (StringUtils.hasLength(checkItem.getTaskId())) {
             queryWrapper.eq("CFTASKID", checkItem.getTaskId());
         }
+        if (StringUtils.hasLength(checkItem.getCheckStandard())) {
+            queryWrapper.like("CFCHECKSTANDARD", checkItem.getCheckStandard());
+        }
         queryWrapper.orderByAsc("CFSEQ");
         return checkItemDao.selectPage(checkItemPage, queryWrapper);
     }

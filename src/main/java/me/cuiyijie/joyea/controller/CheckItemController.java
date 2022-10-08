@@ -44,6 +44,7 @@ public class CheckItemController {
     public TransBasePageResponse listAll(@RequestBody CheckItemVo checkItemVo) {
         CheckItem checkItem = new CheckItem();
         checkItem.setTaskId(checkItemVo.getTaskId());
+        checkItem.setCheckStandard(checkItemVo.getCheckStandard());
         Page<CheckItem> result = checkItemService.list(checkItem, checkItemVo.getPageNum(), checkItemVo.getPageSize());
         return new TransBasePageResponse(result);
     }

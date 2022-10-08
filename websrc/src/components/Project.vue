@@ -4,6 +4,7 @@
     <van-search v-model="searchKey" placeholder="搜索项目关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
+      ref="projectList"
       v-model="searchLoading"
       :finished="!searchHasMore"
       finished-text="没有更多了"
@@ -41,7 +42,7 @@ export default {
       this.current = 0;
       this.searchHasMore = true;
       this.projectList = [];
-      this.listProject();
+      this.$refs.projectList.check();
     },
     onLoad() {
       this.listProject();

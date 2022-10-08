@@ -45,4 +45,10 @@ public class CheckItem {
 
     @TableField("CFTYPENAME")
     private String typeName;
+
+    @TableField("ZYFFID")
+    private String checkMethodId;
+
+    @TableField("ZYFF")
+    private String checkMethod;
 }

@@ -9,5 +9,6 @@ public class TransProcessRequest {
     private Integer pageNum = 1;
 
     private String orderId;
+    private String processName;
 
 }

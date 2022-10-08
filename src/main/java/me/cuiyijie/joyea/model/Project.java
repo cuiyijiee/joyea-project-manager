@@ -41,4 +41,12 @@ public class Project {
     @TableField("KHZY")
     private String proejctKhzy;
 
+    @ApiModelProperty(value = "装调部门")
+    @TableField("ZDDEPT")
+    private String ZdDept;
+
+    @ApiModelProperty(value = "装调部门负责人")
+    @TableField("ZDDEPTMANS")
+    private String ZdDeptMans;
+
 }

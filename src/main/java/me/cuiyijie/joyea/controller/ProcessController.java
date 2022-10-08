@@ -27,6 +27,7 @@ public class ProcessController {
     public TransBaseResponse list(@RequestBody TransProcessRequest request) {
         Process process = new Process();
         process.setOrderId(request.getOrderId());
+        process.setProcessName(request.getProcessName());
         Page<Process> projectPage = processService.select(process, request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(projectPage);
     }
