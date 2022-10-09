@@ -2,8 +2,10 @@ package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
+import me.cuiyijie.joyea.model.CheckItemAttachment;
 import me.cuiyijie.joyea.model.vo.CheckItemVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +21,8 @@ public class CheckItemService {
 
     @Autowired
     private CheckItemDao checkItemDao;
+    @Autowired
+    private CheckItemAttachmentDao checkItemAttachmentDao;
 
     public Page<CheckItem> list(CheckItem checkItem, Integer pageNum, Integer pageSize) {
         Page<CheckItem> checkItemPage = new Page<>(pageNum, pageSize);
@@ -29,7 +34,25 @@ public class CheckItemService {
             queryWrapper.like("CFCHECKSTANDARD", checkItem.getCheckStandard());
         }
         queryWrapper.orderByAsc("CFSEQ");
-        return checkItemDao.selectPage(checkItemPage, queryWrapper);
+
+        Page<CheckItem> checkItemPageResult = checkItemDao.selectPage(checkItemPage, queryWrapper);
+        for (int index = 0; index < checkItemPageResult.getRecords().size(); index++) {
+            CheckItem checkItem1 = checkItemPageResult.getRecords().get(index);
+            String ffid = checkItem1.getCheckMethodId();
+            List<CheckItemAttachment> attachmentList = new ArrayList<>();
+            if (StringUtils.hasLength(ffid)) {
+                String[] ffids = ffid.split(",");
+                for (int i = 0; i < ffids.length; i++) {
+                    String attachId = ffids[i];
+                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+                    if (checkItemAttachment != null) {
+                        attachmentList.add(checkItemAttachment);
+                    }
+                }
+            }
+            checkItem1.setAttachmentList(attachmentList);
+        }
+        return checkItemPageResult;
     }
 
     public List<CheckItem> listChild(Integer id) {

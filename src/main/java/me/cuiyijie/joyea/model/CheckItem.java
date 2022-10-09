@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @TableName("VW_SYX_ZLGL_DJX")
 @ApiModel(value = "点检项信息")
@@ -51,4 +53,7 @@ public class CheckItem {
 
     @TableField("ZYFF")
     private String checkMethod;
+
+    @TableField(exist = false)
+    private List<CheckItemAttachment> attachmentList;
 }
