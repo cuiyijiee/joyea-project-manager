@@ -3,6 +3,7 @@
     <van-nav-bar left-arrow left-text="返回" title="点检项操作"
                  @click-left="() => {this.$router.push({path:'/checkItem',query:{projectId:projectId,orderId:orderId,taskId:taskId}})}"/>
     <van-divider>共 {{ searchResultCount }} 条点检记录</van-divider>
+    <van-button style="width: 100%" type="info">新增点检记录</van-button>
     <van-list
       ref="checkItemResultList"
       v-model="searchLoading"
@@ -29,7 +30,8 @@
               <van-col span="24"><span class="desc">检验人：</span>{{ item.cfCheckPersonName || '' }}</van-col>
               <van-col span="24"><span class="desc">检验时间：</span>{{ item.cfCheckDate || '' }}</van-col>
               <van-col span="24"><span class="desc">检验结果：</span>
-                <span :class="{'green-color':((item.cfCheckResult || '2') === '1') , 'red-color':((item.cfCheckResult || '2') === '2')}">
+                <span
+                  :class="{'green-color':((item.cfCheckResult || '2') === '1') , 'red-color':((item.cfCheckResult || '2') === '2')}">
                   {{ (item.cfCheckResult || '2') === '1' ? '合格' : '不合格' }}
                 </span>
               </van-col>

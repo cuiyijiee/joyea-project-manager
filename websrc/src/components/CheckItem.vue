@@ -16,7 +16,7 @@
       finished-text="没有更多了"
       @load="onLoad">
       <CheckItemCard v-for="item in checkItemList" :key="item.fid" :item="item"
-                   @click.native="handleClickCheckItem(item.fid)">
+                     @click.native="handleClickCheckItem(item.fid)">
       </CheckItemCard>
     </van-list>
   </div>
@@ -29,7 +29,7 @@ import CheckItemCard from "./CheckItemCard";
 
 export default {
   name: "CheckItem",
-  components:{
+  components: {
     CheckItemCard
   },
   data() {
@@ -73,6 +73,7 @@ export default {
         query: {
           orderId: this.orderId,
           projectId: this.projectId,
+          taskId: this.taskId,
           checkItemId: fid
         }
       })

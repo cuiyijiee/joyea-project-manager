@@ -11,6 +11,15 @@
       </van-row>
       <van-row>
         <van-col span="24"><span class="desc">检验方法：</span>{{ item.checkMethod || '' }}</van-col>
+        <van-col span="24">
+          <van-grid :border="false" :column-num="3">
+            <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
+              <van-image v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
+                         :src="'/api/checkItemAttachment/download?attachId=' + attach.fid"/>
+              <van-image v-else :src="defaultImg"/>
+            </van-grid-item>
+          </van-grid>
+        </van-col>
       </van-row>
     </div>
   </div>
@@ -25,7 +34,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      defaultImg: require("@/assets/unknown.png")
+    }
   },
   methods: {},
   mounted() {
@@ -50,5 +61,9 @@ div.container {
 
 span.desc {
   color: dimgray;
+}
+
+.van-col {
+  margin: 5px 0;
 }
 </style>

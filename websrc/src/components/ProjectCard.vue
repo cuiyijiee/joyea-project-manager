@@ -4,12 +4,8 @@
       <van-row>
         <van-col span="24"><span class="desc">项目名称：</span>{{ item.projectName }}</van-col>
         <van-col span="24"><span class="desc">项目编码：</span>{{ item.fnumber }}</van-col>
-      </van-row>
-      <van-row>
         <van-col span="24"><span class="desc">项目经理：</span>{{ item.xmFzr || '' }}</van-col>
         <van-col span="24"><span class="desc">所属部门：</span>{{ item.depart || '' }}</van-col>
-      </van-row>
-      <van-row>
         <van-col span="24"><span class="desc">装调部门：</span>{{ item.zdDept || '' }}</van-col>
         <van-col span="24"><span class="desc">装调部门负责人：</span>{{ item.zdDeptMans || '' }}</van-col>
       </van-row>
@@ -19,7 +15,6 @@
         <van-col span="10"><span class="desc">完成率</span></van-col>
         <van-col span="10"><span class="desc">合格率</span></van-col>
       </van-row>
-
       <van-row>
         <van-col span="4"><span class="desc">自检</span></van-col>
         <van-col span="10">
@@ -91,4 +86,9 @@ div.container {
 span.desc {
   color: dimgray;
 }
+
+.van-col {
+  margin: 5px 0;
+}
+
 </style>

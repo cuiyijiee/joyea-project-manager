@@ -1,10 +1,13 @@
 package me.cuiyijie.joyea.service;
 
 import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
+import me.cuiyijie.joyea.model.CheckItemAttachment;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -31,13 +34,19 @@ public class CheckItemAttachmentService {
     private String loginUrl = "http://47.99.45.18:7998/ormrpc/services/EASLogin";
     @Value("${eas.attachment.url}")
     private String getAttachmentUrl = "http://47.99.45.18:7998/ormrpc/services/WSAttachmentFacade";
+    @Value("${eas.attachment.tmp.dir}")
+    private String attachmentTempDir;
+    @Autowired
+    private CheckItemAttachmentDao checkItemAttachmentDao;
 
     private long lastLoginTimestamp = 0L;
 
-    public String getPreviewFilePath() {
-
-
-        return "";
+    public File getPreviewFilePath(String attachId) {
+        CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+        if(checkItemAttachment != null) {
+            return downloadFile(checkItemAttachment);
+        }
+        return null;
     }
 
     public void login() {
@@ -68,21 +77,29 @@ public class CheckItemAttachmentService {
         }
     }
 
-    public void getAttachment(String attachmentId) {
-        long startTimestamp = System.currentTimeMillis();
+    public File downloadFile(CheckItemAttachment checkItemAttachment) {
+
+        //检查本地是否已经存在待下载的文件
+        String localFileName = attachmentTempDir + "/" + getFileName(checkItemAttachment.getFRemotePath());
+        File localFile = new File(localFileName);
+        if (localFile.exists()) {
+            return localFile;
+        }
 
         if (lastLoginTimestamp == 0L || System.currentTimeMillis() - lastLoginTimestamp > 30 * 60 * 1000) {
             login();
             lastLoginTimestamp = System.currentTimeMillis();
         }
 
+        long startTimestamp = System.currentTimeMillis();
         log.info("start time: " + startTimestamp);
+
         try {
             String soap = "<soapenv:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://webservice.app.common.custom.eas.kingdee.com\">\n" +
                     "   <soapenv:Header/>\n" +
                     "   <soapenv:Body>\n" +
                     "      <web:getAttachmentFromFTP soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n" +
-                    "         <attachmentId xsi:type=\"xsd:string\">" + attachmentId + "</attachmentId>\n" +
+                    "         <attachmentId xsi:type=\"xsd:string\">" + checkItemAttachment.getAttachFid() + "</attachmentId>\n" +
                     "      </web:getAttachmentFromFTP>\n" +
                     "   </soapenv:Body>\n" +
                     "</soapenv:Envelope>";
@@ -99,8 +116,7 @@ public class CheckItemAttachmentService {
             Node node = document.getRootElement().selectSingleNode("//soapenv:Envelope/soapenv:Body");
             if (node != null) {
                 String fileBase64 = ((Element) node).elements().get(0).selectSingleNode("getAttachmentFromFTPReturn").getText();
-                String originFileName = "/Users/cuiyijie/Desktop/十工位更改前后，及未来图纸对比说明.xlsx";
-                base64ToFile(fileBase64, originFileName);
+                base64ToFile(fileBase64, localFileName);
             }
         } catch (Exception exception) {
             log.error("fetch attachment exist error", exception);
@@ -109,6 +125,12 @@ public class CheckItemAttachmentService {
             log.info("end time: " + endTimestamp);
             log.info("total time: " + (endTimestamp - startTimestamp) / 1000 + "s");
         }
+        return localFile;
+    }
+
+    public String getFileName(String fullFilePath) {
+        File file = new File(fullFilePath);
+        return file.getName();
     }
 
     public static void base64ToFile(String base64, String fullFilePath) {

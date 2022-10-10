@@ -45,4 +45,8 @@ div.container {
 span.desc {
   color: dimgray;
 }
+
+.van-col {
+  margin: 5px 0;
+}
 </style>

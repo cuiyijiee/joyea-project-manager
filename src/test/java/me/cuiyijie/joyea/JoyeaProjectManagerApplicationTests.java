@@ -36,8 +36,10 @@ class JoyeaProjectManagerApplicationTests {
 //        checkItemAttachmentService.login();
 //        checkItemAttachmentService.getAttachment("NMUAAAOcGK70r08D");
 
-        Page<CheckItemAttachment> attachmentPage = checkItemAttachmentDao.selectPage(new Page<>(0,10),new QueryWrapper<>());
-        log.info("attachment page: " + attachmentPage);
+//        Page<CheckItemAttachment> attachmentPage = checkItemAttachmentDao.selectPage(new Page<>(0,10),new QueryWrapper<>());
+//        log.info("attachment page: " + attachmentPage);
+
+        log.info("real file name: " + checkItemAttachmentService.getFileName("/mnt/sdb1/eas/EAS/2AA228EC/20160215/20160217140719953_20160217140603106.xlsx"));
     }
 
 }
