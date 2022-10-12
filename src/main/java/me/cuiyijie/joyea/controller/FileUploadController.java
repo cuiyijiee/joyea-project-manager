@@ -54,7 +54,7 @@ public class FileUploadController {
             SysFileUpload sysFileUpload = new SysFileUpload();
             sysFileUpload.setId(fileSaveId);
             sysFileUpload.setFileSuffix(fileSuffix);
-            sysFileUpload.setCreatedBy(currentUserInfo.getId());
+            sysFileUpload.setCreatedBy(currentUserInfo.getEasUserId());
             sysFileUpload.setOriginFileName(multipartFile.getOriginalFilename());
             sysFileUploadService.insert(sysFileUpload);
 

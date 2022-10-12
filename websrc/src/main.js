@@ -10,12 +10,20 @@ Vue.use(Vant);
 
 import App from './App'
 import router from './router'
+import store from "./store";
 
 Vue.config.productionTip = false;
+
+import VConsole from 'vconsole'
+
+if (process.env.NODE_ENV !== 'production') {
+  new VConsole()
+}
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: {App},
   template: '<App/>'

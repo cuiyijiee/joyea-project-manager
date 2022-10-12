@@ -22,10 +22,23 @@ public class NextPlusUserProfileResp {
     private String ytmOpenId;
     //一森组织id
     private String tenantId;
+    //仅一eas用户id
+    private String easUserId;
 
+    private String position;
+
+    private String departmentId;
+
+    private String departmentName;
+
+    private String departmentType;
+
+    private String yzjOpenId;
+
+    private String extendInfo;
 
     public String getToken() {
-        return JwtUtil.createToken(this.id);
+        return JwtUtil.createToken(this.easUserId);
     }
 
 }

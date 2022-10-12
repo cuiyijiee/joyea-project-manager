@@ -38,6 +38,7 @@
               <van-col span="24"><span class="desc">检验依据：</span>{{ item.cfCheckRecords || '' }}</van-col>
               <van-col span="24"><span class="desc">图片视频：</span>{{ item.processName || '' }}</van-col>
               <van-col span="24"><span class="desc">检验附件：</span>{{ item.processName || '' }}</van-col>
+              <van-uploader :after-read="afterRead" />
             </van-row>
           </van-collapse-item>
         </van-collapse>
@@ -83,6 +84,9 @@ export default {
       })
     },
     handleClickCheckItemResult() {
+
+    },
+    afterRead(){
 
     }
   },

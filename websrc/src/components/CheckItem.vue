@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar left-arrow left-text="返回" title="点检项信息"
                  @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
-    <van-tabs v-model="typeActive" color="#1989fa">
+    <van-tabs v-model="typeActive" color="#1989fa" @change="handleTagChange">
       <van-tab title="自检"></van-tab>
       <van-tab title="互检"></van-tab>
       <van-tab title="第三方"></van-tab>
@@ -48,6 +48,13 @@ export default {
     }
   },
   methods: {
+    handleTagChange(index){
+      if(index === 2) {
+
+      }else{
+
+      }
+    },
     onSearch() {
       this.current = 0;
       this.searchHasMore = true;

@@ -1,4 +1,7 @@
 import axios from 'axios'
+import store from "../store";
+import constants from "../constants";
+import router from "../router";
 
 // 创建axios实例
 const service = axios.create({
@@ -8,12 +11,42 @@ const service = axios.create({
 });
 
 service.interceptors.request.use(config => {
-  config.headers['X-TOKEN'] = "test";
+  if (store.state.token) {
+    config.headers['X-TOKEN'] = store.state.token;
+  }
   return config;
 }, error => {
   return Promise.reject(error);
 });
 
+service.interceptors.response.use(config => {
+  if (config.data) {
+    switch (config.data.code) {
+      case constants.USER_NOT_AUTH_CODE:
+        try {
+          this.$store.commit('delToken');
+        } catch (e) {
+        }
+        router.replace({
+          path: '/login',
+          query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
+        })
+    }
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+})
+
+export function getTicket() {
+  return service.post("api/nextplus/ticket", {}).then(resp => resp.data);
+}
+
+export function getProfile(authCode) {
+  return service.post("api/nextplus/profile", {
+    authCode: authCode
+  }).then(resp => resp.data);
+}
 
 export function listProject(searchKey, pageNum, pageSize) {
   return service.post("api/project/list", {
