@@ -13,13 +13,19 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
+      '/apiv2/': {
+        target: "http://sck.joyea.cn:8000",
+        changeOrigin: true,
+        pathRewrite: {
+        }
+      },
+      '/api/': {
         target: "http://127.0.0.1:8000",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
         }
-      }
+      },
     },
 
     // Various Dev Server settings

@@ -84,8 +84,26 @@ export function listCheckItem(taskId, searchKey, pageNum, pageSize) {
   }).then(resp => resp.data);
 }
 
+export function findCheckItem(fid) {
+  return service.post("api/checkItem/find", {
+    fid: fid
+  }).then(resp => resp.data);
+}
+
 export function listCheckItemResult(cfCheckEntryId, pageNum, pageSize) {
   return service.post("api/checkItemResult/list", {
     cfCheckEntryId: cfCheckEntryId, pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }
+
+export function insertCheckItemResult(data) {
+  return service.post("api/checkItemResult/insert", data).then(resp => resp.data);
+}
+
+/******************filez start******************/
+
+export function getUploadFileRegion(filename) {
+  return service.get("api/filez/upload/region/" + filename, {}).then(resp => resp.data);
+}
+
+/******************filez end******************/

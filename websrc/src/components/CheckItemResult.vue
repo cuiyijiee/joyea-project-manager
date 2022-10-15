@@ -3,7 +3,7 @@
     <van-nav-bar left-arrow left-text="返回" title="点检项操作"
                  @click-left="() => {this.$router.push({path:'/checkItem',query:{projectId:projectId,orderId:orderId,taskId:taskId}})}"/>
     <van-divider>共 {{ searchResultCount }} 条点检记录</van-divider>
-    <van-button style="width: 100%" type="info">新增点检记录</van-button>
+    <van-button style="width: 100%" type="info" @click="onClickAddResult">新增点检记录</van-button>
     <van-list
       ref="checkItemResultList"
       v-model="searchLoading"
@@ -38,26 +38,73 @@
               <van-col span="24"><span class="desc">检验依据：</span>{{ item.cfCheckRecords || '' }}</van-col>
               <van-col span="24"><span class="desc">图片视频：</span>{{ item.processName || '' }}</van-col>
               <van-col span="24"><span class="desc">检验附件：</span>{{ item.processName || '' }}</van-col>
-              <van-uploader :after-read="afterRead" />
+
             </van-row>
           </van-collapse-item>
         </van-collapse>
       </div>
     </van-list>
+    <van-popup v-model="addResultVisible" position="bottom" style="padding-bottom: 18px" closeable>
+      <van-nav-bar title="新增点检记录"/>
+      <van-form @submit="onSubmitNewCheckResult">
+        <van-field name="radio" label="检验结果" required>
+          <template #input>
+            <van-radio-group v-model="checkResultRadio" direction="horizontal">
+              <van-radio name="1">合格</van-radio>
+              <van-radio name="2">不合格</van-radio>
+              <van-radio name="3">不涉及</van-radio>
+            </van-radio-group>
+          </template>
+        </van-field>
+        <van-field v-model="checkStandard" placeholder="请填写检验依据" label="检验依据" :required="currentCheckItem.needText"/>
+        <van-field name="uploader" label="图片附件" :required="currentCheckItem.needPicture">
+          <template #input>
+            <van-uploader v-model="pictureFilePreviewList" :after-read="(file) => afterRead(file,'picture')"
+                          accept="image/*"/>
+          </template>
+        </van-field>
+        <van-field name="uploader" label="视频附件" :required="currentCheckItem.needVideo">
+          <template #input>
+            <van-uploader v-model="videoFilePreviewList" :after-read="(file) => afterRead(file,'video')"
+                          accept="video/*"/>
+          </template>
+        </van-field>
+        <van-field name="uploader" label="通用附件" :required="currentCheckItem.needAttachment">
+          <template #input>
+            <van-uploader v-model="commonFilePreviewList" :after-read="(file) => afterRead(file,'attachment')"
+                          accept="all"/>
+          </template>
+        </van-field>
+        <div style="margin: 16px;">
+          <van-button round block type="info" native-type="submit">提交</van-button>
+        </div>
+      </van-form>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import {listCheckItemResult} from "../api";
+import {listCheckItemResult, findCheckItem, insertCheckItemResult} from "../api";
+import {upload} from "../api/fileUpload";
 
 export default {
   name: "CheckItemResult",
   data() {
     return {
+
+      checkResultRadio: "",
+      checkStandard: "",
+      pictureFilePreviewList: [],
+      videoFilePreviewList: [],
+      commonFilePreviewList: [],
+
       projectId: "",
       orderId: "",
       taskId: "",
       checkItemId: "",
+
+      currentCheckItem: {},
+
       typeActive: "自检",
       searchKey: "",
       current: 0,
@@ -66,7 +113,8 @@ export default {
       searchResultCount: 0,
       searchLoading: false,
       searchHasMore: true,
-      activeNames: []
+      activeNames: [],
+      addResultVisible: false,
     }
   },
   methods: {
@@ -86,8 +134,66 @@ export default {
     handleClickCheckItemResult() {
 
     },
-    afterRead(){
+    onSubmitNewCheckResult() {
+      if (!this.checkResultRadio) {
+        this.$notify({type: 'warning', message: '请填写检验结果！'});
+        return;
+      }
+      if (this.currentCheckItem.needText && !this.checkStandard) {
+        this.$notify({type: 'warning', message: '请填写检验依据！'});
+        return;
+      }
+      if (this.currentCheckItem.needPicture && this.pictureFilePreviewList.length <= 0) {
+        this.$notify({type: 'warning', message: '请上传图片附件！'});
+        return;
+      }
+      if (this.currentCheckItem.needVideo && this.videoFilePreviewList.length <= 0) {
+        this.$notify({type: 'warning', message: '请上传视频附件！'});
+        return;
+      }
+      if (this.currentCheckItem.needAttachment && this.commonFilePreviewList.length <= 0) {
+        this.$notify({type: 'warning', message: '请上传通用附件！'});
+        return;
+      }
+      let newCheckResultForm = {
 
+        cfCheckEntryId: this.checkItemId,
+        cfCheckResult: this.checkResultRadio,
+        cfCheckRecords: this.checkStandard,
+
+        attachmentList: this.pictureFilePreviewList.map(file => {
+          return {lenovoId: file.neid, fileName: file.file.name, mimeType: file.mimeType, fileType: "1"};
+        }).concat(this.videoFilePreviewList.map(file => {
+          return {lenovoId: file.neid, fileName: file.file.name, mimeType: file.mimeType, fileType: "2"};
+        })).concat(this.commonFilePreviewList.map(file => {
+          return {lenovoId: file.neid, fileName: file.file.name, mimeType: file.mimeType, fileType: "3"};
+        }))
+      }
+
+      insertCheckItemResult(newCheckResultForm).then(resp => {
+        console.log("resp: " + JSON.stringify(resp))
+      }).finally(() => {
+        this.addResultVisible = false;
+        this.listCheckItemResult();
+      })
+      console.log(JSON.stringify(newCheckResultForm));
+    },
+    afterRead(file, fileType) {
+      file.status = 'uploading';
+      file.message = '上传中...';
+      upload(file).then(uploadResult => {
+
+        file.status = 'done';
+        file.message = '上传成功';
+
+        file.neid = uploadResult.neid;
+        file.mimeType = uploadResult.mime_type;
+      }).finally(() => {
+        console.log("upload success");
+      })
+    },
+    onClickAddResult() {
+      this.addResultVisible = !this.addResultVisible;
     }
   },
   mounted() {
@@ -95,6 +201,13 @@ export default {
     this.orderId = this.$route.query.orderId;
     this.taskId = this.$route.query.taskId;
     this.checkItemId = this.$route.query.checkItemId;
+    findCheckItem(this.checkItemId).then(resp => {
+      if (resp.code === '0') {
+        this.currentCheckItem = resp.obj;
+      } else {
+
+      }
+    })
   }
 }
 </script>

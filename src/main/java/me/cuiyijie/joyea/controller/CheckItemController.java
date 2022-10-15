@@ -49,6 +49,15 @@ public class CheckItemController {
         return new TransBasePageResponse(result);
     }
 
+    @ApiOperation(value = "获取点检项", notes = "获取点检项")
+    @RequestMapping(value = "find", method = RequestMethod.POST)
+    public TransBaseResponse find(@RequestBody CheckItemVo checkItemVo) {
+        CheckItem checkItem = new CheckItem();
+        checkItem.setFid(checkItemVo.getFid());
+        CheckItem result = checkItemService.find(checkItem);
+        return TransBaseResponse.success(result);
+    }
+
     @ApiOperation(value = "新增点检项", notes = "新增点检项")
     @RequestMapping(value = "insert", method = RequestMethod.POST)
     public TransBaseResponse insert(@RequestBody CheckItem checkItem) {

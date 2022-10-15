@@ -1,11 +1,15 @@
 package me.cuiyijie.joyea.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import nonapi.io.github.classgraph.json.Id;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName("CT_PRE_QUALITYCHECKRESULT")
@@ -18,7 +22,7 @@ public class CheckItemResult {
     @TableField(value = "FSIMPLENAME")
     private String fSimpleName;
 
-    @TableField("FID")
+    @TableId(value = "FID", type = IdType.ASSIGN_UUID)
     private String fId;
 
     @TableField("FCREATORID")
@@ -80,4 +84,7 @@ public class CheckItemResult {
 
     @TableField("CFFIELDTYPE")
     private String cfFieldType;
+
+    @TableField(exist = false)
+    private List<CheckItemResultAttachment> attachmentList;
 }

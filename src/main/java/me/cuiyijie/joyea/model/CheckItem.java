@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @ApiModel(value = "点检项信息")
 public class CheckItem {
 
-    @TableField("FID")
+    @TableId("FID")
     private String fid;
 
     @TableField("CFTASKID")

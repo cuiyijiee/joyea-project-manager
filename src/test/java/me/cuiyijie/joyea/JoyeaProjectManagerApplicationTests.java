@@ -7,7 +7,9 @@ import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.ProjectDao;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
 import me.cuiyijie.joyea.model.Project;
+import me.cuiyijie.joyea.pojo.FilezUploadFileRegionResp;
 import me.cuiyijie.joyea.service.CheckItemAttachmentService;
+import me.cuiyijie.joyea.service.FilezService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +30,9 @@ class JoyeaProjectManagerApplicationTests {
     @Autowired
     private CheckItemAttachmentDao checkItemAttachmentDao;
 
+    @Autowired
+    private FilezService filezService;
+
     @Test
     void contextLoads() {
 //        List<Project> projectList = newProjectDao.selectList(new QueryWrapper<>());
@@ -39,7 +44,9 @@ class JoyeaProjectManagerApplicationTests {
 //        Page<CheckItemAttachment> attachmentPage = checkItemAttachmentDao.selectPage(new Page<>(0,10),new QueryWrapper<>());
 //        log.info("attachment page: " + attachmentPage);
 
-        log.info("real file name: " + checkItemAttachmentService.getFileName("/mnt/sdb1/eas/EAS/2AA228EC/20160215/20160217140719953_20160217140603106.xlsx"));
+//        log.info("real file name: " + checkItemAttachmentService.getFileName("/mnt/sdb1/eas/EAS/2AA228EC/20160215/20160217140719953_20160217140603106.xlsx"));
+        FilezUploadFileRegionResp region = filezService.getUploadFileRegion("测试文件");
+        log.info("get upload file region: " + region);
     }
 
 }

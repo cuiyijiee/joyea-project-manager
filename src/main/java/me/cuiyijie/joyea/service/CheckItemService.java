@@ -55,6 +55,26 @@ public class CheckItemService {
         return checkItemPageResult;
     }
 
+    public CheckItem find(CheckItem checkItem) {
+        CheckItem checkItem1 = checkItemDao.selectById(checkItem.getFid());
+        if(checkItem1 != null) {
+            String ffid = checkItem1.getCheckMethodId();
+            List<CheckItemAttachment> attachmentList = new ArrayList<>();
+            if (StringUtils.hasLength(ffid)) {
+                String[] ffids = ffid.split(",");
+                for (int i = 0; i < ffids.length; i++) {
+                    String attachId = ffids[i];
+                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+                    if (checkItemAttachment != null) {
+                        attachmentList.add(checkItemAttachment);
+                    }
+                }
+            }
+            checkItem1.setAttachmentList(attachmentList);
+        }
+        return checkItem1;
+    }
+
     public List<CheckItem> listChild(Integer id) {
         List<CheckItem> checkItems = checkItemDao.listChild(id);
         return checkItems;
