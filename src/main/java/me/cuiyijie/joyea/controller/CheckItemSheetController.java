@@ -3,15 +3,13 @@ package me.cuiyijie.joyea.controller;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.cuiyijie.joyea.model.Sheet;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.model.SheetColumn;
 import me.cuiyijie.joyea.model.SheetData;
 import me.cuiyijie.joyea.model.vo.SheetColumnVo;
 import me.cuiyijie.joyea.pojo.request.*;
 import me.cuiyijie.joyea.service.SheetService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +22,11 @@ import java.util.List;
  * @Author: cuiyijie
  * @Date: 2021/12/24 16:28
  */
+@Slf4j
 @RestController
 @RequestMapping("checkItemSheet")
 @Api(tags = "点检项表格模块")
 public class CheckItemSheetController {
-
-
-    private static final Logger logger = LoggerFactory.getLogger(CheckItemSheetController.class);
 
     @Autowired
     private SheetService sheetService;
@@ -46,7 +42,7 @@ public class CheckItemSheetController {
             transBasePageResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("获取所有的表格分类失败：", exception);
+            log.error("获取所有的表格分类失败：", exception);
             transBasePageResponse.setMsg("获取所有的表格分类失败：" + exception.getMessage());
             transBasePageResponse.setCode("-1");
             return transBasePageResponse;
@@ -63,7 +59,7 @@ public class CheckItemSheetController {
             transBasePageResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("列出表格失败：", exception);
+            log.error("列出表格失败：", exception);
             transBasePageResponse.setMsg("列出表格失败：" + exception.getMessage());
             transBasePageResponse.setCode("-1");
             return transBasePageResponse;
@@ -83,7 +79,7 @@ public class CheckItemSheetController {
                 );
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -95,7 +91,7 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("新增表格失败：", exception);
+            log.error("新增表格失败：", exception);
             transBaseResponse.setMsg("新增表格失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -115,7 +111,7 @@ public class CheckItemSheetController {
         );
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -127,7 +123,7 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("更新表格失败：", exception);
+            log.error("更新表格失败：", exception);
             transBaseResponse.setMsg("更新表格失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -145,7 +141,7 @@ public class CheckItemSheetController {
         );
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -157,7 +153,7 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("删除表格失败：", exception);
+            log.error("删除表格失败：", exception);
             transBaseResponse.setMsg("删除表格失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -173,7 +169,7 @@ public class CheckItemSheetController {
         List<String> paramsCheck = Lists.newArrayList("id:表格ID（id）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -185,7 +181,7 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("获取表格所有表头失败：", exception);
+            log.error("获取表格所有表头失败：", exception);
             transBaseResponse.setMsg("获取表格所有表头失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -200,7 +196,7 @@ public class CheckItemSheetController {
         List<String> paramsCheck = Lists.newArrayList("sheetId:表格ID（sheetId）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -215,7 +211,7 @@ public class CheckItemSheetController {
             transBaseResponse.setCode("0");
 
         } catch (Exception exception) {
-            logger.error("获取表格所有表头失败：", exception);
+            log.error("获取表格所有表头失败：", exception);
             transBaseResponse.setMsg("获取表格所有表头失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -230,7 +226,7 @@ public class CheckItemSheetController {
         List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段id（stageRelId）", "sheetId:表格ID（sheetId）");
         String errorMsg = CheckParamsUtil.checkAll(sheetData, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -241,7 +237,7 @@ public class CheckItemSheetController {
             transBaseResponse.setList(result);
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("列出表格所有数据失败：", exception);
+            log.error("列出表格所有数据失败：", exception);
             transBaseResponse.setMsg("列出表格所有数据失败：" + exception);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -256,7 +252,7 @@ public class CheckItemSheetController {
         List<String> paramsCheck = Lists.newArrayList("stageRelId:阶段id（stageRelId）", "sheetId:表格ID（sheetId）");
         String errorMsg = CheckParamsUtil.checkAll(request, paramsCheck, null, null);
         if (errorMsg != null) {
-            logger.error("参数检查错误：" + errorMsg);
+            log.error("参数检查错误：" + errorMsg);
             transBaseResponse.setMsg(errorMsg);
             transBaseResponse.setCode("-1");
             return transBaseResponse;
@@ -270,7 +266,7 @@ public class CheckItemSheetController {
             sheetService.updateAllData(request.getSheetId(), request.getStageRelId(), request.getSheetData());
             transBaseResponse.setCode("0");
         } catch (Exception exception) {
-            logger.error("更新表格数据失败：", exception);
+            log.error("更新表格数据失败：", exception);
             transBaseResponse.setMsg("更新表格数据失败：" + exception.getMessage());
             transBaseResponse.setCode("-1");
             return transBaseResponse;

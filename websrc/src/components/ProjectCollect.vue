@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-    <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
+    <van-nav-bar title="我的收藏项目"
+                 left-arrow left-text="返回" @click-left="() => {this.$router.push('/project')}"/>
     <van-search v-model="searchKey" placeholder="搜索项目关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
@@ -15,14 +16,13 @@
   </div>
 </template>
 
-
 <script>
 import ProjectCard from "./ProjectCard";
 
-import {listProject} from "../api";
+import {listProjectCollect} from "../api";
 
 export default {
-  name: 'Project',
+  name: 'ProjectCollect',
   components: {
     ProjectCard
   },
@@ -48,7 +48,7 @@ export default {
       this.listProject();
     },
     listProject() {
-      listProject(this.searchKey, this.current + 1, this.pageSize).then(data => {
+      listProjectCollect(this.searchKey, this.current + 1, this.pageSize).then(data => {
         this.projectList = this.projectList.concat(data.list);
         this.searchResultCount = data.total;
         this.searchHasMore = data.hasMore;
@@ -65,8 +65,8 @@ export default {
         query: {projectId: fid}
       })
     },
-    handleClickMyFav(){
-      this.$router.replace("/projectCollect")
+    handleClickMyFav() {
+
     }
   },
   mounted() {

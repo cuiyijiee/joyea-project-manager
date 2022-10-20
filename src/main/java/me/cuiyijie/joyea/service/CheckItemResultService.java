@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.toolkit.MPJWrappers;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CheckItemResultService {
@@ -26,13 +28,22 @@ public class CheckItemResultService {
     public IPage<CheckItemResult> list(CheckItemResult checkItemResult, Integer pageNum, Integer pageSize) {
         Page<CheckItemResult> checkItemResultPage = new Page<>(pageNum, pageSize);
 
-        return checkItemResultDao.selectJoinPage(checkItemResultPage, CheckItemResult.class,
+        IPage<CheckItemResult> checkItemResultIPage = checkItemResultDao.selectJoinPage(checkItemResultPage, CheckItemResult.class,
                 MPJWrappers.<CheckItemResult>lambdaJoin()
                         .selectAll(CheckItemResult.class)
                         .selectAs(Person::getFName, CheckItemResult::getCfCheckPersonName)
                         .leftJoin(Person.class, Person::getFid, CheckItemResult::getCfCheckPersonId)
                         .eq(CheckItemResult::getCfCheckEntryId, checkItemResult.getCfCheckEntryId())
+                        .orderByDesc(CheckItemResult::getCfCheckDate)
         );
+
+        checkItemResultIPage.getRecords().forEach(record -> {
+            List<CheckItemResultAttachment> attachmentList = checkItemResultAttachmentDao
+                    .selectList(new QueryWrapper<CheckItemResultAttachment>().eq("CHECKRESULTID", record.getFId()));
+            record.setAttachmentList(attachmentList);
+        });
+
+        return checkItemResultIPage;
 //        QueryWrapper<CheckItemResult> checkItemResultQueryWrapper = new QueryWrapper<>();
 //        if (StringUtils.hasLength(checkItemResult.getCheckEntryId())) {
 //            checkItemResultQueryWrapper.eq("CFCHECKENTRYID", checkItemResult.getCheckEntryId());

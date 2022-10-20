@@ -1,6 +1,7 @@
 <template>
   <div>
-    <van-nav-bar left-arrow left-text="返回" title="产品信息" @click-left="() => {this.$router.push('/')}"/>
+    <van-nav-bar title="产品信息"
+                 left-arrow left-text="返回" @click-left="() => {this.$router.push('/project')}"/>
     <van-tabs v-model="typeActive" color="#1989fa">
       <van-tab title="全部"></van-tab>
       <van-tab title="未开始"></van-tab>

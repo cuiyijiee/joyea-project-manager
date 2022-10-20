@@ -1,4 +1,5 @@
 import Project from '../components/Project';
+import ProjectCollect from '../components/ProjectCollect';
 import Product from "../components/Product";
 import Process from "../components/Process";
 import CheckItem from "../components/CheckItem";
@@ -15,6 +16,8 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [{
     path: '/project', name: '项目信息', component: Project
+  }, {
+    path: '/projectCollect', name: '我的收藏项目', component: ProjectCollect
   }, {
     path: '/product', name: '产品信息', component: Product
   }, {

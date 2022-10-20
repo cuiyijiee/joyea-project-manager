@@ -31,13 +31,20 @@ public class ProjectController {
     private ProjectScheduleService projectScheduleService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public TransBaseResponse list(@RequestBody TransProjectRequest request, @CurrentUser CurrentUserInfo currentUser) {
-
-        log.info("获取到用户信息：" + currentUser.getEasUserId());
-
+    public TransBaseResponse list(@RequestBody TransProjectRequest request,
+                                  @CurrentUser CurrentUserInfo currentUser) {
         Project project = new Project();
         project.setProjectName(request.getProjectName());
-        Page<Project> projectPage = projectService.list(project, request.getPageNum(), request.getPageSize());
+        Page<Project> projectPage = projectService.list(currentUser.getEasUserId(), project, request.getPageNum(), request.getPageSize());
+        return new TransBasePageResponse(projectPage);
+    }
+
+    @RequestMapping(value = "listCollect", method = RequestMethod.POST)
+    public TransBaseResponse listCollect(@RequestBody TransProjectRequest request,
+                                         @CurrentUser CurrentUserInfo currentUser) {
+        Project project = new Project();
+        project.setProjectName(request.getProjectName());
+        Page<Project> projectPage = projectService.listCollect(currentUser.getEasUserId(), project, request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(projectPage);
     }
 
@@ -52,4 +59,12 @@ public class ProjectController {
 
         return transBaseResponse;
     }
+
+    @RequestMapping(value = "addCollect", method = RequestMethod.POST)
+    public TransBaseResponse addCollect(@RequestBody TransProjectRequest request,
+                                        @CurrentUser CurrentUserInfo currentUserInfo) {
+        projectService.addCollectProject(currentUserInfo.getEasUserId(), request.getFid());
+        return TransBaseResponse.success("");
+    }
+
 }

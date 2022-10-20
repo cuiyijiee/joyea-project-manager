@@ -2,12 +2,17 @@
   <div class="project-card">
     <div class="container">
       <van-row>
-        <van-col span="24"><span class="desc">项目名称：</span>{{ item.projectName }}</van-col>
+        <van-col span="24">
+          <van-icon v-if="item.collect" name="like" style="padding: 0 5px;" color="#ee0a24"
+                    @click.stop="handleCollectProject"/>
+          <van-icon v-else name="like-o" style="padding: 0 5px;" color="#ee0a24" @click.stop="handleCollectProject"/>
+          <span class="desc">项目名称：</span>{{ item.projectName }}
+        </van-col>
         <van-col span="24"><span class="desc">项目编码：</span>{{ item.fnumber }}</van-col>
         <van-col span="24"><span class="desc">项目经理：</span>{{ item.xmFzr || '' }}</van-col>
         <van-col span="24"><span class="desc">所属部门：</span>{{ item.depart || '' }}</van-col>
         <van-col span="24"><span class="desc">装调部门：</span>{{ item.zdDept || '' }}</van-col>
-        <van-col span="24"><span class="desc">装调部门负责人：</span>{{ item.zdDeptMans || '' }}</van-col>
+        <van-col span="24"><span class="desc">装调负责人：</span>{{ item.zdDeptMans || '' }}</van-col>
       </van-row>
       <van-divider></van-divider>
       <van-row>
@@ -43,7 +48,7 @@
 
 <script>
 
-import {findProjectSchedule} from "../api";
+import {findProjectSchedule, addProjectCollect} from "../api";
 
 export default {
   name: "ProjectCard",
@@ -56,6 +61,22 @@ export default {
     return {
       scheduleLoading: true,
       projectSchedule: Object
+    }
+  },
+  methods: {
+    handleCollectProject() {
+      addProjectCollect(this.item.fid).then(resp => {
+        if (resp.code === '0') {
+          if(this.item.collect){
+            this.$notify({type: "success", message: "取消收藏成功！"});
+          }else{
+            this.$notify({type: "success", message: "收藏成功！"});
+          }
+          this.item.collect = !this.item.collect;
+        } else {
+          this.$notify({type: "warning", message: resp.msg})
+        }
+      })
     }
   },
   mounted() {

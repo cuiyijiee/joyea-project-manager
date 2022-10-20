@@ -45,8 +45,12 @@ public class Project {
     @TableField("ZDDEPT")
     private String zdDept;
 
-    @ApiModelProperty(value = "装调部门负责人")
+    @ApiModelProperty(value = "装调负责人")
     @TableField("ZDDEPTMANS")
     private String zdDeptMans;
+
+    @ApiModelProperty(value = "是否被收藏")
+    @TableField(exist = false)
+    private boolean isCollect;
 
 }

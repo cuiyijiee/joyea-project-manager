@@ -3,6 +3,7 @@
     <div class="container">
       <van-row>
         <van-col span="24"><span class="desc">产品编号：</span>{{ item.productNumber || '' }}</van-col>
+        <van-col span="24"><span class="desc">产品名称：</span>{{ item.productName || '' }}</van-col>
         <van-col span="24"><span class="desc">生产单号：</span>{{ item.orderNumber || '' }}</van-col>
       </van-row>
       <van-divider></van-divider>
@@ -11,7 +12,6 @@
         <van-col span="10"><span class="desc">完成率</span></van-col>
         <van-col span="10"><span class="desc">合格率</span></van-col>
       </van-row>
-
       <van-row>
         <van-col span="4"><span class="desc">自检</span></van-col>
         <van-col span="10">
@@ -83,6 +83,7 @@ div.container {
 span.desc {
   color: dimgray;
 }
+
 .van-col {
   margin: 5px 0;
 }

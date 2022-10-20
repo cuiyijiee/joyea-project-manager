@@ -54,6 +54,18 @@ export function listProject(searchKey, pageNum, pageSize) {
   }).then(resp => resp.data);
 }
 
+export function listProjectCollect(searchKey, pageNum, pageSize) {
+  return service.post("api/project/listCollect", {
+    pageSize: pageSize, pageNum: pageNum, projectName: searchKey
+  }).then(resp => resp.data);
+}
+
+export function addProjectCollect(fid) {
+  return service.post("api/project/addCollect", {
+    fid: fid
+  }).then(resp => resp.data);
+}
+
 export function findProjectSchedule(fid) {
   return service.post("api/project/findSchedule", {
     fid: fid

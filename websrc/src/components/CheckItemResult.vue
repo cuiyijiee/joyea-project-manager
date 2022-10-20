@@ -5,15 +5,12 @@
     <van-divider>共 {{ searchResultCount }} 条点检记录</van-divider>
     <van-button style="width: 100%" type="info" @click="onClickAddResult">新增点检记录</van-button>
     <van-list
-      ref="checkItemResultList"
-      v-model="searchLoading"
-      :finished="!searchHasMore"
-      finished-text="没有更多了"
-      @load="onLoad">
-      <div v-for="item in checkItemResultList" :key="item.fid"
-           @click="handleClickCheckItemResult(item.fid)">
+      ref="checkItemResultList" v-model="searchLoading" :finished="!searchHasMore"
+      finished-text="没有更多了" @load="onLoad">
+      <div>
         <van-collapse v-model="activeNames">
-          <van-collapse-item name="1">
+          <van-collapse-item :name="item.fid" v-for="item in checkItemResultList" :key="item.fid"
+                             @click="handleClickCheckItemResult(item.fid)">
             <template #title>
               <van-row>
                 <van-col span="12">{{ item.cfCheckDate || '' }}</van-col>
@@ -36,9 +33,37 @@
                 </span>
               </van-col>
               <van-col span="24"><span class="desc">检验依据：</span>{{ item.cfCheckRecords || '' }}</van-col>
-              <van-col span="24"><span class="desc">图片视频：</span>{{ item.processName || '' }}</van-col>
-              <van-col span="24"><span class="desc">检验附件：</span>{{ item.processName || '' }}</van-col>
-
+              <van-col span="24">
+                <span class="desc">图片视频：</span>
+                <van-grid :border="false" :column-num="3">
+                  <van-grid-item
+                    v-for="attach in item.attachmentList.filter(item => {return item.fileType === '1' || item.fileType === '2'})"
+                    :key="attach.fid">
+                    <div @click="handleClickAttachment(attach)">
+                      <van-image v-if="attach.mimeType.startsWith('image')" width="100" height="100"
+                                 :src="'/apiv2/imagePreview?neid=' + attach.lenovoId"/>
+                      <van-image v-else-if="attach.mimeType.startsWith('video')" width="100" height="100"
+                                 :src="defaultVideoImg"/>
+                      <van-image v-else width="100" height="100" :src="defaultImg"/>
+                    </div>
+                  </van-grid-item>
+                </van-grid>
+              </van-col>
+              <van-col span="24">
+                <span class="desc">检验附件：</span>
+                <van-grid :border="false" :column-num="3">
+                  <van-grid-item v-for="attach in item.attachmentList.filter(item => {return item.fileType === '3'})"
+                                 :key="attach.fid">
+                    <div @click="handleClickAttachment(attach)">
+                      <van-image v-if="attach.mimeType.startsWith('image')" width="100" height="100"
+                                 :src="'/apiv2/imagePreview?neid=' + attach.lenovoId"/>
+                      <van-image v-else-if="attach.mimeType.startsWith('video')" width="100" height="100"
+                                 :src="defaultVideoImg"/>
+                      <van-image v-else width="100" height="100" :src="defaultImg"/>
+                    </div>
+                  </van-grid-item>
+                </van-grid>
+              </van-col>
             </van-row>
           </van-collapse-item>
         </van-collapse>
@@ -115,10 +140,14 @@ export default {
       searchHasMore: true,
       activeNames: [],
       addResultVisible: false,
+
+      defaultVideoImg: require("@/assets/video.png"),
+      defaultImg: require("@/assets/unknown.png"),
     }
   },
   methods: {
     onLoad() {
+      console.log("on load")
       this.listCheckItemResult();
     },
     listCheckItemResult() {
@@ -172,9 +201,16 @@ export default {
 
       insertCheckItemResult(newCheckResultForm).then(resp => {
         console.log("resp: " + JSON.stringify(resp))
+        if (resp.code === '0') {
+          this.$notify({type: 'success', message: '新增成功！'});
+          this.current = 0;
+          this.checkItemResultList = [];
+
+          console.log("do check")
+          this.$refs.checkItemResultList.check();
+        }
       }).finally(() => {
         this.addResultVisible = false;
-        this.listCheckItemResult();
       })
       console.log(JSON.stringify(newCheckResultForm));
     },
@@ -194,6 +230,13 @@ export default {
     },
     onClickAddResult() {
       this.addResultVisible = !this.addResultVisible;
+    },
+    handleClickAttachment(attachment) {
+      console.log("attachment: " + JSON.stringify(attachment))
+
+      let previewUrl = location.protocol + location.host + "/apiv2/imagePreview?neid=" + attachment.lenovoId;
+      console.log("preview url: " + previewUrl)
+      callNextPlusPreview(attachment.fileName, previewUrl);
     }
   },
   mounted() {
@@ -204,8 +247,6 @@ export default {
     findCheckItem(this.checkItemId).then(resp => {
       if (resp.code === '0') {
         this.currentCheckItem = resp.obj;
-      } else {
-
       }
     })
   }

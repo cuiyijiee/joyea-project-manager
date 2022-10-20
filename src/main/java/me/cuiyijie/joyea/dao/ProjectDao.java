@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.yulichang.base.MPJBaseMapper;
 import me.cuiyijie.joyea.model.Project;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * @Date: 2022/9/28 11:28
  */
 @Repository
-public interface ProjectDao extends BaseMapper<Project> {
+public interface ProjectDao extends MPJBaseMapper<Project> {
 }

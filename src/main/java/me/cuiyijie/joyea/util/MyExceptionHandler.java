@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.util;
 
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
+import me.cuiyijie.joyea.exception.SysRuntimeException;
 import me.cuiyijie.joyea.exception.UserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,9 @@ public class MyExceptionHandler {
         if (exception instanceof UserException) {
             map.put("code", Constants.USER_AUTHENTICATION_EXPIRED_CODE);
             map.put("msg", "用户信息失效");
+        } else if (exception instanceof SysRuntimeException) {
+            map.put("code", Constants.UNKNOWN_ERROR_CODE);
+            map.put("msg", exception.getMessage());
         } else {
             map.put("code", Constants.UNKNOWN_ERROR_CODE);
             map.put("msg", String.format("发生未知错误：%s", exception.getMessage()));

@@ -30,7 +30,6 @@ public class CheckItemResultController {
     @Autowired
     private CheckItemResultService checkItemResultService;
 
-
     @ApiOperation(value = "获取点检项记录", notes = "获取点检项记录")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse listAll(@RequestBody CheckItemResultVo checkItemResultVo) {

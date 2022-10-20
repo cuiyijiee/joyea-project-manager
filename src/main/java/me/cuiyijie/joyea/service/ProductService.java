@@ -25,11 +25,10 @@ public class ProductService {
             queryWrapper.eq("XMID", product.getXmId());
         }
         if (StringUtils.hasLength(product.getProductName())) {
-            queryWrapper.and(productQueryWrapper -> {
-                productQueryWrapper.like("ORDERNUMBER", product.getProductName())
-                        .or()
-                        .like("PRODUCTNUMBER", product.getProductName());
-            });
+            queryWrapper.and(productQueryWrapper ->
+                    productQueryWrapper.like("ORDERNUMBER", product.getProductName())
+                            .or()
+                            .like("PRODUCTNUMBER", product.getProductName()));
         }
         return productDao.selectPage(productPage, queryWrapper);
     }
