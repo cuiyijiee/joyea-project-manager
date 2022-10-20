@@ -203,11 +203,13 @@ export default {
         console.log("resp: " + JSON.stringify(resp))
         if (resp.code === '0') {
           this.$notify({type: 'success', message: '新增成功！'});
-          this.current = 0;
+
           this.checkItemResultList = [];
 
-          console.log("do check")
-          this.$refs.checkItemResultList.check();
+          this.current = 0;
+          this.listCheckItemResult();
+
+          //this.$refs.checkItemResultList.check();
         }
       }).finally(() => {
         this.addResultVisible = false;
