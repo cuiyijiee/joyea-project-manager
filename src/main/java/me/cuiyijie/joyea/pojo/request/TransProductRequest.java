@@ -15,6 +15,8 @@ public class TransProductRequest {
     private String xmId;
     private String productName;
 
+    private Integer status;
+
     private String orderId;
 
 }

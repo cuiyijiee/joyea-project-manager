@@ -3,203 +3,41 @@
 <mapper namespace="me.cuiyijie.joyea.dao.CheckItemDao">
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItem">
 
-        <id property="id" column="id"/>
-        <id property="checkName" column="check_name"/>
-        <id property="checkNameVisible" column="check_name_visible"/>
-        <id property="checkStandard" column="check_standard"/>
-        <id property="checkStandardVisible" column="check_standard_visible"/>
-        <id property="checkMethod" column="check_method"/>
-        <id property="checkMethodVisible" column="check_method_visible"/>
-        <id property="checkTool" column="check_tool"/>
-        <id property="checkToolVisible" column="check_tool_visible"/>
-        <id property="checkStandardFrom" column="check_standard_from"/>
-        <id property="checkStandardFromVisible" column="check_standard_from_visible"/>
-
-        <id property="firstCheckVerifyType" column="first_check_verify_type"/>
-        <id property="firstCheckVerifySheetId" column="first_check_verify_sheet_id"/>
-        <id property="firstCheckPersonId" column="first_check_person_id"/>
-
-        <id property="secondCheckVerifyType" column="second_check_verify_type"/>
-        <id property="secondCheckVerifySheetId" column="second_check_verify_sheet_id"/>
-        <id property="secondCheckPersonId" column="second_check_person_id"/>
-
-        <id property="thirdCheckVerifyType" column="third_check_verify_type"/>
-        <id property="thirdCheckVerifySheetId" column="third_check_verify_sheet_id"/>
-        <id property="thirdCheckPersonId" column="third_check_person_id"/>
-
-        <id property="createdAt" column="created_at"/>
-        <id property="updatedAt" column="updated_at"/>
-        <id property="fileExplanation" column="file_explanation"/>
-        <id property="enabled" column="enabled"/>
+        <id property="fid" column="FID"/>
+        <id property="taskId" column="CFTASKID"/>
+        <id property="checkModeId" column="CFCHECKMODELID"/>
+        <id property="typeId" column="CFTYPEID"/>
+        <id property="seq" column="CFSEQ"/>
+        <id property="keyItem" column="CFKEYITEM"/>
+        <id property="checkStandard" column="CFCHECKSTANDARD"/>
+        <id property="needText" column="CFNEEDTEXT"/>
+        <id property="needAttachment" column="CFNEEDATTACHMENT"/>
+        <id property="needPicture" column="CFNEEDPICTURE"/>
+        <id property="needVideo" column="CFNEEDVIDEO"/>
+        <id property="typeName" column="CFTYPENAME"/>
+        <id property="checkMethodId" column="ZYFFID"/>
+        <id property="checkMethod" column="ZYFF"/>
 
     </resultMap>
 
-    <select id="listChild" resultMap="BaseResultMap">
-        SELECT c.*
-        FROM t_template_checkitem_rel tcl
-                 LEFT JOIN t_checkitem c ON tcl.cid = c.id
-        WHERE tcl.pid = #{id}
+    <select id="selectWithPage" resultMap="BaseResultMap">
+        SELECT FID,
+               CFTASKID,
+               CFCHECKMODELID,
+               CFTYPEID,
+               CFSEQ,
+               CFKEYITEM,
+               CFCHECKSTANDARD,
+               CFNEEDTEXT,
+               CFNEEDATTACHMENT,
+               CFNEEDPICTURE,
+               CFNEEDVIDEO,
+               CFTYPENAME,
+               ZYFFID,
+               ZYFF
+        FROM VW_SYX_ZLGL_DJX
+        WHERE (CFTASKID = #{item.taskId})
+        ORDER BY CFSEQ ASC
     </select>
-
-    <select id="listAll" resultMap="BaseResultMap">
-        SELECT DISTINCT ci.*
-        FROM t_checkitem ci
-
-        LEFT JOIN t_checkitem_tag_rel tctr on ci.id = tctr.checkitem_id
-        LEFT JOIN t_checkitem_tag tct on tctr.checkitem_tag_id = tct.id
-
-        LEFT JOIN t_checkitem_property tcp on ci.id = tcp.checkitem_id
-        WHERE 1=1
-        <if test="item.checkCategoryTypes != null">
-            AND tcp.property_value in
-            <foreach collection="item.checkCategoryTypes" item="property" index="index" open="(" close=")"
-                     separator=",">
-                #{property,jdbcType=VARCHAR}
-            </foreach>
-            AND tcp.property_type = 'CATEGORY'
-        </if>
-        <if test="item.checkModuleTypes != null">
-            AND tcp.property_value in
-            <foreach collection="item.checkModuleTypes" item="property" index="index" open="(" close=")"
-                     separator=",">
-                #{property,jdbcType=VARCHAR}
-            </foreach>
-            AND tcp.property_type = 'MODULE'
-        </if>
-        <if test="item.checkStageTypes != null">
-            AND tcp.property_value in
-            <foreach collection="item.checkStageTypes" item="property" index="index" open="(" close=")"
-                     separator=",">
-                #{property,jdbcType=VARCHAR}
-            </foreach>
-            AND tcp.property_type = 'STAGE'
-        </if>
-        <if test="item.productTagText != null and item.productTagText != ''">
-            AND tct.tag_name LIKE CONCAT('%',#{item.productTagText},'%')
-            AND tct.tag_type = 'PRODUCT'
-        </if>
-        <if test="item.operationTagText != null and item.operationTagText != ''">
-            AND tct.tag_name LIKE CONCAT('%',#{item.operationTagText},'%')
-            AND tct.tag_type = 'OPERATION'
-        </if>
-        ORDER BY created_at DESC
-    </select>
-
-    <select id="listById" resultMap="BaseResultMap">
-        SELECT *
-        FROM t_checkitem
-        WHERE id = #{id}
-    </select>
-
-    <select id="selectCheckItemRel" resultType="java.lang.Integer">
-        SELECT COUNT(1)
-        FROM t_template_checkitem_rel
-        WHERE cid = #{checkItemId}
-    </select>
-
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_checkitem(
-            check_name, check_standard, check_method, check_tool, check_standard_from,
-            check_name_visible, check_standard_visible, check_method_visible, check_tool_visible,
-            check_standard_from_visible,
-            first_check_verify_type, first_check_verify_sheet_id,first_check_person_id,
-            second_check_verify_type, second_check_verify_sheet_id,second_check_person_id,
-            third_check_verify_type, third_check_verify_sheet_id,third_check_person_id,
-            created_at,file_explanation, enabled)
-        VALUES (
-                   #{item.checkName}, #{item.checkStandard}, #{item.checkMethod}, #{item.checkTool},
-                   #{item.checkStandardFrom},
-                   #{item.checkNameVisible}, #{item.checkStandardVisible}, #{item.checkMethodVisible},
-                   #{item.checkToolVisible}, #{item.checkStandardFromVisible},
-                   #{item.firstCheckVerifyType}, #{item.firstCheckVerifySheetId}, #{item.firstCheckPersonId},
-                   #{item.secondCheckVerifyType}, #{item.secondCheckVerifySheetId}, #{item.secondCheckPersonId},
-                   #{item.thirdCheckVerifyType}, #{item.thirdCheckVerifySheetId}, #{item.thirdCheckPersonId},
-                   NOW(), #{item.fileExplanation},1)
-    </insert>
-
-    <update id="update">
-        UPDATE t_checkitem
-        <set>
-            <if test="item.checkName != null and item.checkName != ''">
-                check_name = #{item.checkName},
-            </if>
-            <if test="item.checkNameVisible != null and item.checkNameVisible != ''">
-                check_name_visible = #{item.checkNameVisible},
-            </if>
-            <if test="item.checkStandard != null and item.checkStandard != ''">
-                check_standard = #{item.checkStandard},
-            </if>
-            <if test="item.checkStandardVisible != null and item.checkStandardVisible != ''">
-                check_standard_visible = #{item.checkStandardVisible},
-            </if>
-            <if test="item.checkMethod != null and item.checkMethod != ''">
-                check_method = #{item.checkMethod},
-            </if>
-            <if test="item.checkMethodVisible != null and item.checkMethodVisible != ''">
-                check_method_visible = #{item.checkMethodVisible},
-            </if>
-            <if test="item.checkTool != null and item.checkTool != ''">
-                check_tool = #{item.checkTool},
-            </if>
-            <if test="item.checkToolVisible != null and item.checkToolVisible != ''">
-                check_tool_visible = #{item.checkToolVisible},
-            </if>
-            <if test="item.checkStandardFrom != null and item.checkStandardFrom != ''">
-                check_standard_from = #{item.checkStandardFrom},
-            </if>
-            <if test="item.checkStandardFromVisible != null and item.checkStandardFromVisible != ''">
-                check_standard_from_visible = #{item.checkStandardFromVisible},
-            </if>
-            <if test="item.firstCheckVerifyType != null">
-                first_check_verify_type = #{item.firstCheckVerifyType},
-            </if>
-            <if test="item.firstCheckVerifySheetId != null and item.firstCheckVerifySheetId != ''">
-                first_check_verify_sheet_id = #{item.firstCheckVerifySheetId},
-            </if>
-            <if test="item.firstCheckPersonId != null and item.firstCheckPersonId != ''">
-                first_check_person_id = #{item.firstCheckPersonId},
-            </if>
-            <if test="item.secondCheckVerifyType != null">
-                second_check_verify_type = #{item.secondCheckVerifyType},
-            </if>
-            <if test="item.secondCheckVerifySheetId != null and item.secondCheckVerifySheetId != ''">
-                second_check_verify_sheet_id = #{item.secondCheckVerifySheetId},
-            </if>
-            <if test="item.secondCheckPersonId != null and item.secondCheckPersonId != ''">
-                second_check_person_id = #{item.secondCheckPersonId},
-            </if>
-            <if test="item.thirdCheckVerifyType != null">
-                third_check_verify_type = #{item.thirdCheckVerifyType},
-            </if>
-            <if test="item.thirdCheckVerifySheetId != null and item.thirdCheckVerifySheetId != ''">
-                third_check_verify_sheet_id = #{item.thirdCheckVerifySheetId},
-            </if>
-            <if test="item.thirdCheckPersonId != null and item.thirdCheckPersonId != ''">
-                third_check_person_id = #{item.thirdCheckPersonId},
-            </if>
-            <if test="item.enabled != null and item.enabled != ''">
-                enabled = #{item.enabled},
-            </if>
-            <if test="item.fileExplanation != null and item.fileExplanation != ''">
-                file_explanation = #{item.fileExplanation},
-            </if>
-            updated_at = NOW()
-        </set>
-        WHERE id = #{item.id}
-    </update>
-
-    <delete id="delete">
-        DELETE
-        FROM t_checkitem
-        WHERE id = #{item.id}
-    </delete>
-
-    <update id="updateState">
-        UPDATE t_checkitem
-        <set>
-            enabled = #{item.enabled}
-        </set>
-        WHERE id = #{item.id}
-    </update>
 
 </mapper>

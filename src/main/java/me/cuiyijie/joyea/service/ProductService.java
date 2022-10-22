@@ -1,9 +1,11 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.joyea.dao.ProductDao;
 import me.cuiyijie.joyea.model.Product;
+import me.cuiyijie.joyea.pojo.request.TransProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,19 +20,18 @@ public class ProductService {
     @Autowired
     private ProductDao productDao;
 
-    public Page<Product> list(Product product, Integer pageNum, Integer pageSize) {
+    public IPage<Product> list(TransProductRequest product, Integer pageNum, Integer pageSize) {
         Page<Product> productPage = new Page<>(pageNum, pageSize);
-        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.hasLength(product.getXmId())) {
-            queryWrapper.eq("XMID", product.getXmId());
-        }
-        if (StringUtils.hasLength(product.getProductName())) {
-            queryWrapper.and(productQueryWrapper ->
-                    productQueryWrapper.like("ORDERNUMBER", product.getProductName())
-                            .or()
-                            .like("PRODUCTNUMBER", product.getProductName()));
-        }
-        return productDao.selectPage(productPage, queryWrapper);
+        return productDao.selectWithPage(productPage, product);
+    }
+
+    public String selectCount(TransProductRequest product) {
+        Integer allCount = productDao.selectAllCount(product.getXmId());
+        Integer notStartCount = productDao.selectNotStartCount(product.getXmId());
+        Integer startCount = productDao.selectStartCount(product.getXmId());
+        Integer finishCount = productDao.selectFinishCount(product.getXmId());
+
+        return String.format("%s_%s_%s_%s", allCount, notStartCount, startCount, finishCount);
     }
 
     public Integer insert(Product product) {

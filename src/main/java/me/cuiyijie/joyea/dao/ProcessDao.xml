@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.ProcessDao">
+
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Process">
+
+        <id property="fId" column="FID"/>
+        <id property="orderId" column="ORDERID"/>
+        <id property="taskId" column="TASKID"/>
+        <id property="processNumber" column="GXNO"/>
+        <id property="processName" column="GXNAME"/>
+        <id property="cfSeq" column="CFSEQ"/>
+
+    </resultMap>
+
+    <select id="selectWithPage" resultMap="BaseResultMap">
+        SELECT t.FID,
+        t.ORDERID,
+        t.TASKID,
+        t.GXNO,
+        t.GXNAME,
+        t.CFSEQ
+        FROM VW_SYX_ZLGL_GX t
+        LEFT JOIN VW_SYX_ZLGL_GXWCL t1
+        ON t.ORDERID = t1.ORDERID AND t.GXNO = t1.GXNO
+        WHERE (t.ORDERID = #{item.orderId})
+        <if test="item.processName != null and item.processName != ''">
+            AND (
+            t.GXNO LIKE CONCAT(CONCAT('%',#{item.processName}),'%')
+            OR
+            t.GXNAME LIKE CONCAT(CONCAT('%',#{item.processName}),'%')
+            )
+        </if>
+        <if test="item.status == 1">
+            AND(
+            t1.EACHFINISH = 0 AND t1.SELFFINISH = 0
+            )
+        </if>
+        <if test="item.status == 2">
+            AND (
+            (t1.EACHFINISH &gt; 0 and (t1.EACHFINISH &lt; t1.EACH))
+            OR (t1.SELFFINISH > 0 and t1.SELFFINISH &lt; t1.SELF)
+            )
+        </if>
+        <if test="item.status == 3">
+            AND(
+            t1.EACHFINISH= t1.EACH AND t1.SELFFINISH = t1.SELF
+            )
+        </if>
+        ORDER BY CFSEQ ASC
+    </select>
+
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_GX t
+                 LEFT JOIN VW_SYX_ZLGL_GXWCL t1
+                           ON t.ORDERID = t1.ORDERID AND t.GXNO = t1.GXNO
+        WHERE t.ORDERID = #{orderId}
+    </select>
+
+    <select id="selectNotStartCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_GX t
+                 LEFT JOIN VW_SYX_ZLGL_GXWCL t1
+                           ON t.ORDERID = t1.ORDERID AND t.GXNO = t1.GXNO
+        WHERE t.ORDERID = #{orderId}
+          AND (
+            t1.EACHFINISH = 0 AND t1.SELFFINISH = 0
+            )
+    </select>
+
+    <select id="selectStartCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_GX t
+                 LEFT JOIN VW_SYX_ZLGL_GXWCL t1
+                           ON t.ORDERID = t1.ORDERID AND t.GXNO = t1.GXNO
+        WHERE t.ORDERID = #{orderId}
+          AND (
+                (t1.EACHFINISH &gt; 0 and (t1.EACHFINISH &lt; t1.EACH))
+                OR (t1.SELFFINISH > 0 and t1.SELFFINISH &lt; t1.SELF)
+            )
+    </select>
+
+    <select id="selectFinishCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_GX t
+                 LEFT JOIN VW_SYX_ZLGL_GXWCL t1
+                           ON t.ORDERID = t1.ORDERID AND t.GXNO = t1.GXNO
+        WHERE t.ORDERID = #{orderId}
+          AND (
+            t1.EACHFINISH = t1.EACH AND t1.SELFFINISH = t1.SELF
+            )
+    </select>
+
+</mapper>

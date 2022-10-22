@@ -51,32 +51,6 @@ public class TemplateController {
         return transBaseResponse;
     }
 
-    @ApiOperation(value = "获取子节点", notes = "获取子节点")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "当前文件夹ID", required = true, dataType = "Integer"),
-//    })
-    @RequestMapping(value = "listChild", method = RequestMethod.POST)
-    public TransBaseResponse list(@RequestBody TransTemplateRequest request) {
-        TransBasePageResponse transBaseResponse = new TransBasePageResponse();
-        try {
-            Template template1 = templateService.listById(request.getId());
-            if (template1 == null) {
-                throw new RuntimeException("该节点不存在！");
-            }
-            if (template1.getLevelType() == TemplateLevelType.DIR) {
-                List<Template> templates = templateService.listChild(request.getId());
-            } else {
-                List<CheckItem> checkItems = checkItemService.listChild(request.getId());
-            }
-            transBaseResponse.setCode("0");
-        } catch (Exception exception) {
-            log.error("获取全部根节点：", exception);
-            transBaseResponse.setCode("-1");
-            transBaseResponse.setMsg(exception.toString());
-        }
-        return transBaseResponse;
-    }
-
     @ApiOperation(value = "获取全部的工序", notes = "获取全部的工序")
     @RequestMapping(value = "listAllOperation", method = RequestMethod.POST)
     public TransBaseResponse listAllOperation(@RequestBody TransOperationRequest request) {

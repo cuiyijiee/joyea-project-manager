@@ -11,4 +11,6 @@ public class TransProcessRequest {
     private String orderId;
     private String processName;
 
+    private String status;
+
 }

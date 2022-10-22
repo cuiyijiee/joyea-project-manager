@@ -6,11 +6,8 @@ import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
-import me.cuiyijie.joyea.model.vo.CheckItemVo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -32,6 +29,9 @@ public class CheckItemService {
         }
         if (StringUtils.hasLength(checkItem.getCheckStandard())) {
             queryWrapper.like("CFCHECKSTANDARD", checkItem.getCheckStandard());
+        }
+        if (checkItem.getKeyItem() != null || checkItem.getKeyItem() != -1) {
+            queryWrapper.like("CFKEYITEM", checkItem.getKeyItem());
         }
         queryWrapper.orderByAsc("CFSEQ");
 
@@ -57,7 +57,7 @@ public class CheckItemService {
 
     public CheckItem find(CheckItem checkItem) {
         CheckItem checkItem1 = checkItemDao.selectById(checkItem.getFid());
-        if(checkItem1 != null) {
+        if (checkItem1 != null) {
             String ffid = checkItem1.getCheckMethodId();
             List<CheckItemAttachment> attachmentList = new ArrayList<>();
             if (StringUtils.hasLength(ffid)) {
@@ -75,31 +75,22 @@ public class CheckItemService {
         return checkItem1;
     }
 
-    public List<CheckItem> listChild(Integer id) {
-        List<CheckItem> checkItems = checkItemDao.listChild(id);
-        return checkItems;
-    }
+    public String listCount(CheckItem checkItem) {
 
-    public List<CheckItem> listAll(CheckItemVo checkItemVo) {
-        List<CheckItem> checkItems = checkItemDao.listAll(checkItemVo);
-        return checkItems;
-    }
+        QueryWrapper<CheckItem> queryWrapper1 = new QueryWrapper<>();
+        if (StringUtils.hasLength(checkItem.getTaskId())) {
+            queryWrapper1.eq("CFTASKID", checkItem.getTaskId());
+        }
+        queryWrapper1.eq("CFKEYITEM", 0);
+        Long count1 = checkItemDao.selectCount(queryWrapper1);
 
-    public Integer update(CheckItem checkItem) {
-        return checkItemDao.update(checkItem);
-    }
+        QueryWrapper<CheckItem> queryWrapper2 = new QueryWrapper<>();
+        if (StringUtils.hasLength(checkItem.getTaskId())) {
+            queryWrapper2.eq("CFTASKID", checkItem.getTaskId());
+        }
+        queryWrapper2.eq("CFKEYITEM", 1);
+        Long count2 = checkItemDao.selectCount(queryWrapper2);
 
-    @Transactional
-    public Integer insert(CheckItem checkItem) {
-        Integer result = checkItemDao.insert(checkItem);
-        return result;
-    }
-
-    public Integer delete(CheckItem checkItem) {
-        return checkItemDao.delete(checkItem);
-    }
-
-    public Integer updateState(@Param("item") CheckItem checkItem) {
-        return checkItemDao.updateState(checkItem);
+        return String.format("%s_%s", count1, count2);
     }
 }

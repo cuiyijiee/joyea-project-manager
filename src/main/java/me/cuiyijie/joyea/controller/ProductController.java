@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
@@ -44,9 +45,7 @@ public class ProductController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProductRequest request) {
         Product product = new Product();
-        product.setXmId(request.getXmId());
-        product.setProductName(request.getProductName());
-        Page<Product> productPage = productService.list(product, request.getPageNum(), request.getPageSize());
+        IPage<Product> productPage = productService.list(request, request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(productPage);
     }
 
@@ -62,24 +61,15 @@ public class ProductController {
         return transBaseResponse;
     }
 
-    @ApiOperation(value = "新增新的项目产品", notes = "传入projectId，productNumber，productName")
-    @RequestMapping(value = "insert", method = RequestMethod.POST)
-    public TransBaseResponse insert(@RequestBody TransProductRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
-        return response;
-    }
+    @RequestMapping(value = "count", method = RequestMethod.POST)
+    public TransBaseResponse findCount(@RequestBody TransProductRequest request) {
+        ProductSchedule productSchedule = new ProductSchedule();
+        productSchedule.setOrderId(request.getOrderId());
 
-    @ApiOperation(value = "删除项目产品", notes = "传入id")
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public TransBaseResponse delete(@RequestBody TransProductRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
-        return response;
-    }
+        TransBaseResponse transBaseResponse = new TransBaseResponse();
+        transBaseResponse.setObj(productService.selectCount(request));
+        transBaseResponse.setCode("0");
 
-    @ApiOperation(value = "更新项目产品", notes = "传入id,其余同insert")
-    @RequestMapping(value = "update", method = RequestMethod.POST)
-    public TransBaseResponse update(@RequestBody TransProductRequest request) {
-        TransBaseResponse response = new TransBaseResponse();
-        return response;
+        return transBaseResponse;
     }
 }

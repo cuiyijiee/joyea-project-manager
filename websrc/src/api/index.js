@@ -72,9 +72,15 @@ export function findProjectSchedule(fid) {
   }).then(resp => resp.data);
 }
 
-export function listProduct(xmId, searchKey, pageNum, pageSize) {
+export function listProduct(xmId, searchKey, status, pageNum, pageSize) {
   return service.post("api/product/list", {
-    xmId: xmId, productName: searchKey, pageNum: pageNum, pageSize: pageSize
+    xmId: xmId, productName: searchKey, status: status, pageNum: pageNum, pageSize: pageSize
+  }).then(resp => resp.data);
+}
+
+export function listProductCount(xmId) {
+  return service.post("api/product/count", {
+    xmId: xmId
   }).then(resp => resp.data);
 }
 
@@ -84,21 +90,35 @@ export function findProductSchedule(orderId) {
   }).then(resp => resp.data);
 }
 
-export function listProcess(orderId, searchKey, pageNum, pageSize) {
+export function listProcess(orderId, searchKey, status, pageNum, pageSize) {
   return service.post("api/process/list", {
-    orderId: orderId, processName: searchKey, pageNum: pageNum, pageSize: pageSize
+    orderId: orderId, processName: searchKey, status: status,
+    pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }
 
-export function listCheckItem(taskId, searchKey, pageNum, pageSize) {
+export function listProcessCount(orderId) {
+  return service.post("api/process/count", {
+    orderId: orderId
+  }).then(resp => resp.data);
+}
+
+export function listCheckItem(taskId, searchKey, keyItem, pageNum, pageSize) {
   return service.post("api/checkItem/list", {
-    taskId: taskId, checkStandard: searchKey, pageNum: pageNum, pageSize: pageSize
+    taskId: taskId, checkStandard: searchKey, keyItem: keyItem,
+    pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }
 
 export function findCheckItem(fid) {
   return service.post("api/checkItem/find", {
     fid: fid
+  }).then(resp => resp.data);
+}
+
+export function findCheckItemCount(taskId) {
+  return service.post("api/checkItem/count", {
+    taskId: taskId
   }).then(resp => resp.data);
 }
 
