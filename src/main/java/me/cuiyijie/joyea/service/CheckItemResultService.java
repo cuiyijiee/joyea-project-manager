@@ -9,7 +9,6 @@ import me.cuiyijie.joyea.dao.CheckItemResultDao;
 import me.cuiyijie.joyea.model.CheckItemResult;
 import me.cuiyijie.joyea.model.CheckItemResultAttachment;
 import me.cuiyijie.joyea.model.Person;
-import me.cuiyijie.joyea.model.vo.CheckItemResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +65,13 @@ public class CheckItemResultService {
 
             checkItemResultAttachmentDao.insert(checkItemResultAttachment);
         }
+    }
+
+    public List<CheckItemResult> findRecentResult(String checkEntryId) {
+        QueryWrapper<CheckItemResult> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("CFCHECKENTRYID", checkEntryId);
+        queryWrapper.orderByDesc("CFCHECKDATE");
+        return checkItemResultDao.selectList(queryWrapper);
     }
 
 }

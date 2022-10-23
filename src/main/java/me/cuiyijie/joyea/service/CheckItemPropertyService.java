@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemPropertyDao;
 import me.cuiyijie.joyea.enums.CheckCategoryType;
 import me.cuiyijie.joyea.enums.CheckItemPropertyType;
@@ -7,8 +8,6 @@ import me.cuiyijie.joyea.enums.CheckModuleType;
 import me.cuiyijie.joyea.enums.CheckStageType;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +20,9 @@ import java.util.Map;
  * @Author: cuiyijie
  * @Date: 2021/11/26 14:25
  */
+@Slf4j
 @Service
 public class CheckItemPropertyService {
-
-    private final Logger logger = LoggerFactory.getLogger(CheckItemPropertyService.class);
-
 
     @Autowired
     private CheckItemPropertyDao checkItemPropertyDao;
@@ -57,7 +54,7 @@ public class CheckItemPropertyService {
                 }
             }
         } catch (Exception exception) {
-            logger.error("获取点检项属性失败：", exception);
+            log.error("获取点检项属性失败：", exception);
         }
         resultMap.put(CheckItemPropertyType.CATEGORY, categoryTypes);
         resultMap.put(CheckItemPropertyType.STAGE, stageTypes);

@@ -3,10 +3,17 @@
     <van-nav-bar left-arrow left-text="返回" title="点检项信息"
                  @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
     <van-tabs v-model="typeActive" color="#1989fa" @change="handleTagChange">
-      <van-tab :title="'自检(' + count[0]+')'"></van-tab>
+      <van-tab :title="'自检(' + (parseInt(count[0]) + parseInt(count[1]))+')'"></van-tab>
       <van-tab :title="'互检(' + count[1]+')'"></van-tab>
-      <van-tab :title="'第三方(' + count[0]+')'"></van-tab>
+      <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
     </van-tabs>
+<!--    <div style="margin: 10px 5px 0 5px;">-->
+<!--      <van-field name="switch" label="显示全部">-->
+<!--        <template #input>-->
+<!--          <van-switch v-model="showAll" size="20" @change="handleShowAll"/>-->
+<!--        </template>-->
+<!--      </van-field>-->
+<!--    </div>-->
     <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
@@ -37,8 +44,9 @@ export default {
       projectId: "",
       orderId: "",
       taskId: "",
-      typeActive: "自检",
+      typeActive: 0,
       searchKey: "",
+      showAll: false,
       current: 0,
       keyItem: -1,
       pageSize: 5,
@@ -50,12 +58,10 @@ export default {
     }
   },
   methods: {
+    handleShowAll(event) {
+    },
     handleTagChange(name, title) {
-      if (name === 1) {
-        this.keyItem = 1;
-      } else {
-        this.keyItem = -1;
-      }
+      this.keyItem = name === 1 ? 1 : -1;
       this.onSearch();
     },
     onSearch() {
@@ -85,14 +91,15 @@ export default {
           orderId: this.orderId,
           projectId: this.projectId,
           taskId: this.taskId,
-          checkItemId: fid
+          checkItemId: fid,
+          toCheckItemType: this.typeActive + 1
         }
       })
     },
     listCount() {
       findCheckItemCount(this.taskId).then(resp => {
         if (resp.code === '0') {
-          this.count = resp.obj.split("_")
+          this.count = resp.obj.split("_");
         }
       })
     }

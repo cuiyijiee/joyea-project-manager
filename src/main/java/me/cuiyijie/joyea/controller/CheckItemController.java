@@ -54,7 +54,7 @@ public class CheckItemController {
         return TransBaseResponse.success(result);
     }
 
-    @ApiOperation(value = "获取点检项", notes = "获取点检项")
+    @ApiOperation(value = "获取点检项数量统计", notes = "获取点检项数量统计")
     @RequestMapping(value = "count", method = RequestMethod.POST)
     public TransBaseResponse count(@RequestBody CheckItemVo checkItemVo) {
         CheckItem checkItem = new CheckItem();

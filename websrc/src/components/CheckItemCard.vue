@@ -20,6 +20,10 @@
             </van-grid-item>
           </van-grid>
         </van-col>
+        <van-col span="24">
+          <van-image v-if="item.qualified" :src="qualifiedImg" width="100" height="100"/>
+          <van-image v-else :src="unQualifiedImg" width="100" height="100"/>
+        </van-col>
       </van-row>
     </div>
   </div>
@@ -35,7 +39,9 @@ export default {
   },
   data() {
     return {
-      defaultImg: require("@/assets/unknown.png")
+      defaultImg: require("@/assets/unknown.png"),
+      qualifiedImg: require("@/assets/qualified.png"),
+      unQualifiedImg: require("@/assets/unqualified.png"),
     }
   },
   methods: {},

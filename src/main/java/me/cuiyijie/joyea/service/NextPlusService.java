@@ -1,12 +1,11 @@
 package me.cuiyijie.joyea.service;
 
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.model.Department;
 import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
 import me.cuiyijie.joyea.pojo.NextPlusNotificationRequest;
 import me.cuiyijie.joyea.pojo.NextPlusTenant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -17,10 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class NextPlusService {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(NextPlusService.class);
 
     @Autowired
     private RestTemplate restTemplate;
@@ -65,7 +63,7 @@ public class NextPlusService {
         //restTemplate.postForEntity(Constants.NEXT_PLUS_SEND_NOTIFICATION_URL, entity, String.class);
         ResponseEntity<String> response = restTemplate.postForEntity(Constants.NEXT_PLUS_SEND_NOTIFICATION_URL, entity, String.class);
 
-        LOGGER.info("invoke nextplus notification result:{}", response);
+        log.info("invoke nextplus notification result:{}", response);
     }
 
     public List<Department> getAllDepartment() {

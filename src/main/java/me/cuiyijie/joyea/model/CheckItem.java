@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -57,4 +58,8 @@ public class CheckItem {
 
     @TableField(exist = false)
     private List<CheckItemAttachment> attachmentList;
+
+    @ApiModelProperty("是否合格")
+    @TableField(exist = false)
+    private boolean qualified;
 }

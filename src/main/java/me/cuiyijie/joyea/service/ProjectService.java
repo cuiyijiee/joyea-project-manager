@@ -1,17 +1,11 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.yulichang.toolkit.MPJWrappers;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import com.github.yulichang.wrapper.enums.BaseFuncEnum;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.ProjectCollectDao;
 import me.cuiyijie.joyea.dao.ProjectDao;
-import me.cuiyijie.joyea.exception.SysRuntimeException;
-import me.cuiyijie.joyea.model.CheckItemResult;
-import me.cuiyijie.joyea.model.Person;
 import me.cuiyijie.joyea.model.Project;
 import me.cuiyijie.joyea.model.ProjectCollect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
-import java.util.function.Consumer;
 
 @Slf4j
 @Service

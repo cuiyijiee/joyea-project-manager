@@ -44,7 +44,7 @@ public class CheckItemResult {
     private String cfCheckEntryId;
 
     @TableField("CFCHECKTYPE")
-    private String fCheckType;
+    private String cfCheckType;
 
     @TableField(value = "CFCHECKRESULT")
     private String cfCheckResult;

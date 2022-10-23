@@ -1,15 +1,12 @@
 package me.cuiyijie.joyea.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.joyea.dao.ProcessDao;
 import me.cuiyijie.joyea.model.Process;
 import me.cuiyijie.joyea.pojo.request.TransProcessRequest;
-import me.cuiyijie.joyea.pojo.request.TransProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class ProcessService {

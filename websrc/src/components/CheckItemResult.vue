@@ -13,8 +13,11 @@
                              @click="handleClickCheckItemResult(item.fid)">
             <template #title>
               <van-row>
-                <van-col span="12">{{ item.cfCheckDate || '' }}</van-col>
-                <van-col span="8">{{ item.cfCheckPersonName || '' }}</van-col>
+                <van-col span="14">
+                  <span style="border: medium solid black; padding: 0 2px">{{ getCheckType(item.cfCheckType) }}</span>
+                  {{ item.cfCheckDate || '' }}
+                </van-col>
+                <van-col span="6">{{ item.cfCheckPersonName || '' }}</van-col>
                 <van-col span="4">
                   <div
                     :class="{'green-color':((item.cfCheckResult || '2') === '1') , 'red-color':((item.cfCheckResult || '2') === '2')}">
@@ -127,6 +130,7 @@ export default {
       orderId: "",
       taskId: "",
       checkItemId: "",
+      toCheckItemType: -1,
 
       currentCheckItem: {},
 
@@ -189,6 +193,7 @@ export default {
         cfCheckEntryId: this.checkItemId,
         cfCheckResult: this.checkResultRadio,
         cfCheckRecords: this.checkStandard,
+        cfCheckType: this.toCheckItemType,
 
         attachmentList: this.pictureFilePreviewList.map(file => {
           return {lenovoId: file.neid, fileName: file.file.name, mimeType: file.mimeType, fileType: "1"};
@@ -200,7 +205,6 @@ export default {
       }
 
       insertCheckItemResult(newCheckResultForm).then(resp => {
-        console.log("resp: " + JSON.stringify(resp))
         if (resp.code === '0') {
           this.$notify({type: 'success', message: '新增成功！'});
 
@@ -239,6 +243,21 @@ export default {
       let previewUrl = location.protocol + location.host + "/apiv2/imagePreview?neid=" + attachment.lenovoId;
       console.log("preview url: " + previewUrl)
       callNextPlusPreview(attachment.fileName, previewUrl);
+    },
+    getCheckType(cfCheckType) {
+      let checkType = "自";
+      switch (cfCheckType) {
+        case "1":
+          checkType = "自"
+          break;
+        case "2":
+          checkType = "互"
+          break;
+        case "3":
+          checkType = "三"
+          break;
+      }
+      return checkType;
     }
   },
   mounted() {
@@ -246,6 +265,7 @@ export default {
     this.orderId = this.$route.query.orderId;
     this.taskId = this.$route.query.taskId;
     this.checkItemId = this.$route.query.checkItemId;
+    this.toCheckItemType = this.$route.query.toCheckItemType;
     findCheckItem(this.checkItemId).then(resp => {
       if (resp.code === '0') {
         this.currentCheckItem = resp.obj;

@@ -6,6 +6,7 @@ import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
+import me.cuiyijie.joyea.model.CheckItemResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,6 +21,8 @@ public class CheckItemService {
     private CheckItemDao checkItemDao;
     @Autowired
     private CheckItemAttachmentDao checkItemAttachmentDao;
+    @Autowired
+    private CheckItemResultService checkItemResultService;
 
     public Page<CheckItem> list(CheckItem checkItem, Integer pageNum, Integer pageSize) {
         Page<CheckItem> checkItemPage = new Page<>(pageNum, pageSize);
@@ -31,12 +34,14 @@ public class CheckItemService {
             queryWrapper.like("CFCHECKSTANDARD", checkItem.getCheckStandard());
         }
         if (checkItem.getKeyItem() != null && checkItem.getKeyItem() != -1) {
-            queryWrapper.like("CFKEYITEM", checkItem.getKeyItem());
+            queryWrapper.eq("CFKEYITEM", checkItem.getKeyItem());
         }
         queryWrapper.orderByAsc("CFSEQ");
 
         Page<CheckItem> checkItemPageResult = checkItemDao.selectPage(checkItemPage, queryWrapper);
+
         for (int index = 0; index < checkItemPageResult.getRecords().size(); index++) {
+            //查找附件
             CheckItem checkItem1 = checkItemPageResult.getRecords().get(index);
             String ffid = checkItem1.getCheckMethodId();
             List<CheckItemAttachment> attachmentList = new ArrayList<>();
@@ -51,6 +56,14 @@ public class CheckItemService {
                 }
             }
             checkItem1.setAttachmentList(attachmentList);
+
+            //设置是否合格
+            List<CheckItemResult> checkItemResults = checkItemResultService.findRecentResult(checkItem1.getFid());
+            if (checkItemResults != null && checkItemResults.size() > 0 && "2".equals(checkItemResults.get(0).getCfCheckResult())) {
+                checkItem1.setQualified(false);
+            } else {
+                checkItem1.setQualified(true);
+            }
         }
         return checkItemPageResult;
     }
