@@ -5,12 +5,15 @@
         <van-col span="24"><span class="desc">检验类型：</span>{{ item.typeName || '' }}</van-col>
         <van-col span="24"><span class="desc">
           <van-icon v-if="item.keyItem === 1" name="star"/>
-          <!--          <van-icon v-else name="star-o"/>-->
           检验标准：</span>{{ item.checkStandard || '' }}
         </van-col>
       </van-row>
       <van-row>
-        <van-col span="24"><span class="desc">检验方法：</span>{{ item.checkMethod || '' }}</van-col>
+        <van-col span="24"><span class="desc">检验方法：</span>
+          <span class="van-multi-ellipsis--l2" @click.stop="handleClickCheckMethod(item)">
+            {{ item.checkMethod || '' }}
+          </span>
+        </van-col>
         <van-col span="24">
           <van-grid :border="false" :column-num="3">
             <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
@@ -39,12 +42,20 @@ export default {
   },
   data() {
     return {
+      checkMethodVisible: false,
       defaultImg: require("@/assets/unknown.png"),
       qualifiedImg: require("@/assets/qualified.png"),
       unQualifiedImg: require("@/assets/unqualified.png"),
     }
   },
-  methods: {},
+  methods: {
+    handleClickCheckMethod(item) {
+      this.$dialog.alert({
+        title: '检验方法',
+        message: item.checkMethod || '',
+      })
+    }
+  },
   mounted() {
   }
 }

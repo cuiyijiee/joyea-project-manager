@@ -21,23 +21,43 @@
     </resultMap>
 
     <select id="selectWithPage" resultMap="BaseResultMap">
-        SELECT FID,
-               CFTASKID,
-               CFCHECKMODELID,
-               CFTYPEID,
-               CFSEQ,
-               CFKEYITEM,
-               CFCHECKSTANDARD,
-               CFNEEDTEXT,
-               CFNEEDATTACHMENT,
-               CFNEEDPICTURE,
-               CFNEEDVIDEO,
-               CFTYPENAME,
-               ZYFFID,
-               ZYFF
-        FROM VW_SYX_ZLGL_DJX
-        WHERE (CFTASKID = #{item.taskId})
-        ORDER BY CFSEQ ASC
+        SELECT t.FID,
+        t.CFTASKID,
+        t.CFCHECKMODELID,
+        t.CFTYPEID,
+        t.CFSEQ,
+        t.CFKEYITEM,
+        t.CFCHECKSTANDARD,
+        t.CFNEEDTEXT,
+        t.CFNEEDATTACHMENT,
+        t.CFNEEDPICTURE,
+        t.CFNEEDVIDEO,
+        t.CFTYPENAME,
+        t.ZYFFID,
+        t.ZYFF
+        <choose>
+            <when test="!item.finished">
+                FROM (
+                select a.*,b.CFCheckType from VW_SYX_ZLGL_DJX a
+                left join ct_pre_qualitycheckresult b on b.CFCheckEntryID = a.fid where b.fid is null
+                union all
+                select a.*,b.CFCheckType from VW_SYX_ZLGL_DJX a
+                left join ct_pre_qualitycheckresult b on b.CFCheckEntryID = a.fid
+                WHERE b.CFCheckResult = 0 and b.CFCheckType = 2
+                ) t
+            </when>
+            <otherwise>
+                FROM VW_SYX_ZLGL_DJX t
+            </otherwise>
+        </choose>
+        WHERE (t.CFTASKID = #{item.taskId})
+        <if test="item.checkStandard != null and item.checkStandard != ''">
+            AND t.CFCHECKSTANDARD like CONCAT(CONCAT('%',#{item.checkStandard}),'%')
+        </if>
+        <if test="item.keyItem != null and item.keyItem != -1">
+            AND t.CFKEYITEM = #{item.keyItem}
+        </if>
+        ORDER BY t.CFSEQ ASC
     </select>
 
 </mapper>

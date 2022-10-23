@@ -7,13 +7,13 @@
       <van-tab :title="'互检(' + count[1]+')'"></van-tab>
       <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
     </van-tabs>
-<!--    <div style="margin: 10px 5px 0 5px;">-->
-<!--      <van-field name="switch" label="显示全部">-->
-<!--        <template #input>-->
-<!--          <van-switch v-model="showAll" size="20" @change="handleShowAll"/>-->
-<!--        </template>-->
-<!--      </van-field>-->
-<!--    </div>-->
+    <div style="margin: 10px 5px 0 5px;">
+      <van-field name="switch" label="显示全部">
+        <template #input>
+          <van-switch v-model="showAll" size="20" @change="handleShowAll"/>
+        </template>
+      </van-field>
+    </div>
     <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
@@ -59,6 +59,7 @@ export default {
   },
   methods: {
     handleShowAll(event) {
+      this.onSearch();
     },
     handleTagChange(name, title) {
       this.keyItem = name === 1 ? 1 : -1;
@@ -74,7 +75,7 @@ export default {
       this.listCheckItem();
     },
     listCheckItem() {
-      listCheckItem(this.taskId, this.searchKey, this.keyItem,
+      listCheckItem(this.taskId, this.searchKey, this.keyItem, this.showAll,
         this.current + 1, this.pageSize).then(data => {
         this.checkItemList = this.checkItemList.concat(data.list);
         this.searchResultCount = data.total;

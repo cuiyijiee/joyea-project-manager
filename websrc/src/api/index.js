@@ -103,9 +103,9 @@ export function listProcessCount(orderId) {
   }).then(resp => resp.data);
 }
 
-export function listCheckItem(taskId, searchKey, keyItem, pageNum, pageSize) {
+export function listCheckItem(taskId, searchKey, keyItem,finished, pageNum, pageSize) {
   return service.post("api/checkItem/list", {
-    taskId: taskId, checkStandard: searchKey, keyItem: keyItem,
+    taskId: taskId, checkStandard: searchKey, keyItem: keyItem,finished:finished,
     pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }

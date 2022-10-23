@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.CheckItemDao;
@@ -24,21 +25,9 @@ public class CheckItemService {
     @Autowired
     private CheckItemResultService checkItemResultService;
 
-    public Page<CheckItem> list(CheckItem checkItem, Integer pageNum, Integer pageSize) {
-        Page<CheckItem> checkItemPage = new Page<>(pageNum, pageSize);
-        QueryWrapper<CheckItem> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.hasLength(checkItem.getTaskId())) {
-            queryWrapper.eq("CFTASKID", checkItem.getTaskId());
-        }
-        if (StringUtils.hasLength(checkItem.getCheckStandard())) {
-            queryWrapper.like("CFCHECKSTANDARD", checkItem.getCheckStandard());
-        }
-        if (checkItem.getKeyItem() != null && checkItem.getKeyItem() != -1) {
-            queryWrapper.eq("CFKEYITEM", checkItem.getKeyItem());
-        }
-        queryWrapper.orderByAsc("CFSEQ");
+    public IPage<CheckItem> list(CheckItem checkItem, Integer pageNum, Integer pageSize) {
 
-        Page<CheckItem> checkItemPageResult = checkItemDao.selectPage(checkItemPage, queryWrapper);
+        IPage<CheckItem> checkItemPageResult = checkItemDao.selectWithPage(new Page<>(pageNum, pageSize), checkItem);
 
         for (int index = 0; index < checkItemPageResult.getRecords().size(); index++) {
             //查找附件

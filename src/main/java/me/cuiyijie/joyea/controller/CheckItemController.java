@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
@@ -41,7 +42,8 @@ public class CheckItemController {
         checkItem.setTaskId(checkItemVo.getTaskId());
         checkItem.setCheckStandard(checkItemVo.getCheckStandard());
         checkItem.setKeyItem(checkItemVo.getKeyItem());
-        Page<CheckItem> result = checkItemService.list(checkItem, checkItemVo.getPageNum(), checkItemVo.getPageSize());
+        checkItem.setFinished(checkItemVo.isFinished());
+        IPage<CheckItem> result = checkItemService.list(checkItem, checkItemVo.getPageNum(), checkItemVo.getPageSize());
         return new TransBasePageResponse(result);
     }
 

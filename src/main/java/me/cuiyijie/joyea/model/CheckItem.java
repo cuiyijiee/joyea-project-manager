@@ -62,4 +62,8 @@ public class CheckItem {
     @ApiModelProperty("是否合格")
     @TableField(exist = false)
     private boolean qualified;
+
+    @ApiModelProperty("是否完成")
+    @TableField(exist = false)
+    private boolean finished;
 }
