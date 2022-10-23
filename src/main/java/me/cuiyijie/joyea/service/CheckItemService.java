@@ -30,7 +30,7 @@ public class CheckItemService {
         if (StringUtils.hasLength(checkItem.getCheckStandard())) {
             queryWrapper.like("CFCHECKSTANDARD", checkItem.getCheckStandard());
         }
-        if (checkItem.getKeyItem() != null || checkItem.getKeyItem() != -1) {
+        if (checkItem.getKeyItem() != null && checkItem.getKeyItem() != -1) {
             queryWrapper.like("CFKEYITEM", checkItem.getKeyItem());
         }
         queryWrapper.orderByAsc("CFSEQ");

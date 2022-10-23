@@ -4,8 +4,8 @@
                  @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
     <van-tabs v-model="typeActive" color="#1989fa" @change="handleTagChange">
       <van-tab :title="'自检(' + count[0]+')'"></van-tab>
-      <van-tab :title="'互检(' + count[0]+')'"></van-tab>
-      <van-tab :title="'第三方(' + count[1]+')'"></van-tab>
+      <van-tab :title="'互检(' + count[1]+')'"></van-tab>
+      <van-tab :title="'第三方(' + count[0]+')'"></van-tab>
     </van-tabs>
     <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
@@ -40,7 +40,7 @@ export default {
       typeActive: "自检",
       searchKey: "",
       current: 0,
-      keyItem: 0,
+      keyItem: -1,
       pageSize: 5,
       checkItemList: [],
       searchResultCount: 0,
@@ -51,12 +51,11 @@ export default {
   },
   methods: {
     handleTagChange(name, title) {
-      if (name === 0 || name === 1) {
-        this.keyItem = 0;
-      } else {
+      if (name === 1) {
         this.keyItem = 1;
+      } else {
+        this.keyItem = -1;
       }
-      console.log(this.keyItem);
       this.onSearch();
     },
     onSearch() {
