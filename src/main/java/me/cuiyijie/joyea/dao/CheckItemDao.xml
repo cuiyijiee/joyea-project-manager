@@ -35,27 +35,28 @@
         t.CFTYPENAME,
         t.ZYFFID,
         t.ZYFF
-        <choose>
-            <when test="!item.finished">
-                FROM (
-                select a.*,b.CFCheckType from VW_SYX_ZLGL_DJX a
-                left join ct_pre_qualitycheckresult b on b.CFCheckEntryID = a.fid where b.fid is null
-                union all
-                select a.*,b.CFCheckType from VW_SYX_ZLGL_DJX a
-                left join ct_pre_qualitycheckresult b on b.CFCheckEntryID = a.fid
-                WHERE b.CFCheckResult = 0 and b.CFCheckType = 2
-                ) t
-            </when>
-            <otherwise>
-                FROM VW_SYX_ZLGL_DJX t
-            </otherwise>
-        </choose>
+        FROM VW_SYX_ZLGL_DJX t
         WHERE (t.CFTASKID = #{item.taskId})
+        <if test="!item.finished">
+            AND t.FID NOT IN
+            (select a.fid
+            from VW_SYX_ZLGL_DJX a,
+            (select fid,
+            CFCheckEntryID,
+            CFCheckType,
+            CFCheckResult,
+            row_number() over(partition by CFCheckEntryID order by CFCheckDate desc) lev
+            from CT_PRE_QualityCheckResult) re
+            where re.lev = 1
+            and re.CFCheckType = #{item.cfCheckType}
+            and re.CFCheckEntryID = a.fid
+            and a.cftaskid = #{item.taskId})
+        </if>
         <if test="item.checkStandard != null and item.checkStandard != ''">
             AND t.CFCHECKSTANDARD like CONCAT(CONCAT('%',#{item.checkStandard}),'%')
         </if>
-        <if test="item.keyItem != null and item.keyItem != -1">
-            AND t.CFKEYITEM = #{item.keyItem}
+        <if test="item.cfCheckType == 2">
+            AND t.CFKEYITEM = 1
         </if>
         ORDER BY t.CFSEQ ASC
     </select>

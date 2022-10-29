@@ -16,9 +16,9 @@ Vue.config.productionTip = false;
 
 import VConsole from 'vconsole'
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
   new VConsole()
-}
+// }
 
 /* eslint-disable no-new */
 new Vue({

@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar left-arrow left-text="返回" title="点检项信息"
                  @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
-    <van-tabs v-model="typeActive" color="#1989fa" @change="handleTagChange">
+    <van-tabs v-model="cfCheckType" color="#1989fa" @change="handleTagChange">
       <van-tab :title="'自检(' + (parseInt(count[0]) + parseInt(count[1]))+')'"></van-tab>
       <van-tab :title="'互检(' + count[1]+')'"></van-tab>
       <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
@@ -44,11 +44,10 @@ export default {
       projectId: "",
       orderId: "",
       taskId: "",
-      typeActive: 0,
+      cfCheckType: 0,
       searchKey: "",
       showAll: false,
       current: 0,
-      keyItem: -1,
       pageSize: 5,
       checkItemList: [],
       searchResultCount: 0,
@@ -62,7 +61,6 @@ export default {
       this.onSearch();
     },
     handleTagChange(name, title) {
-      this.keyItem = name === 1 ? 1 : -1;
       this.onSearch();
     },
     onSearch() {
@@ -75,7 +73,7 @@ export default {
       this.listCheckItem();
     },
     listCheckItem() {
-      listCheckItem(this.taskId, this.searchKey, this.keyItem, this.showAll,
+      listCheckItem(this.taskId, this.searchKey, this.cfCheckType + 1, this.showAll,
         this.current + 1, this.pageSize).then(data => {
         this.checkItemList = this.checkItemList.concat(data.list);
         this.searchResultCount = data.total;
@@ -93,7 +91,7 @@ export default {
           projectId: this.projectId,
           taskId: this.taskId,
           checkItemId: fid,
-          toCheckItemType: this.typeActive + 1
+          toCheckItemType: this.cfCheckType + 1
         }
       })
     },

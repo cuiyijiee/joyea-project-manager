@@ -43,6 +43,7 @@ public class CheckItemController {
         checkItem.setCheckStandard(checkItemVo.getCheckStandard());
         checkItem.setKeyItem(checkItemVo.getKeyItem());
         checkItem.setFinished(checkItemVo.isFinished());
+        checkItem.setCfCheckType(checkItemVo.getCfCheckType());
         IPage<CheckItem> result = checkItemService.list(checkItem, checkItemVo.getPageNum(), checkItemVo.getPageSize());
         return new TransBasePageResponse(result);
     }

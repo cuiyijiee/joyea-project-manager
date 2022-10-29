@@ -48,10 +48,11 @@ public class CheckItemService {
 
             //设置是否合格
             List<CheckItemResult> checkItemResults = checkItemResultService.findRecentResult(checkItem1.getFid());
-            if (checkItemResults != null && checkItemResults.size() > 0 && "2".equals(checkItemResults.get(0).getCfCheckResult())) {
-                checkItem1.setQualified(false);
-            } else {
+            if (checkItemResults != null && checkItemResults.size() > 0
+                    && ("1".equals(checkItemResults.get(0).getCfCheckResult()) || "3".equals(checkItemResults.get(0).getCfCheckResult()))) {
                 checkItem1.setQualified(true);
+            } else {
+                checkItem1.setQualified(false);
             }
         }
         return checkItemPageResult;

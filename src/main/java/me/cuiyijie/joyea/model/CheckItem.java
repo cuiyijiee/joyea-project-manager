@@ -66,4 +66,8 @@ public class CheckItem {
     @ApiModelProperty("是否完成")
     @TableField(exist = false)
     private boolean finished;
+
+    @ApiModelProperty("点检类型")
+    @TableField(exist = false)
+    private Integer cfCheckType = 1;
 }
