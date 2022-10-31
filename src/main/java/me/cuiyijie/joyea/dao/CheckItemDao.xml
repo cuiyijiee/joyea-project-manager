@@ -45,7 +45,7 @@
             CFCheckEntryID,
             CFCheckType,
             CFCheckResult,
-            row_number() over(partition by CFCheckEntryID order by CFCheckDate desc) lev
+            TO_CHAR(row_number() over(partition by CFCheckEntryID order by CFCheckDate desc)) lev
             from CT_PRE_QualityCheckResult) re
             where re.lev = 1
             and re.CFCheckType = #{item.cfCheckType}
