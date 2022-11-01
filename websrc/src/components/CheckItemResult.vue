@@ -42,10 +42,11 @@
                   <van-grid-item
                     v-for="attach in item.attachmentList.filter(item => {return item.fileType === '1' || item.fileType === '2'})"
                     :key="attach.fid">
-                    <div @click="handleClickAttachment(attach)">
-                      <van-image v-if="attach.mimeType.startsWith('image')" width="100" height="100"
+                    <div @click="handleClickAttachment(attach,item.attachmentList)">
+                      <van-image v-if="attach.mimeType && attach.mimeType.startsWith('image')" width="100" height="100"
                                  :src="'/apiv2/imagePreview?neid=' + attach.lenovoId"/>
-                      <van-image v-else-if="attach.mimeType.startsWith('video')" width="100" height="100"
+                      <van-image v-else-if="attach.mimeType && attach.mimeType.startsWith('video')" width="100"
+                                 height="100"
                                  :src="defaultVideoImg"/>
                       <van-image v-else width="100" height="100" :src="defaultImg"/>
                     </div>
@@ -57,10 +58,11 @@
                 <van-grid :border="false" :column-num="3">
                   <van-grid-item v-for="attach in item.attachmentList.filter(item => {return item.fileType === '3'})"
                                  :key="attach.fid">
-                    <div @click="handleClickAttachment(attach)">
-                      <van-image v-if="attach.mimeType.startsWith('image')" width="100" height="100"
+                    <div @click="handleClickAttachment(attach,item.attachmentList)">
+                      <van-image v-if="attach.mimeType && attach.mimeType.startsWith('image')" width="100" height="100"
                                  :src="'/apiv2/imagePreview?neid=' + attach.lenovoId"/>
-                      <van-image v-else-if="attach.mimeType.startsWith('video')" width="100" height="100"
+                      <van-image v-else-if="attach.mimeType && attach.mimeType.startsWith('video')" width="100"
+                                 height="100"
                                  :src="defaultVideoImg"/>
                       <van-image v-else width="100" height="100" :src="defaultImg"/>
                     </div>
@@ -84,7 +86,8 @@
             </van-radio-group>
           </template>
         </van-field>
-        <van-field v-model="checkStandard" placeholder="请填写检验依据" label="检验依据" :required="currentCheckItem.needText"/>
+        <van-field v-model="checkStandard" placeholder="请填写检验依据" label="检验依据"
+                   :required="currentCheckItem.needText"/>
         <van-field name="uploader" label="图片附件" :required="currentCheckItem.needPicture">
           <template #input>
             <van-uploader v-model="pictureFilePreviewList" :after-read="(file) => afterRead(file,'picture')"
@@ -114,6 +117,7 @@
 <script>
 import {listCheckItemResult, findCheckItem, insertCheckItemResult} from "../api";
 import {upload} from "../api/fileUpload";
+import {handleGoToPreview} from "../utils/JoyeaUtil";
 
 export default {
   name: "CheckItemResult",
@@ -229,7 +233,7 @@ export default {
         file.message = '上传成功';
 
         file.neid = uploadResult.neid;
-        file.mimeType = uploadResult.mime_type;
+        file.mimeType = uploadResult.mimeType;
       }).finally(() => {
         console.log("upload success");
       })
@@ -237,12 +241,8 @@ export default {
     onClickAddResult() {
       this.addResultVisible = !this.addResultVisible;
     },
-    handleClickAttachment(attachment) {
-      console.log("attachment: " + JSON.stringify(attachment))
-
-      let previewUrl = location.protocol + location.host + "/apiv2/imagePreview?neid=" + attachment.lenovoId;
-      console.log("preview url: " + previewUrl)
-      callNextPlusPreview(attachment.fileName, previewUrl);
+    handleClickAttachment(attachment, attachmentList) {
+      handleGoToPreview(this, attachment, attachmentList)
     },
     getCheckType(cfCheckType) {
       let checkType = "自";

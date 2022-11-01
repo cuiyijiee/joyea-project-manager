@@ -26,6 +26,7 @@ service.interceptors.response.use(config => {
         try {
           this.$store.commit('delToken');
         } catch (e) {
+          console.log("request exist error: " + e);
         }
         router.replace({
           path: '/login',
@@ -130,6 +131,13 @@ export function listCheckItemResult(cfCheckEntryId, pageNum, pageSize) {
 
 export function insertCheckItemResult(data) {
   return service.post("api/checkItemResult/insert", data).then(resp => resp.data);
+}
+
+export function previewFile(neid){
+  return service.get("apiv2/preview?neid=" + neid)
+    .then(resp => {
+      return resp.data;
+    })
 }
 
 /******************filez start******************/
