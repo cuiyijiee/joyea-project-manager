@@ -1,7 +1,11 @@
 <template>
   <div>
-    <van-nav-bar title="产品信息"
-                 left-arrow left-text="返回" @click-left="() => {this.$router.push('/project')}"/>
+    <van-nav-bar title="产品信息" @click-left="() => {this.$router.push('/project')}">
+      <template #left>
+        <van-icon name="arrow-left" size="25px"/>
+        <span style="font-size: 16px;color: #1989fa">返回</span>
+      </template>
+    </van-nav-bar>
     <van-tabs v-model="typeActive" color="#1989fa" @click="onTabChanged">
       <van-tab :title="'全部(' + count[0]+')' "></van-tab>
       <van-tab :title="'未开始(' + count[1]+')' "></van-tab>

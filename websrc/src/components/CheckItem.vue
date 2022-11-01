@@ -8,7 +8,7 @@
       <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
     </van-tabs>
     <div style="margin: 10px 5px 0 5px;">
-      <van-field name="switch" label="显示全部">
+      <van-field name="switch" label="展示所有点检项">
         <template #input>
           <van-switch v-model="showAll" size="20" @change="handleShowAll"/>
         </template>
