@@ -1,7 +1,12 @@
 <template>
   <div>
-    <van-nav-bar left-arrow left-text="返回" title="点检项操作"
-                 @click-left="() => {this.$router.push({path:'/checkItem',query:{projectId:projectId,orderId:orderId,taskId:taskId}})}"/>
+    <van-nav-bar title="点检项操作"
+                 @click-left="() => {this.$router.push({path:'/checkItem',query:{projectId:projectId,orderId:orderId,taskId:taskId}})}">
+      <template #left>
+        <van-icon name="arrow-left" size="25px"/>
+        <span style="font-size: 16px;color: #1989fa">返回</span>
+      </template>
+    </van-nav-bar>
     <van-divider>共 {{ searchResultCount }} 条点检记录</van-divider>
     <van-button style="width: 100%" type="info" @click="onClickAddResult">新增点检记录</van-button>
     <van-list
@@ -91,19 +96,19 @@
         <van-field name="uploader" label="图片附件" :required="currentCheckItem.needPicture">
           <template #input>
             <van-uploader v-model="pictureFilePreviewList" :after-read="(file) => afterRead(file,'picture')"
-                          accept="image/*"/>
+                          accept="image/*" multiple/>
           </template>
         </van-field>
         <van-field name="uploader" label="视频附件" :required="currentCheckItem.needVideo">
           <template #input>
             <van-uploader v-model="videoFilePreviewList" :after-read="(file) => afterRead(file,'video')"
-                          accept="video/*"/>
+                          accept="video/*" multiple/>
           </template>
         </van-field>
         <van-field name="uploader" label="通用附件" :required="currentCheckItem.needAttachment">
           <template #input>
             <van-uploader v-model="commonFilePreviewList" :after-read="(file) => afterRead(file,'attachment')"
-                          accept="all"/>
+                          accept="all" multiple/>
           </template>
         </van-field>
         <div style="margin: 16px;">

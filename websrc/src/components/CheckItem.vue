@@ -1,7 +1,12 @@
 <template>
   <div>
-    <van-nav-bar left-arrow left-text="返回" title="点检项信息"
-                 @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}"/>
+    <van-nav-bar title="点检项信息"
+                 @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}">
+      <template #left>
+        <van-icon name="arrow-left" size="25px"/>
+        <span style="font-size: 16px;color: #1989fa">返回</span>
+      </template>
+    </van-nav-bar>
     <van-tabs v-model="cfCheckType" color="#1989fa" @change="handleTagChange">
       <van-tab :title="'自检(' + (parseInt(count[0]) + parseInt(count[1]))+')'"></van-tab>
       <van-tab :title="'互检(' + count[1]+')'"></van-tab>
