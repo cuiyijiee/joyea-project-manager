@@ -102,13 +102,13 @@
         <van-field name="uploader" label="视频附件" :required="currentCheckItem.needVideo">
           <template #input>
             <van-uploader v-model="videoFilePreviewList" :after-read="(file) => afterRead(file,'video')"
-                          accept="video/*" multiple/>
+                          accept="video/*"/>
           </template>
         </van-field>
         <van-field name="uploader" label="通用附件" :required="currentCheckItem.needAttachment">
           <template #input>
             <van-uploader v-model="commonFilePreviewList" :after-read="(file) => afterRead(file,'attachment')"
-                          accept="all" multiple/>
+                          accept="all"/>
           </template>
         </van-field>
         <div style="margin: 16px;">
@@ -177,6 +177,17 @@ export default {
 
     },
     onSubmitNewCheckResult() {
+      //检查文件是否上传完毕
+      let notUploadSuccessFiles = this.pictureFilePreviewList
+        .concat(this.videoFilePreviewList)
+        .concat(this.commonFilePreviewList)
+        .filter(item => {
+          return item.status !== "done";
+        })
+      if (notUploadSuccessFiles.length > 0) {
+        this.$notify({type: 'warning', message: '请等待全部文件全部上传完毕后提交！'});
+        return;
+      }
       if (!this.checkResultRadio) {
         this.$notify({type: 'warning', message: '请填写检验结果！'});
         return;
@@ -238,7 +249,8 @@ export default {
         file.message = '上传成功';
 
         file.neid = uploadResult.neid;
-        file.mimeType = uploadResult.mimeType;
+        file.mimeType = uploadResult.mime_type;
+
       }).finally(() => {
         console.log("upload success");
       })

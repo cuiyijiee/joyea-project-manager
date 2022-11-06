@@ -4,7 +4,7 @@
       <van-row>
         <van-col span="24"><span class="desc">检验类型：</span>{{ item.typeName || '' }}</van-col>
         <van-col span="24"><span class="desc">
-          <van-icon v-if="item.keyItem === 1" name="star"/>
+          <van-icon v-if="item.keyItem === 1" name="star" color="red" size="20"/>
           检验标准：</span>{{ item.checkStandard || '' }}
         </van-col>
       </van-row>

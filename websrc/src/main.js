@@ -14,10 +14,10 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
-import VConsole from 'vconsole'
+import eruda from 'eruda'
 
 // if (process.env.NODE_ENV !== 'production') {
-  new VConsole()
+  eruda.init();
 // }
 
 /* eslint-disable no-new */

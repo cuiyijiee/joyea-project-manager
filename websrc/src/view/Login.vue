@@ -22,28 +22,43 @@ export default {
     ...mapActions(['setToken']),
     login() {
       let _this = this;
-      getTicket().then(data => {
-        let ticket = data.obj.ticket;
-        callNextPlusLogin(ticket, (success, authCode) => {
-          if (success) {
-            getProfile(authCode).then(data => {
-              if (data.code === "0") {
-                this.$notify({type: 'success', message: '欢迎回来，' + data.obj.name + '！'});
-                let token = data.obj.token;
-                _this.setToken(token);
-                console.log("login success")
-                this.$router.replace("/project")
-              } else {
-                this.error = true;
-                this.errorMsg = data.msg;
-              }
-            })
+      if (process.env.NODE_ENV !== 'production') {
+        getProfile("test").then(data => {
+          if (data.code === "0") {
+            this.$notify({type: 'success', message: '欢迎回来，' + data.obj.name + '！'});
+            let token = data.obj.token;
+            _this.setToken(token);
+            console.log("login success")
+            this.$router.replace("/project")
           } else {
             this.error = true;
-            this.errorMsg = "当前非next+环境！";
+            this.errorMsg = data.msg;
           }
         })
-      })
+      } else {
+        getTicket().then(data => {
+          let ticket = data.obj.ticket;
+          callNextPlusLogin(ticket, (success, authCode) => {
+            if (success) {
+              getProfile(authCode).then(data => {
+                if (data.code === "0") {
+                  this.$notify({type: 'success', message: '欢迎回来，' + data.obj.name + '！'});
+                  let token = data.obj.token;
+                  _this.setToken(token);
+                  console.log("login success")
+                  this.$router.replace("/project")
+                } else {
+                  this.error = true;
+                  this.errorMsg = data.msg;
+                }
+              })
+            } else {
+              this.error = true;
+              this.errorMsg = "当前非next+环境！";
+            }
+          })
+        })
+      }
     }
   },
   mounted() {

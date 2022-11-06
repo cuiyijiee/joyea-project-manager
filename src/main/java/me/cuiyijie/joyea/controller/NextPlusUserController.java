@@ -113,6 +113,18 @@ public class NextPlusUserController {
 
         TransBaseResponse response = new TransBaseResponse();
 
+        //测试环境专用
+        if("test".equals(request.getAuthCode())) {
+
+            NextPlusUserProfileResp nextPlusUserProfileResp = new NextPlusUserProfileResp();
+            nextPlusUserProfileResp.setEasUserId("NMUAAAAABWKA733t");
+            nextPlusUserProfileResp.setName("测试用户（郑志超）");
+
+            response.setCode("0");
+            response.setObj(nextPlusUserProfileResp);
+            return response;
+        }
+
         ResponseEntity<NextPlusUserProfileResp> profileResp = restTemplate.getForEntity(
                 String.format("%s%s", Constants.NEXT_PLUS_PROFILE_URL, request.getAuthCode()),
                 NextPlusUserProfileResp.class
