@@ -19,12 +19,12 @@ import store from "../src/store";
 
 export default {
   name: 'App',
-  data(){
-    return{
-      fileName:""
+  data() {
+    return {
+      fileName: ""
     }
   },
-  methods:{
+  methods: {
     onChange(index) {
       this.index = index;
       this.fileName = this.imagePreviewImages[parseInt(index)].fileName;

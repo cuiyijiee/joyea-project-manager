@@ -27,7 +27,7 @@
       :finished="!searchHasMore"
       finished-text="没有更多了"
       @load="onLoad">
-      <CheckItemCard v-for="item in checkItemList" :key="item.fid" :item="item"
+      <CheckItemCard v-for="(item,index) in checkItemList" :key="item.fid" :item="item" :index="index"
                      @click.native="handleClickCheckItem(item.fid)">
       </CheckItemCard>
     </van-list>
