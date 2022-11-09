@@ -50,6 +50,7 @@
             where re.lev = 1
             and re.CFCheckType = #{item.cfCheckType}
             and re.CFCheckEntryID = a.fid
+            and re.CFCheckResult = 1
             and a.cftaskid = #{item.taskId})
         </if>
         <if test="item.checkStandard != null and item.checkStandard != ''">
