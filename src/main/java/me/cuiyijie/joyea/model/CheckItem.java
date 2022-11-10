@@ -61,7 +61,7 @@ public class CheckItem {
 
     @ApiModelProperty("是否合格")
     @TableField(exist = false)
-    private boolean qualified;
+    private Boolean qualified;
 
     @ApiModelProperty("是否完成")
     @TableField(exist = false)
@@ -69,5 +69,5 @@ public class CheckItem {
 
     @ApiModelProperty("点检类型")
     @TableField(exist = false)
-    private Integer cfCheckType = 1;
+    private String cfCheckType = "1";
 }

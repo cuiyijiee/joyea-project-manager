@@ -226,20 +226,29 @@ export default {
 
       insertCheckItemResult(newCheckResultForm).then(resp => {
         if (resp.code === '0') {
-          this.$notify({type: 'success', message: '新增成功！'});
+          //重置新增表单
+          this.resetAddForm();
+          this.$notify({type: 'success', message: '新增成功！', duration: 400});
 
           this.checkItemResultList = [];
 
           this.current = 0;
           this.listCheckItemResult();
-
-          //this.$refs.checkItemResultList.check();
         }
       }).finally(() => {
         this.addResultVisible = false;
       })
       console.log(JSON.stringify(newCheckResultForm));
     },
+
+    resetAddForm() {
+      this.checkResultRadio = "";
+      this.checkStandard = "";
+      this.pictureFilePreviewList = [];
+      this.videoFilePreviewList = [];
+      this.commonFilePreviewList = [];
+    },
+
     afterRead(file, fileType) {
       file.status = 'uploading';
       file.message = '上传中...';

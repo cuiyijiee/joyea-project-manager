@@ -15,7 +15,6 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import store from "../src/store";
 
 export default {
   name: 'App',

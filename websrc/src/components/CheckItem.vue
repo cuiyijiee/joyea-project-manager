@@ -12,12 +12,11 @@
       <van-tab :title="'互检(' + count[1]+')'"></van-tab>
       <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
     </van-tabs>
-    <div style="margin: 10px 5px 0 5px;">
-      <van-field name="switch" label="展示所有点检项">
-        <template #input>
-          <van-switch v-model="showAll" size="20" @change="handleShowAll"/>
-        </template>
-      </van-field>
+    <div style="margin: 10px 5px 0 15px;align-content: center">
+      <van-radio-group v-model="showAll" direction="horizontal" @change="handleShowAll">
+        <van-radio name="0">未完成</van-radio>
+        <van-radio name="1">展示所有点检项</van-radio>
+      </van-radio-group>
     </div>
     <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
@@ -51,7 +50,7 @@ export default {
       taskId: "",
       cfCheckType: 0,
       searchKey: "",
-      showAll: false,
+      showAll: '0',
       current: 0,
       pageSize: 5,
       checkItemList: [],
@@ -78,7 +77,7 @@ export default {
       this.listCheckItem();
     },
     listCheckItem() {
-      listCheckItem(this.taskId, this.searchKey, this.cfCheckType + 1, this.showAll,
+      listCheckItem(this.taskId, this.searchKey, this.cfCheckType + 1, this.showAll === '1',
         this.current + 1, this.pageSize).then(data => {
         this.checkItemList = this.checkItemList.concat(data.list);
         this.searchResultCount = data.total;

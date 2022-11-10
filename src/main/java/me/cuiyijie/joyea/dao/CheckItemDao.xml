@@ -46,9 +46,8 @@
             CFCheckType,
             CFCheckResult,
             TO_CHAR(row_number() over(partition by CFCheckEntryID order by CFCheckDate desc)) lev
-            from CT_PRE_QualityCheckResult) re
+            from CT_PRE_QualityCheckResult WHERE CFCheckType = #{item.cfCheckType} ) re
             where re.lev = 1
-            and re.CFCheckType = #{item.cfCheckType}
             and re.CFCheckEntryID = a.fid
             and re.CFCheckResult = 1
             and a.cftaskid = #{item.taskId})

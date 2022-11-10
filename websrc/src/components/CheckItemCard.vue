@@ -10,21 +10,33 @@
         </van-col>
       </van-row>
       <van-row>
-        <van-col span="24"><span class="desc">检验方法：</span>
-          <span class="van-multi-ellipsis--l2" @click.stop="handleClickCheckMethod(item)">
-            {{ item.checkMethod || '' }}
-          </span>
+        <van-col span="24"><span class="desc">检验方法：
+        </span>
+          <van-row>
+            <van-col span="20">
+              <div :class="isOpen ? 'new_detail' : 'default'">
+                {{ item.checkMethod || '' }}
+              </div>
+              <van-grid :border="false" :column-num="3" v-if="isOpen">
+                <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
+                  <van-image v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
+                             :src="'/api/checkItemAttachment/download?attachId=' + attach.fid"/>
+                  <van-image v-else :src="defaultImg"/>
+                </van-grid-item>
+              </van-grid>
+            </van-col>
+            <van-col span="4">
+              <van-button @click.stop="isOpen=!isOpen"
+                          type="info" size="mini" plain>{{ word }}
+                <!--            <i :class="isOpen?'arrow-up':'arrow-down'"></i>-->
+              </van-button>
+            </van-col>
+          </van-row>
         </van-col>
         <van-col span="24">
-          <van-grid :border="false" :column-num="3">
-            <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
-              <van-image v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
-                         :src="'/api/checkItemAttachment/download?attachId=' + attach.fid"/>
-              <van-image v-else :src="defaultImg"/>
-            </van-grid-item>
-          </van-grid>
+
         </van-col>
-        <van-col span="24">
+        <van-col span="24" v-if="item.qualified !== null">
           <van-image v-if="item.qualified" :src="qualifiedImg" width="100" height="100"/>
           <van-image v-else :src="unQualifiedImg" width="100" height="100"/>
         </van-col>
@@ -50,7 +62,20 @@ export default {
       defaultImg: require("@/assets/unknown.png"),
       qualifiedImg: require("@/assets/qualified.png"),
       unQualifiedImg: require("@/assets/unqualified.png"),
+      isOpen: false,
     }
+  },
+  computed: {
+    // 内容
+    word() {
+      if (this.isOpen === false) {
+        return '展开↓'
+      } else if (this.isOpen === true) {
+        return '收起↑'
+      } else if (this.is_show === '') {
+        return null
+      }
+    },
   },
   methods: {
     handleClickCheckMethod(item) {
@@ -87,4 +112,25 @@ span.desc {
 .van-col {
   margin: 5px 0;
 }
+
+.new_detail {
+  padding: 5px 0px 5px 0;
+  font-size: 14px;
+}
+
+.default {
+  padding: 5px 0px 5px 0;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.popper-btn {
+  position: absolute;
+  right: 15px;
+  bottom: 21px;
+}
+
 </style>

@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CheckItemService {
@@ -48,11 +49,19 @@ public class CheckItemService {
 
             //设置是否合格
             List<CheckItemResult> checkItemResults = checkItemResultService.findRecentResult(checkItem1.getFid());
-            if (checkItemResults != null && checkItemResults.size() > 0
-                    && ("1".equals(checkItemResults.get(0).getCfCheckResult()) || "3".equals(checkItemResults.get(0).getCfCheckResult()))) {
-                checkItem1.setQualified(true);
+
+            List<CheckItemResult> myCheckResults = checkItemResults.stream().filter(item -> {
+                return item.getCfCheckType().equals(checkItem.getCfCheckType());
+            }).collect(Collectors.toList());
+            //无点检记录
+            if (myCheckResults.size() == 0) {
+                checkItem1.setQualified(null);
             } else {
-                checkItem1.setQualified(false);
+                if(myCheckResults.get(0).getCfCheckResult().equals("1") || myCheckResults.get(0).getCfCheckResult().equals("3")) {
+                    checkItem1.setQualified(true);
+                }else{
+                    checkItem1.setQualified(false);
+                }
             }
         }
         return checkItemPageResult;
