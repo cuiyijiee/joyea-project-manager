@@ -55,13 +55,9 @@ public class CheckItemService {
             }).collect(Collectors.toList());
             //无点检记录
             if (myCheckResults.size() == 0) {
-                checkItem1.setQualified(null);
+                checkItem1.setCfCheckResult("");
             } else {
-                if(myCheckResults.get(0).getCfCheckResult().equals("1") || myCheckResults.get(0).getCfCheckResult().equals("3")) {
-                    checkItem1.setQualified(true);
-                }else{
-                    checkItem1.setQualified(false);
-                }
+                checkItem1.setCfCheckResult(myCheckResults.get(0).getCfCheckResult());
             }
         }
         return checkItemPageResult;

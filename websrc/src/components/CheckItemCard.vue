@@ -9,7 +9,7 @@
           检验标准：</span>{{ item.checkStandard || '' }}
         </van-col>
       </van-row>
-      <van-row>
+      <van-row v-if="item.checkMethod && item.attachmentList.length > 0">
         <van-col span="24"><span class="desc">检验方法：
         </span>
           <van-row>
@@ -36,9 +36,10 @@
         <van-col span="24">
 
         </van-col>
-        <van-col span="24" v-if="item.qualified !== null">
-          <van-image v-if="item.qualified" :src="qualifiedImg" width="100" height="100"/>
-          <van-image v-else :src="unQualifiedImg" width="100" height="100"/>
+        <van-col span="24" v-if="item.cfCheckResult !== null">
+          <van-image v-if="item.cfCheckResult === '1'" :src="qualifiedImg" width="100" height="100"/>
+          <van-image v-if="item.cfCheckResult === '2'" :src="unQualifiedImg" width="100" height="100"/>
+          <van-image v-if="item.cfCheckResult === '3'" :src="unknownImg" width="100" height="100"/>
         </van-col>
       </van-row>
     </div>
@@ -62,6 +63,7 @@ export default {
       defaultImg: require("@/assets/unknown.png"),
       qualifiedImg: require("@/assets/qualified.png"),
       unQualifiedImg: require("@/assets/unqualified.png"),
+      unknownImg: require("@/assets/unknown.png"),
       isOpen: false,
     }
   },

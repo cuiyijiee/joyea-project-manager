@@ -70,4 +70,8 @@ public class CheckItem {
     @ApiModelProperty("点检类型")
     @TableField(exist = false)
     private String cfCheckType = "1";
+
+    @ApiModelProperty("最新的点检结果")
+    @TableField(exist = false)
+    private String cfCheckResult;
 }

@@ -24,10 +24,9 @@
                 </van-col>
                 <van-col span="6">{{ item.cfCheckPersonName || '' }}</van-col>
                 <van-col span="4">
-                  <div
-                    :class="{'green-color':((item.cfCheckResult || '2') === '1') , 'red-color':((item.cfCheckResult || '2') === '2')}">
-                    {{ (item.cfCheckResult || '2') === '1' ? '合格' : '不合格' }}
-                  </div>
+                  <div class="green-color" v-if="item.cfCheckResult==='1'">合格</div>
+                  <div class="red-color" v-if="item.cfCheckResult==='2'">不合格</div>
+                  <div class="blue-color" v-if="item.cfCheckResult==='3'">不涉及</div>
                 </van-col>
               </van-row>
             </template>
@@ -35,10 +34,9 @@
               <van-col span="24"><span class="desc">检验人：</span>{{ item.cfCheckPersonName || '' }}</van-col>
               <van-col span="24"><span class="desc">检验时间：</span>{{ item.cfCheckDate || '' }}</van-col>
               <van-col span="24"><span class="desc">检验结果：</span>
-                <span
-                  :class="{'green-color':((item.cfCheckResult || '2') === '1') , 'red-color':((item.cfCheckResult || '2') === '2')}">
-                  {{ (item.cfCheckResult || '2') === '1' ? '合格' : '不合格' }}
-                </span>
+                <span class="green-color" v-if="item.cfCheckResult==='1'">合格</span>
+                <span class="red-color" v-if="item.cfCheckResult==='2'">不合格</span>
+                <span class="blue-color" v-if="item.cfCheckResult==='3'">不涉及</span>
               </van-col>
               <van-col span="24"><span class="desc">检验依据：</span>{{ item.cfCheckRecords || '' }}</van-col>
               <van-col span="24">
@@ -309,6 +307,10 @@ export default {
 
 .green-color {
   color: green;
+}
+
+.blue-color {
+  color: dodgerblue;
 }
 
 </style>

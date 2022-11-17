@@ -39,21 +39,21 @@
         WHERE (t.CFTASKID = #{item.taskId})
         <if test="!item.finished">
             AND t.FID NOT IN
-            (select a.fid
-            from VW_SYX_ZLGL_DJX a,
-            (select fid,
+            (SELECT a.fid
+            FROM VW_SYX_ZLGL_DJX a,
+            (SELECT fid,
             CFCheckEntryID,
             CFCheckType,
             CFCheckResult,
-            TO_CHAR(row_number() over(partition by CFCheckEntryID order by CFCheckDate desc)) lev
-            from CT_PRE_QualityCheckResult WHERE CFCheckType = #{item.cfCheckType} ) re
-            where re.lev = 1
-            and re.CFCheckEntryID = a.fid
-            and re.CFCheckResult = 1
-            and a.cftaskid = #{item.taskId})
+            TO_CHAR(row_number() over(PARTITION BY CFCheckEntryID ORDER BY CFCheckDate DESC)) lev
+            FROM CT_PRE_QualityCheckResult WHERE CFCheckType = #{item.cfCheckType} ) re
+            WHERE re.lev = 1
+            AND re.CFCheckEntryID = a.fid
+            AND re.CFCheckResult IN (1,3)
+            AND a.cftaskid = #{item.taskId})
         </if>
         <if test="item.checkStandard != null and item.checkStandard != ''">
-            AND t.CFCHECKSTANDARD like CONCAT(CONCAT('%',#{item.checkStandard}),'%')
+            AND t.CFCHECKSTANDARD LIKE CONCAT(CONCAT('%',#{item.checkStandard}),'%')
         </if>
         <if test="item.cfCheckType == 2">
             AND t.CFKEYITEM = 1
