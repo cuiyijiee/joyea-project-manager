@@ -2,14 +2,7 @@
   <div id="app">
     <router-view/>
     <van-image-preview v-model="showImagePreview" :startPosition="imagePreviewStartIndex"
-                       :images="imagePreviewImages.map(item => item.url)" @change="onChange">
-      <template v-slot:cover>
-        <div>
-          <p>文件名:{{ fileName.length === 0 ? '暂未设置' : fileName }}</p>
-          <!--          <van-button>显示原图</van-button>-->
-        </div>
-      </template>
-    </van-image-preview>
+                       :images="imagePreviewImages.map(item => item.url)" @change="onChange"/>
   </div>
 </template>
 
