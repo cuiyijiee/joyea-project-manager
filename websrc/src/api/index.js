@@ -73,9 +73,9 @@ export function findProjectSchedule(fid) {
   }).then(resp => resp.data);
 }
 
-export function listProduct(xmId, searchKey, status, pageNum, pageSize) {
+export function listProduct(fid, searchKey, status, pageNum, pageSize) {
   return service.post("api/product/list", {
-    xmId: xmId, productName: searchKey, status: status, pageNum: pageNum, pageSize: pageSize
+    fid: fid, productName: searchKey, status: status, pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }
 

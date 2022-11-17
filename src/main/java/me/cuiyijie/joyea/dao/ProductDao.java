@@ -16,12 +16,12 @@ public interface ProductDao extends MPJBaseMapper<Product> {
 
     IPage<Product> selectWithPage(IPage<Product> page, @Param("item") TransProductRequest product);
 
-    Integer selectAllCount(@Param("xmId") String xmId);
+    Integer selectAllCount(@Param("fid") String fid);
 
-    Integer selectNotStartCount(@Param("xmId") String xmId);
+    Integer selectNotStartCount(@Param("fid") String fid);
 
-    Integer selectStartCount(@Param("xmId") String xmId);
+    Integer selectStartCount(@Param("fid") String fid);
 
-    Integer selectFinishCount(@Param("xmId") String xmId);
+    Integer selectFinishCount(@Param("fid") String fid);
 
 }

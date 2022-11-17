@@ -26,10 +26,10 @@ public class ProductService {
     }
 
     public String selectCount(TransProductRequest product) {
-        Integer allCount = productDao.selectAllCount(product.getXmId());
-        Integer notStartCount = productDao.selectNotStartCount(product.getXmId());
-        Integer startCount = productDao.selectStartCount(product.getXmId());
-        Integer finishCount = productDao.selectFinishCount(product.getXmId());
+        Integer allCount = productDao.selectAllCount(product.getFid());
+        Integer notStartCount = productDao.selectNotStartCount(product.getFid());
+        Integer startCount = productDao.selectStartCount(product.getFid());
+        Integer finishCount = productDao.selectFinishCount(product.getFid());
 
         return String.format("%s_%s_%s_%s", allCount, notStartCount, startCount, finishCount);
     }

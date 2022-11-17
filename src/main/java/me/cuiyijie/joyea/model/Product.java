@@ -13,12 +13,12 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "产品信息")
-@TableName("VW_SYX_ZLGL_CP")
+@TableName("VW_SYX_ZLGL_CPWCL")
 public class Product {
 
     @ApiModelProperty(value = "项目ID")
-    @TableField("XMID")
-    private String xmId;
+    @TableField("FID")
+    private String fid;
 
     @ApiModelProperty(value = "生产订单ID")
     @TableId(value = "ORDERID")
@@ -35,5 +35,29 @@ public class Product {
     @ApiModelProperty(value = "产品名称")
     @TableField("PRODUCTNAME")
     private String productName;
+
+    @ApiModelProperty(value = "自检总点检项")
+    @TableField("SELF")
+    private Long self;
+
+    @ApiModelProperty(value = "自检已点数")
+    @TableField("SELFFINISH")
+    private Long selfFinish;
+
+    @ApiModelProperty(value = "自检合格")
+    @TableField("SELFGOOD")
+    private Long selfGood;
+
+    @ApiModelProperty(value = "互检总点检项")
+    @TableField("EACH")
+    private Long each;
+
+    @ApiModelProperty(value = "互检已点数")
+    @TableField("EACHFINISH")
+    private Long eachFinish;
+
+    @ApiModelProperty(value = "互检合格")
+    @TableField("EACHGOOD")
+    private Long eachGood;
 
 }
