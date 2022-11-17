@@ -81,7 +81,18 @@ export default {
   },
   mounted() {
     findProjectSchedule(this.item.fid).then(data => {
-      this.projectSchedule = data.obj;
+      if(data.obj) {
+        this.projectSchedule = data.obj;
+      }else{
+        this.projectSchedule = {
+          self:0,
+          selfFinish:0,
+          selfGood:0,
+          each:0,
+          eachFinish:0,
+          eachGood:0,
+        }
+      }
     }).finally(() => {
       this.scheduleLoading = false;
     })

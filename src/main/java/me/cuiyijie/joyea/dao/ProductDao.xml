@@ -15,7 +15,9 @@
     <select id="selectWithPage" resultMap="BaseResultMap">
         SELECT t.ORDERID, t.XMID, t.ORDERNUMBER, t.PRODUCTNUMBER, t.PRODUCTNAME
         FROM VW_SYX_ZLGL_CP t
-        LEFT JOIN VW_SYX_ZLGL_CPWCL t1 ON t.ORDERID = t1.ORDERID
+        <if test="item.status != 0">
+            LEFT JOIN VW_SYX_ZLGL_CPWCL t1 ON t.ORDERID = t1.ORDERID
+        </if>
         WHERE t.XMID = #{item.xmId}
         <if test="item.productName != null and item.productName != ''">
             AND (

@@ -57,7 +57,18 @@ export default {
   methods: {},
   mounted() {
     findProductSchedule(this.item.orderId).then(data => {
-      this.productSchedule = data.obj;
+      if(data.obj) {
+        this.productSchedule = data.obj;
+      }else{
+        this.productSchedule = {
+          self:0,
+          selfFinish:0,
+          selfGood:0,
+          each:0,
+          eachFinish:0,
+          eachGood:0,
+        }
+      }
     }).finally(() => {
       this.scheduleLoading = false;
     })
