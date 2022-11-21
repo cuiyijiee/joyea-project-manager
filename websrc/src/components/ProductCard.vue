@@ -16,22 +16,26 @@
         <van-col span="4"><span class="desc">自检</span></van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" size="20" type="spinner"/>
-          <van-progress v-else :percentage="item.self ? ((item.selfFinish / item.self) * 100).toFixed(2) : 0.00"/>
+          <van-progress v-else
+                        :percentage="(productSchedule.self && productSchedule.self !== 0) ? ((productSchedule.selfFinish / productSchedule.self) * 100).toFixed(2) : 0.00"/>
         </van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" size="20" type="spinner"/>
-          <van-progress v-else :percentage="item.self ? ((item.selfGood / item.self) * 100).toFixed(2) : 0.00"/>
+          <van-progress v-else
+                        :percentage="(productSchedule.self && productSchedule.self !== 0) ? ((productSchedule.selfGood / productSchedule.self) * 100).toFixed(2) : 0.00"/>
         </van-col>
       </van-row>
       <van-row>
         <van-col span="4"><span class="desc">互检</span></van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" size="20" type="spinner"/>
-          <van-progress v-else :percentage="item.each ? ((item.eachFinish / item.each) * 100).toFixed(2) : 0.00"/>
+          <van-progress v-else
+                        :percentage="(productSchedule.each && productSchedule.each !==0) ? ((productSchedule.eachFinish / productSchedule.each) * 100).toFixed(2) : 0.00"/>
         </van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" size="20" type="spinner"/>
-          <van-progress v-else :percentage="item.each ? ((item.eachGood / item.each) * 100).toFixed(2) : 0.00"/>
+          <van-progress v-else
+                        :percentage="(productSchedule.each && productSchedule.each!==0) ? ((productSchedule.eachGood / productSchedule.each) * 100).toFixed(2) : 0.00"/>
         </van-col>
       </van-row>
     </div>
@@ -50,28 +54,29 @@ export default {
   },
   data() {
     return {
-      scheduleLoading: false,
-      // productSchedule: Object
+      scheduleLoading: true,
+      productSchedule: Object
     }
   },
   methods: {},
   mounted() {
-    // findProductSchedule(this.item.orderId).then(data => {
-    //   if(data.obj) {
-    //     this.productSchedule = data.obj;
-    //   }else{
-    //     this.productSchedule = {
-    //       self:0,
-    //       selfFinish:0,
-    //       selfGood:0,
-    //       each:0,
-    //       eachFinish:0,
-    //       eachGood:0,
-    //     }
-    //   }
-    // }).finally(() => {
-    //   this.scheduleLoading = false;
-    // })
+    this.scheduleLoading = true;
+    findProductSchedule(this.item.orderId).then(data => {
+      if (data.obj) {
+        this.productSchedule = data.obj;
+      } else {
+        this.productSchedule = {
+          self: 0,
+          selfFinish: 0,
+          selfGood: 0,
+          each: 0,
+          eachFinish: 0,
+          eachGood: 0,
+        }
+      }
+    }).finally(() => {
+      this.scheduleLoading = false;
+    })
   }
 }
 </script>

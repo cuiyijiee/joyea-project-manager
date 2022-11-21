@@ -32,6 +32,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(setBean()).addPathPatterns("/**")
                 .excludePathPatterns(
                         "/nextplus/**",
+                        "/ecology/**",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/webjars/**",

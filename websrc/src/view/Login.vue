@@ -1,6 +1,6 @@
 <template>
   <div>
-    检查权限中。。。
+    next+检查权限中。。。
     <h1 v-if="error">{{ errorMsg }}</h1>
   </div>
 </template>

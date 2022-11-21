@@ -20,4 +20,7 @@ public class Person {
     @TableField("FNAME_L2")
     private String fName;
 
+    @TableField("FNUMBER")
+    private String fNumber;
+
 }

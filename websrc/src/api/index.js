@@ -29,8 +29,7 @@ service.interceptors.response.use(config => {
           console.log("request exist error: " + e);
         }
         router.replace({
-          path: '/login',
-          query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
+          path: '/login', query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
         })
     }
   }
@@ -47,6 +46,14 @@ export function getProfile(authCode) {
   return service.post("api/nextplus/profile", {
     authCode: authCode
   }).then(resp => resp.data);
+}
+
+export function getEcologyAuthUrl() {
+  return service.post("api/ecology/authUrl", {}).then(resp => resp.data);
+}
+
+export function getEcologyProfile(ticket) {
+  return service.post("api/ecology/profile?ticket=" + ticket, {}).then(resp => resp.data);
 }
 
 export function listProject(searchKey, pageNum, pageSize) {
@@ -79,9 +86,9 @@ export function listProduct(fid, searchKey, status, pageNum, pageSize) {
   }).then(resp => resp.data);
 }
 
-export function listProductCount(xmId) {
+export function listProductCount(fid) {
   return service.post("api/product/count", {
-    xmId: xmId
+    fid: fid
   }).then(resp => resp.data);
 }
 
@@ -93,8 +100,7 @@ export function findProductSchedule(orderId) {
 
 export function listProcess(orderId, searchKey, status, pageNum, pageSize) {
   return service.post("api/process/list", {
-    orderId: orderId, processName: searchKey, status: status,
-    pageNum: pageNum, pageSize: pageSize
+    orderId: orderId, processName: searchKey, status: status, pageNum: pageNum, pageSize: pageSize
   }).then(resp => resp.data);
 }
 
@@ -106,8 +112,12 @@ export function listProcessCount(orderId) {
 
 export function listCheckItem(taskId, searchKey, cfCheckType, finished, pageNum, pageSize) {
   return service.post("api/checkItem/list", {
-    taskId: taskId, checkStandard: searchKey, cfCheckType: cfCheckType, finished: finished,
-    pageNum: pageNum, pageSize: pageSize
+    taskId: taskId,
+    checkStandard: searchKey,
+    cfCheckType: cfCheckType,
+    finished: finished,
+    pageNum: pageNum,
+    pageSize: pageSize
   }).then(resp => resp.data);
 }
 
@@ -133,7 +143,7 @@ export function insertCheckItemResult(data) {
   return service.post("api/checkItemResult/insert", data).then(resp => resp.data);
 }
 
-export function previewFile(neid){
+export function previewFile(neid) {
   return service.get("apiv2/preview?neid=" + neid)
     .then(resp => {
       return resp.data;

@@ -7,6 +7,7 @@ import CheckItemResult from "../components/CheckItemResult";
 
 import Error from "../view/Error";
 import Login from "../view/Login";
+import ELogin from "../view/ELogin";
 
 import VueRouter from 'vue-router';
 import Vue from "vue";
@@ -30,6 +31,8 @@ const router = new VueRouter({
     path: '/error', name: '错误页面', component: Error
   }, {
     path: '/login', name: '登录界面', component: Login
+  }, {
+    path: '/elogin', name: '范围登录界面', component: ELogin
   }]
 })
 

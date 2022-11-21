@@ -3,7 +3,8 @@
     <div class="container">
       <van-row>
         <van-col span="24">
-          <van-icon v-if="item.collect" name="like" style="padding: 0 5px;" color="#ee0a24"
+          <van-loading v-if="collectLoading" type="spinner" size="18" style="display:inline-block;padding: 0 5px;"/>
+          <van-icon v-else-if="item.collect" name="like" style="padding: 0 5px;" color="#ee0a24"
                     @click.stop="handleCollectProject"/>
           <van-icon v-else name="like-o" style="padding: 0 5px;" color="#ee0a24" @click.stop="handleCollectProject"/>
           <span class="desc">项目名称：</span>{{ item.projectName }}
@@ -24,22 +25,26 @@
         <van-col span="4"><span class="desc">自检</span></van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
-          <van-progress v-else :percentage="((projectSchedule.selfFinish / projectSchedule.self) * 100).toFixed(2)"/>
+          <van-progress v-else
+                        :percentage=" projectSchedule.self ? ((projectSchedule.selfFinish / projectSchedule.self) * 100).toFixed(2) : 0.00"/>
         </van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
-          <van-progress v-else :percentage="((projectSchedule.selfGood / projectSchedule.self) * 100).toFixed(2)"/>
+          <van-progress v-else
+                        :percentage="projectSchedule.self ? ((projectSchedule.selfGood / projectSchedule.self) * 100).toFixed(2):0.00"/>
         </van-col>
       </van-row>
       <van-row>
         <van-col span="4"><span class="desc">互检</span></van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
-          <van-progress v-else :percentage="((projectSchedule.eachFinish / projectSchedule.each) * 100).toFixed(2)"/>
+          <van-progress v-else
+                        :percentage="projectSchedule.each?((projectSchedule.eachFinish / projectSchedule.each) * 100).toFixed(2):0.00"/>
         </van-col>
         <van-col span="10">
           <van-loading v-if="scheduleLoading" type="spinner" size="20"/>
-          <van-progress v-else :percentage="((projectSchedule.eachGood / projectSchedule.each) * 100).toFixed(2)"/>
+          <van-progress v-else
+                        :percentage="projectSchedule.each?((projectSchedule.eachGood / projectSchedule.each) * 100).toFixed(2):0.00"/>
         </van-col>
       </van-row>
     </div>
@@ -60,37 +65,41 @@ export default {
   data() {
     return {
       scheduleLoading: true,
-      projectSchedule: Object
+      projectSchedule: Object,
+      collectLoading: false,
     }
   },
   methods: {
     handleCollectProject() {
+      this.collectLoading = true;
       addProjectCollect(this.item.fid).then(resp => {
         if (resp.code === '0') {
-          if(this.item.collect){
+          if (this.item.collect) {
             this.$notify({type: "success", message: "取消收藏成功！"});
-          }else{
+          } else {
             this.$notify({type: "success", message: "收藏成功！"});
           }
           this.item.collect = !this.item.collect;
         } else {
           this.$notify({type: "warning", message: resp.msg})
         }
+      }).finally(() => {
+        this.collectLoading = false;
       })
     }
   },
   mounted() {
     findProjectSchedule(this.item.fid).then(data => {
-      if(data.obj) {
+      if (data.obj) {
         this.projectSchedule = data.obj;
-      }else{
+      } else {
         this.projectSchedule = {
-          self:0,
-          selfFinish:0,
-          selfGood:0,
-          each:0,
-          eachFinish:0,
-          eachGood:0,
+          self: 0,
+          selfFinish: 0,
+          selfGood: 0,
+          each: 0,
+          eachFinish: 0,
+          eachGood: 0,
         }
       }
     }).finally(() => {

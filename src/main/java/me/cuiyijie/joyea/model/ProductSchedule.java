@@ -25,13 +25,21 @@ public class ProductSchedule {
     @TableField("PROJECTNAME")
     private String projectName;
 
-    @ApiModelProperty(value = "物料编号")
-    @TableField("WLNUMBER")
-    private String wlNumber;
+//    @ApiModelProperty(value = "物料编号")
+//    @TableField("WLNUMBER")
+//    private String wlNumber;
+//
+//    @ApiModelProperty(value = "物料名称")
+//    @TableField("WLNAME")
+//    private String wlName;
 
-    @ApiModelProperty(value = "物料名称")
-    @TableField("WLNAME")
-    private String wlName;
+//    @ApiModelProperty(value = "产品编号")
+//    @TableField("PRODUCTNUMBER")
+//    private String productNumber;
+//
+//    @ApiModelProperty(value = "产品名称")
+//    @TableField("PRODUCTNAME")
+//    private String productName;
 
     @ApiModelProperty(value = "自检总点检项")
     @TableField("SELF")

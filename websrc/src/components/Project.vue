@@ -2,6 +2,7 @@
   <div class="hello">
     <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
     <van-search v-model="searchKey" placeholder="搜索项目关键字" @search="onSearch"/>
+
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
       ref="projectList"
@@ -65,7 +66,7 @@ export default {
         query: {projectId: fid}
       })
     },
-    handleClickMyFav(){
+    handleClickMyFav() {
       this.$router.replace("/projectCollect")
     }
   },

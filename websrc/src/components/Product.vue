@@ -7,7 +7,7 @@
       </template>
     </van-nav-bar>
     <van-tabs v-model="typeActive" color="#1989fa" @click="onTabChanged">
-      <van-tab :title="'全部(' + count[0]+')' "></van-tab>
+      <van-tab :title="'全部(' + (tabStatus === 0 && !searchLoading ? searchResultCount : count[0]).toString() +')' "></van-tab>
       <van-tab :title="'未开始(' + count[1]+')' "></van-tab>
       <van-tab :title="'验证中(' + count[2]+')' "></van-tab>
       <van-tab :title="'已完成(' + count[3]+')' "></van-tab>

@@ -36,28 +36,28 @@ public class Product {
     @TableField("PRODUCTNAME")
     private String productName;
 
-    @ApiModelProperty(value = "自检总点检项")
-    @TableField("SELF")
-    private Long self;
-
-    @ApiModelProperty(value = "自检已点数")
-    @TableField("SELFFINISH")
-    private Long selfFinish;
-
-    @ApiModelProperty(value = "自检合格")
-    @TableField("SELFGOOD")
-    private Long selfGood;
-
-    @ApiModelProperty(value = "互检总点检项")
-    @TableField("EACH")
-    private Long each;
-
-    @ApiModelProperty(value = "互检已点数")
-    @TableField("EACHFINISH")
-    private Long eachFinish;
-
-    @ApiModelProperty(value = "互检合格")
-    @TableField("EACHGOOD")
-    private Long eachGood;
+//    @ApiModelProperty(value = "自检总点检项")
+//    @TableField("SELF")
+//    private Long self;
+//
+//    @ApiModelProperty(value = "自检已点数")
+//    @TableField("SELFFINISH")
+//    private Long selfFinish;
+//
+//    @ApiModelProperty(value = "自检合格")
+//    @TableField("SELFGOOD")
+//    private Long selfGood;
+//
+//    @ApiModelProperty(value = "互检总点检项")
+//    @TableField("EACH")
+//    private Long each;
+//
+//    @ApiModelProperty(value = "互检已点数")
+//    @TableField("EACHFINISH")
+//    private Long eachFinish;
+//
+//    @ApiModelProperty(value = "互检合格")
+//    @TableField("EACHGOOD")
+//    private Long eachGood;
 
 }
