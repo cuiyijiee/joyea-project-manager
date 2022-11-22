@@ -3,69 +3,8 @@
 <mapper namespace="me.cuiyijie.joyea.dao.UserDao">
     <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.User">
 
-        <id property="id" column="id"/>
-        <id property="name" column="name"/>
-        <id property="signature" column="signature"/>
-        <id property="email" column="email"/>
-        <id property="mobile" column="mobile"/>
-        <id property="imageUrl" column="image_url"/>
-        <id property="activated" column="activated"/>
-        <id property="createdAt" column="created_at"/>
-        <id property="updatedAt" column="updated_at"/>
+        <id property="fid" column="FID"/>
+        <id property="fPersonId" column="FPERSONID"/>
     </resultMap>
-
-    <select id="listAll" resultMap="BaseResultMap">
-        SELECT *
-        FROM t_user
-        WHERE 1=1
-        <if test="item.name != null and item.name != ''">
-            AND name = #{item.name}
-        </if>
-        ORDER BY created_at DESC
-    </select>
-
-    <insert id="insert">
-        INSERT INTO t_user(id,name, signature, email, mobile, image_url, activated, created_at)
-        VALUES (#{item.id},
-                #{item.name},
-                #{item.signature},
-                #{item.email},
-                #{item.mobile},
-                #{item.imageUrl},
-                #{item.activated},
-                NOW())
-    </insert>
-
-    <update id="update">
-        UPDATE t_user
-        <set>
-            <if test="item.name != null and item.name != ''">
-                name = #{item.name},
-            </if>
-            <if test="item.signature != null and item.signature != ''">
-                signature = #{item.signature},
-            </if>
-            <if test="item.email != null and item.email != ''">
-                email = #{item.email},
-            </if>
-            <if test="item.mobile != null and item.mobile != ''">
-                mobile = #{item.mobile},
-            </if>
-            <if test="item.imgUrl != null and item.imgUrl != ''">
-                image_url = #{item.imgUrl},
-            </if>
-            <if test="item.activated != null and item.activated != ''">
-                activated = #{item.activated},
-            </if>
-            updated_at = NOW()
-        </set>
-        WHERE id = #{item.id}
-    </update>
-
-    <delete id="delete">
-        DELETE
-        FROM t_user
-        WHERE id = #{item.id}
-    </delete>
 
 </mapper>

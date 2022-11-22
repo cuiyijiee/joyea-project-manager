@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import me.cuiyijie.joyea.dao.UserDao;
 import me.cuiyijie.joyea.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +14,8 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public List<User> listAll(User user) {
-        return userDao.listAll(user);
-    }
-
-    public Integer update(User user) {
-        return userDao.update(user);
-    }
-
-    public Integer insert(User user) {
-        return userDao.insert(user);
-    }
-
-    public Integer delete(User user) {
-        return userDao.delete(user);
+    public User findByPersonId(String personId) {
+        return userDao.selectOne(new QueryWrapper<User>().eq("FPERSONID", personId));
     }
 
 }

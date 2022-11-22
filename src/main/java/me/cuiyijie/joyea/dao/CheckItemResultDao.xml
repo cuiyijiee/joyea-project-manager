@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.CheckItemResultDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItemResult">
+
+        <id property="fNumber" column="FNUMBER"/>
+        <id property="fSimpleName" column="FSIMPLENAME"/>
+        <id property="fId" column="FID"/>
+        <id property="fCreatorId" column="FCREATORID"/>
+        <id property="fCreateTime" column="FCREATETIME"/>
+        <id property="fLastUpdateUserId" column="FLASTUPDATEUSERID"/>
+        <id property="fLastUpdateTime" column="FLASTUPDATETIME"/>
+        <id property="fControlUnitId" column="FCONTROLUNITID"/>
+        <id property="cfCheckEntryId" column="CFCHECKENTRYID"/>
+        <id property="cfCheckEntryId" column="CFCHECKTYPE"/>
+        <id property="cfCheckResult" column="CFCHECKRESULT"/>
+        <id property="cfRemark" column="CFREMARK"/>
+        <id property="cfCheckPersonId" column="CFCHECKPERSONID"/>
+        <id property="cfCheckDate" column="CFCHECKDATE"/>
+        <id property="cfCheckRecords" column="CFCHECKRECORDS"/>
+        <id property="fNameL1" column="FNAME_L1"/>
+        <id property="fNameL2" column="FNAME_L2"/>
+        <id property="fNameL3" column="FNAME_L3"/>
+        <id property="fDescriptionL1" column="FDESCRIPTION_L1"/>
+        <id property="fDescriptionL2" column="FDESCRIPTION_L2"/>
+        <id property="fDescriptionL3" column="FDESCRIPTION_L3"/>
+        <id property="cfFieldType" column="CFFIELDTYPE"/>
+    </resultMap>
+
+    <insert id="customInsert">
+        INSERT INTO CT_PRE_QUALITYCHECKRESULT (FID, CFCHECKENTRYID, CFCHECKTYPE, CFCHECKRESULT,
+                                               CFCHECKPERSONID, FCREATORID,
+                                               CFCHECKDATE, CFCHECKRECORDS)
+        VALUES (NEWBOSID('3A72033A'),
+                #{item.cfCheckEntryId},
+                #{item.cfCheckType},
+                #{item.cfCheckResult},
+                #{item.cfCheckPersonId},
+                #{item.fCreatorId},
+                #{item.cfCheckDate},
+                #{item.cfCheckRecords})
+    </insert>
+
+</mapper>

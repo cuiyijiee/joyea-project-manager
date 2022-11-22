@@ -1,20 +1,21 @@
 package me.cuiyijie.joyea.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@TableName("T_PM_USER")
 public class User {
 
-    private String id;
-    private String name;
-    private String signature;
-    private String email;
-    private String mobile;
-    private String imageUrl;
-    private Boolean activated;
+    @TableId(value = "FID", type = IdType.ASSIGN_UUID)
+    private String fid;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @TableField("FPERSONID")
+    private String fPersonId;
+
 }

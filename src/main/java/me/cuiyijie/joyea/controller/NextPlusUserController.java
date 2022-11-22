@@ -38,15 +38,8 @@ import java.util.Map;
 @RequestMapping("nextplus")
 @Api(tags = "系统用户模块-NextPlus用户体系")
 public class NextPlusUserController {
-
-    @Autowired
-    UserService iUserService;
-
     @Autowired
     private NextPlusService nextPlusService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private EasPersonDao easPersonDao;
@@ -154,16 +147,7 @@ public class NextPlusUserController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse listNextPlusPerson(@RequestBody TransJoyeaPersonRequest request) {
         TransBaseResponse response = new TransBaseResponse();
-//        NextPlusTenant nextPlusTenant = nextPlusService.getTenantInfo();
-//        if (StringUtil.isNotEmpty(request.getName()) && nextPlusTenant != null) {
-//            response.setObj(nextPlusTenant.getMembers().stream().filter(item -> item.getName().contains(request.getName())).collect(Collectors.toList()));
-//        } else {
-//            response.setObj(nextPlusTenant.getMembers());
-//        }
-        User user = new User();
-        user.setName(request.getName());
-        response.setList(userService.listAll(user));
-
+        //TODO
         response.setCode("0");
         return response;
     }

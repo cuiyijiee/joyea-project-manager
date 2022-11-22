@@ -22,7 +22,7 @@ public class CheckItemResult {
     @TableField(value = "FSIMPLENAME")
     private String fSimpleName;
 
-    @TableId(value = "FID", type = IdType.ASSIGN_UUID)
+    @TableId(value = "FID", type = IdType.INPUT)
     private String fId;
 
     @TableField("FCREATORID")
