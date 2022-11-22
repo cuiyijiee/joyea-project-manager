@@ -1,15 +1,13 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.CheckItemPropertyDao;
+import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.joyea.dao.CheckItemPropertyDao;
 import me.cuiyijie.joyea.enums.CheckCategoryType;
 import me.cuiyijie.joyea.enums.CheckItemPropertyType;
 import me.cuiyijie.joyea.enums.CheckModuleType;
 import me.cuiyijie.joyea.enums.CheckStageType;
-import me.cuiyijie.joyea.enums.base.BaseEnum;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +20,9 @@ import java.util.Map;
  * @Author: cuiyijie
  * @Date: 2021/11/26 14:25
  */
+@Slf4j
 @Service
 public class CheckItemPropertyService {
-
-    private final Logger logger = LoggerFactory.getLogger(CheckItemPropertyService.class);
-
 
     @Autowired
     private CheckItemPropertyDao checkItemPropertyDao;
@@ -58,7 +54,7 @@ public class CheckItemPropertyService {
                 }
             }
         } catch (Exception exception) {
-            logger.error("获取点检项属性失败：", exception);
+            log.error("获取点检项属性失败：", exception);
         }
         resultMap.put(CheckItemPropertyType.CATEGORY, categoryTypes);
         resultMap.put(CheckItemPropertyType.STAGE, stageTypes);
@@ -68,35 +64,6 @@ public class CheckItemPropertyService {
 
     public void updateCheckItemProperty(CheckItem checkItem) {
         List<CheckItemProperty> properties = new ArrayList<>();
-        if (checkItem.getCheckCategoryTypes() != null) {
-            for (int jndex = 0; jndex < checkItem.getCheckCategoryTypes().size(); jndex++) {
-                CheckCategoryType checkCategoryType = checkItem.getCheckCategoryTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.CATEGORY, checkCategoryType.name());
-                properties.add(checkItemProperty);
-            }
-        }
-        if (checkItem.getCheckModuleTypes() != null) {
-            for (int jndex = 0; jndex < checkItem.getCheckModuleTypes().size(); jndex++) {
-                CheckModuleType checkModuleType = checkItem.getCheckModuleTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.MODULE, checkModuleType.name());
-                properties.add(checkItemProperty);
-            }
-        }
-        if (checkItem.getCheckStageTypes() != null) {
-            for (int jndex = 0; jndex < checkItem.getCheckStageTypes().size(); jndex++) {
-                CheckStageType checkStageType = checkItem.getCheckStageTypes().get(jndex);
-                CheckItemProperty checkItemProperty = new CheckItemProperty(0, checkItem.getId(), CheckItemPropertyType.STAGE, checkStageType.name());
-                properties.add(checkItemProperty);
-            }
-        }
 
-        CheckItemProperty checkItemProperty = new CheckItemProperty();
-        checkItemProperty.setCheckItemId(checkItem.getId());
-        checkItemPropertyDao.deleteByCheckItemIdAndType(checkItemProperty);
-        for (int index = 0; index < properties.size(); index++) {
-            CheckItemProperty temp = properties.get(index);
-            temp.setCheckItemId(checkItem.getId());
-            checkItemPropertyDao.insert(temp);
-        }
     }
 }

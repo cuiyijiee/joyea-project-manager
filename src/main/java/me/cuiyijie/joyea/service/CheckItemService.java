@@ -1,22 +1,19 @@
 package me.cuiyijie.joyea.service;
 
-import me.cuiyijie.joyea.dao.main.CheckItemDao;
-import me.cuiyijie.joyea.dao.main.SysFileUploadDao;
-import me.cuiyijie.joyea.dao.main.TemplateDao;
-import me.cuiyijie.joyea.model.SysFileUpload;
-import me.cuiyijie.joyea.enums.*;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
+import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
-import me.cuiyijie.joyea.model.CheckItemTag;
-import me.cuiyijie.joyea.model.Template;
-import me.cuiyijie.joyea.model.vo.CheckItemVo;
-import org.apache.ibatis.annotations.Param;
+import me.cuiyijie.joyea.model.CheckItemAttachment;
+import me.cuiyijie.joyea.model.CheckItemResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,116 +22,83 @@ public class CheckItemService {
     @Autowired
     private CheckItemDao checkItemDao;
     @Autowired
-    private TemplateDao templateDao;
-
+    private CheckItemAttachmentDao checkItemAttachmentDao;
     @Autowired
-    private CheckItemTagService checkItemTagService;
-    @Autowired
-    private CheckItemPropertyService checkItemPropertyService;
+    private CheckItemResultService checkItemResultService;
 
-    @Autowired
-    private SysFileUploadDao sysFileUploadDao;
+    public IPage<CheckItem> list(CheckItem checkItem, Integer pageNum, Integer pageSize) {
 
-    public Integer countChild(Integer id) {
-        return checkItemDao.countChild(id);
-    }
+        IPage<CheckItem> checkItemPageResult = checkItemDao.selectWithPage(new Page<>(pageNum, pageSize), checkItem);
 
-    public List<CheckItem> listChild(Integer id) {
-        List<CheckItem> checkItems = checkItemDao.listChild(id);
-        for (int index = 0; index < checkItems.size(); index++) {
-            CheckItem checkItem1 = checkItems.get(index);
-            addCheckItemAttributes(checkItem1);
-            //获取文件说明
-            if(StringUtils.hasLength(checkItem1.getFileExplanation())){
-                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(checkItem1.getFileExplanation());
-                checkItem1.setFileExplanationFile(sysFileUpload);
+        for (int index = 0; index < checkItemPageResult.getRecords().size(); index++) {
+            //查找附件
+            CheckItem checkItem1 = checkItemPageResult.getRecords().get(index);
+            String ffid = checkItem1.getCheckMethodId();
+            List<CheckItemAttachment> attachmentList = new ArrayList<>();
+            if (StringUtils.hasLength(ffid)) {
+                String[] ffids = ffid.split(",");
+                for (int i = 0; i < ffids.length; i++) {
+                    String attachId = ffids[i];
+                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+                    if (checkItemAttachment != null) {
+                        attachmentList.add(checkItemAttachment);
+                    }
+                }
+            }
+            checkItem1.setAttachmentList(attachmentList);
+
+            //设置是否合格
+            List<CheckItemResult> checkItemResults = checkItemResultService.findRecentResult(checkItem1.getFid());
+
+            List<CheckItemResult> myCheckResults = checkItemResults.stream().filter(item -> {
+                return item.getCfCheckType().equals(checkItem.getCfCheckType());
+            }).collect(Collectors.toList());
+            //无点检记录
+            if (myCheckResults.size() == 0) {
+                checkItem1.setCfCheckResult("");
+            } else {
+                checkItem1.setCfCheckResult(myCheckResults.get(0).getCfCheckResult());
             }
         }
-        return checkItems;
+        return checkItemPageResult;
     }
 
-    public List<CheckItem> listAll(CheckItemVo checkItemVo) {
-        List<CheckItem> checkItems = checkItemDao.listAll(checkItemVo);
-        for (int index = 0; index < checkItems.size(); index++) {
-            CheckItem checkItem1 = checkItems.get(index);
-            addCheckItemAttributes(checkItem1);
-            //获取文件说明
-            if(StringUtils.hasLength(checkItem1.getFileExplanation())){
-                SysFileUpload sysFileUpload = sysFileUploadDao.selectById(checkItem1.getFileExplanation());
-                checkItem1.setFileExplanationFile(sysFileUpload);
+    public CheckItem find(CheckItem checkItem) {
+        CheckItem checkItem1 = checkItemDao.selectById(checkItem.getFid());
+        if (checkItem1 != null) {
+            String ffid = checkItem1.getCheckMethodId();
+            List<CheckItemAttachment> attachmentList = new ArrayList<>();
+            if (StringUtils.hasLength(ffid)) {
+                String[] ffids = ffid.split(",");
+                for (int i = 0; i < ffids.length; i++) {
+                    String attachId = ffids[i];
+                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+                    if (checkItemAttachment != null) {
+                        attachmentList.add(checkItemAttachment);
+                    }
+                }
             }
+            checkItem1.setAttachmentList(attachmentList);
         }
-        return checkItems;
+        return checkItem1;
     }
 
-    public void addCheckItemAttributes(CheckItem checkItem) {
-        List<CheckItemTag> checkItemTags = checkItemTagService.listByCheckItemId(checkItem.getId());
-        checkItem.setTags(checkItemTags);
+    public String listCount(CheckItem checkItem) {
 
-        Map<CheckItemPropertyType, List<Enum<?>>> propertyMap = checkItemPropertyService.getCheckItemProperty(checkItem.getId(), null);
-        if (propertyMap != null) {
-            checkItem.setCheckCategoryTypes(propertyMap.get(CheckItemPropertyType.CATEGORY).stream().map(item -> (CheckCategoryType) item).collect(Collectors.toList()));
-            checkItem.setCheckModuleTypes(propertyMap.get(CheckItemPropertyType.MODULE).stream().map(item -> (CheckModuleType) item).collect(Collectors.toList()));
-            checkItem.setCheckStageTypes(propertyMap.get(CheckItemPropertyType.STAGE).stream().map(item -> (CheckStageType) item).collect(Collectors.toList()));
+        QueryWrapper<CheckItem> queryWrapper1 = new QueryWrapper<>();
+        if (StringUtils.hasLength(checkItem.getTaskId())) {
+            queryWrapper1.eq("CFTASKID", checkItem.getTaskId());
         }
-    }
+        queryWrapper1.eq("CFKEYITEM", 0);
+        Long count1 = checkItemDao.selectCount(queryWrapper1);
 
-    public Integer update(CheckItem checkItem) {
-        Integer result = checkItemDao.update(checkItem);
-        checkItemTagService.deleteAllCheckItemTagRel(checkItem.getId());
-        if (checkItem.getTags() != null) {
-            for (int index = 0; index < checkItem.getTags().size(); index++) {
-                CheckItemTag checkItemTag = checkItem.getTags().get(index);
-                checkItemTagService.addCheckItemTagRel(checkItem.getId(), checkItemTag.getId());
-                //checkItemTagService.insert(checkItem.getTags().get(index));
-                checkItemPropertyService.updateCheckItemProperty(checkItem);
-            }
+        QueryWrapper<CheckItem> queryWrapper2 = new QueryWrapper<>();
+        if (StringUtils.hasLength(checkItem.getTaskId())) {
+            queryWrapper2.eq("CFTASKID", checkItem.getTaskId());
         }
-        return checkItemDao.update(checkItem);
-    }
+        queryWrapper2.eq("CFKEYITEM", 1);
+        Long count2 = checkItemDao.selectCount(queryWrapper2);
 
-    @Transactional
-    public Integer insert(CheckItem checkItem) {
-        Integer result = checkItemDao.insert(checkItem);
-        if (checkItem.getTags() != null) {
-            for (int index = 0; index < checkItem.getTags().size(); index++) {
-                CheckItemTag checkItemTag = checkItem.getTags().get(index);
-                checkItemTagService.addCheckItemTagRel(checkItem.getId(), checkItemTag.getId());
-                //checkItemTagService.insert(checkItem.getTags().get(index));
-                checkItemPropertyService.updateCheckItemProperty(checkItem);
-            }
-        }
-        return result;
-    }
-
-    public Integer delete(CheckItem checkItem) {
-        //TODO 需要同步删除t_checkitem_property表
-        checkItemTagService.deleteAllCheckItemTagRel(checkItem.getId());
-        return checkItemDao.delete(checkItem);
-    }
-
-    public void addCheckItemRel(Integer pid, Integer id) {
-        CheckItem checkItem = checkItemDao.listById(id);
-        if (checkItem == null) {
-            throw new RuntimeException("被关联的点检项不存在！");
-        }
-        Template template = templateDao.listById(pid);
-        if (template == null || template.getLevelType() == null || template.getLevelType() != TemplateLevelType.OPERATION) {
-            throw new RuntimeException("被关联的工序不存在！");
-        } else {
-            templateDao.addTemplateRel(pid, id);
-        }
-    }
-
-    public Integer deleteCheckItemRel(Integer pid, Integer id) {
-        return templateDao.deleteTemplateRel(pid, id);
-    }
-
-    public Integer selectCheckItemRel(Integer checkItemId) {
-        return checkItemDao.selectCheckItemRel(checkItemId);
-    }
-
-    public Integer updateState(@Param("item") CheckItem checkItem) {
-        return checkItemDao.updateState(checkItem);
+        return String.format("%s_%s", count1, count2);
     }
 }

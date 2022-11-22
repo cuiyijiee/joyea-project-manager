@@ -1,25 +1,18 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.enums.TemplateLevelType;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.Template;
-import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransOperationRequest;
 import me.cuiyijie.joyea.pojo.request.TransTemplateRequest;
-import me.cuiyijie.joyea.service.CheckItemAnswerService;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.TemplateService;
 import me.cuiyijie.joyea.model.vo.TemplateVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,45 +51,6 @@ public class TemplateController {
         return transBaseResponse;
     }
 
-    @ApiOperation(value = "获取子节点", notes = "获取子节点")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "当前文件夹ID", required = true, dataType = "Integer"),
-//    })
-    @RequestMapping(value = "listChild", method = RequestMethod.POST)
-    public TransBaseResponse list(@RequestBody TransTemplateRequest request) {
-        TransBasePageResponse transBaseResponse = new TransBasePageResponse();
-        try {
-            Template template1 = templateService.listById(request.getId());
-            if (template1 == null) {
-                throw new RuntimeException("该节点不存在！");
-            }
-            if(request.getPageNum() != null) {
-                PageHelper.startPage(request.getPageNum(),request.getPageSize());
-                if (template1.getLevelType() == TemplateLevelType.DIR) {
-                    List<Template> templates = templateService.listChild(request.getId());
-                    transBaseResponse = new TransBasePageResponse(new PageInfo(templates));
-                } else {
-                    List<CheckItem> checkItems = checkItemService.listChild(request.getId());
-                    transBaseResponse = new TransBasePageResponse(new PageInfo(checkItems));
-                }
-            }else{
-                if (template1.getLevelType() == TemplateLevelType.DIR) {
-                    List<Template> templates = templateService.listChild(request.getId());
-                    transBaseResponse.setList(templates);
-                } else {
-                    List<CheckItem> checkItems = checkItemService.listChild(request.getId());
-                    transBaseResponse.setList(checkItems);
-                }
-            }
-            transBaseResponse.setCode("0");
-        } catch (Exception exception) {
-            log.error("获取全部根节点：", exception);
-            transBaseResponse.setCode("-1");
-            transBaseResponse.setMsg(exception.toString());
-        }
-        return transBaseResponse;
-    }
-
     @ApiOperation(value = "获取全部的工序", notes = "获取全部的工序")
     @RequestMapping(value = "listAllOperation", method = RequestMethod.POST)
     public TransBaseResponse listAllOperation(@RequestBody TransOperationRequest request) {
@@ -104,11 +58,7 @@ public class TemplateController {
         try {
 
             if(request.getPageNum() != null && request.getPageNum() != -1) {
-                PageHelper.startPage(request.getPageNum(),request.getPageSize());
-                Template template = new Template();
-                template.setName(request.getOperationName());
-                List<TemplateVo> operations = templateService.listAllOperation(template);
-                transBaseResponse = new TransBasePageResponse(new PageInfo<TemplateVo>(operations));
+                List<TemplateVo> operations = templateService.listAllOperation();
             }
             //transBaseResponse.setList(templateService.listAllOperation());
             transBaseResponse.setCode("0");
@@ -179,23 +129,16 @@ public class TemplateController {
     public TransBaseResponse delete(@RequestBody Template template) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         try {
-            templateService.deleteTemplate(template);
-            transBaseResponse.setCode("0");
-        } catch (Exception exception) {
-            log.error("删除节点：", exception);
-            transBaseResponse.setCode("-1");
-            transBaseResponse.setMsg(exception.toString());
-        }
-        return transBaseResponse;
-    }
-
-    @ApiOperation(value = "批量删除节点", notes = "批量删除节点")
-    @RequestMapping(value = "batchDelete", method = RequestMethod.POST)
-    public TransBaseResponse batchDelete(@RequestBody TransTemplateRequest request) {
-        TransBaseResponse transBaseResponse = new TransBaseResponse();
-        try {
-            templateService.batchDeleteTemplate(request.getIds());
-            transBaseResponse.setCode("0");
+            //判断要删除的节点下有没有子节点，如果有子节点不允许删除
+            Integer childCount = templateService.selectChildCount(template.getId());
+            if (childCount > 0) {
+                log.error("删除节点，存在子节点无法删除");
+                transBaseResponse.setCode("-1");
+                transBaseResponse.setMsg("该节点存在子节点，无法删除！");
+                return transBaseResponse;
+            }
+            templateService.deleteRelByCid(template);
+            transBaseResponse.setCode(templateService.delete(template) == 1 ? "0" : "-1");
         } catch (Exception exception) {
             log.error("删除节点：", exception);
             transBaseResponse.setCode("-1");

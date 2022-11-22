@@ -1,12 +1,14 @@
 package me.cuiyijie.joyea.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import io.swagger.models.auth.In;
-import me.cuiyijie.joyea.dao.main.ProductDao;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import me.cuiyijie.joyea.dao.ProductDao;
 import me.cuiyijie.joyea.model.Product;
+import me.cuiyijie.joyea.pojo.request.TransProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @Author: cuiyijie
@@ -18,23 +20,30 @@ public class ProductService {
     @Autowired
     private ProductDao productDao;
 
+    public IPage<Product> list(TransProductRequest product, Integer pageNum, Integer pageSize) {
+        Page<Product> productPage = new Page<>(pageNum, pageSize);
+        return productDao.selectWithPage(productPage, product);
+    }
+
+    public String selectCount(TransProductRequest product) {
+        Integer allCount = productDao.selectAllCount(product.getFid());
+        Integer notStartCount = productDao.selectNotStartCount(product.getFid());
+        Integer startCount = productDao.selectStartCount(product.getFid());
+        Integer finishCount = productDao.selectFinishCount(product.getFid());
+
+        return String.format("%s_%s_%s_%s", allCount, notStartCount, startCount, finishCount);
+    }
 
     public Integer insert(Product product) {
-        return productDao.insert(product);
+        return null;
     }
 
-    public Page<Product> list(Product product, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        Page<Product> result = (Page<Product>) productDao.list(product);
-        return result;
+    public Integer delete(Integer id) {
+        return null;
     }
 
-    public Integer delete(Integer id){
-        return productDao.delete(id);
-    }
-
-    public Integer update(Product product){
-        return productDao.update(product);
+    public Integer update(Product product) {
+        return null;
     }
 
 }

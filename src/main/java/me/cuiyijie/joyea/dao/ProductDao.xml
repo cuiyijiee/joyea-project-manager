@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.ProductDao">
+
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Product">
+
+        <id property="fid" column="XMID"/>
+        <id property="orderId" column="ORDERID"/>
+        <id property="orderNumber" column="ORDERNUMBER"/>
+        <id property="productNumber" column="PRODUCTNUMBER"/>
+        <id property="productName" column="PRODUCTNAME"/>
+
+<!--        <id property="self" column="SELF"/>-->
+<!--        <id property="selfFinish" column="SELFFINISH"/>-->
+<!--        <id property="selfGood" column="SELFGOOD"/>-->
+
+<!--        <id property="each" column="EACH"/>-->
+<!--        <id property="eachFinish" column="EACHFINISH"/>-->
+<!--        <id property="eachGood" column="EACHGOOD"/>-->
+
+    </resultMap>
+
+    <select id="selectWithPage" resultMap="BaseResultMap">
+        SELECT t.ORDERID, t.XMID, t.ORDERNUMBER, t.PRODUCTNUMBER, t.PRODUCTNAME
+        FROM VW_SYX_ZLGL_CP t
+        <if test="item.status != 0">
+            LEFT JOIN VW_SYX_ZLGL_CPWCL t1 ON t.ORDERID = t1.ORDERID
+        </if>
+        WHERE t.XMID = #{item.fid}
+        <if test="item.productName != null and item.productName != ''">
+            AND (
+            t.ORDERNUMBER LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
+            OR
+            t.PRODUCTNUMBER LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
+            OR
+            t.PRODUCTNAME LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
+            )
+        </if>
+        <if test="item.status == 1">
+            AND(
+            t1.EACHFINISH = 0 AND t1.SELFFINISH = 0
+            )
+        </if>
+        <if test="item.status == 2">
+            AND (
+            (t1.EACHFINISH &gt; 0 and (t1.EACHFINISH &lt; t1.EACH))
+            OR (t1.SELFFINISH > 0 and t1.SELFFINISH &lt; t1.SELF)
+            )
+        </if>
+        <if test="item.status == 3">
+            AND(
+            t1.EACHFINISH= t1.EACH AND t1.SELFFINISH = t1.SELF
+            )
+        </if>
+    </select>
+
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_CP t
+        WHERE t.XMID = #{fid}
+    </select>
+
+    <select id="selectNotStartCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_CPWCL t1
+        WHERE t1.FID = #{fid}
+          AND (
+            t1.EACHFINISH = 0 AND t1.SELFFINISH = 0
+            )
+    </select>
+
+    <select id="selectStartCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_CPWCL t1
+        WHERE t1.FID = #{fid}
+          AND (
+                (t1.EACHFINISH &gt; 0 and (t1.EACHFINISH &lt; t1.EACH))
+                OR (t1.SELFFINISH > 0 and t1.SELFFINISH &lt; t1.SELF)
+            )
+    </select>
+
+    <select id="selectFinishCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM VW_SYX_ZLGL_CPWCL t1
+        WHERE t1.FID = #{fid}
+          AND (
+            t1.EACHFINISH = t1.EACH AND t1.SELFFINISH = t1.SELF
+            )
+    </select>
+
+</mapper>

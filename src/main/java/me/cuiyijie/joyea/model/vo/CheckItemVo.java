@@ -19,14 +19,6 @@ public class CheckItemVo extends CheckItem {
     private Integer pageSize = 10;
     private Integer pageNum = 1;
 
-    private List<CheckItemTag> checkItemTags;
 
-    private Integer pid;
-    private List<Integer> ids;
-
-    @ApiModelProperty(value = "产品标签搜索")
-    private String productTagText;
-    @ApiModelProperty(value = "工序标签搜索")
-    private String operationTagText;
 
 }

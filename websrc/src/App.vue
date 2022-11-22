@@ -1,0 +1,50 @@
+<template>
+  <div id="app">
+    <router-view/>
+    <van-image-preview v-model="showImagePreview" :startPosition="imagePreviewStartIndex"
+                       :images="imagePreviewImages.map(item => item.url)" @change="onChange"/>
+  </div>
+</template>
+
+<script>
+import {mapActions, mapGetters} from 'vuex'
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      fileName: ""
+    }
+  },
+  methods: {
+    onChange(index) {
+      this.index = index;
+      this.fileName = this.imagePreviewImages[parseInt(index)].fileName;
+    },
+  },
+  created() {
+    this.$store.state.imagePreviewShow = false;
+  },
+  computed: {
+    ...mapGetters([
+      'imagePreviewImages', 'imagePreviewStartIndex'
+    ]),
+    showImagePreview: {
+      get: function () {
+        return this.$store.state.imagePreviewShow;
+      },
+      set: function (newValue) {
+        this.$store.state.imagePreviewShow = newValue;
+      }
+    }
+  },
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>

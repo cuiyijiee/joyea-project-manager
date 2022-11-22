@@ -2,22 +2,30 @@ package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
-import me.cuiyijie.joyea.dao.main.NextPlusUserProfileDao;
-import me.cuiyijie.joyea.domain.Department;
+import me.cuiyijie.joyea.dao.EasPersonDao;
+import me.cuiyijie.joyea.model.Department;
+import me.cuiyijie.joyea.model.EasPerson;
 import me.cuiyijie.joyea.model.User;
-import me.cuiyijie.joyea.pojo.*;
+import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
+import me.cuiyijie.joyea.pojo.NextPlusTicketResp;
+import me.cuiyijie.joyea.pojo.NextPlusUserProfileResp;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransJoyeaPersonRequest;
 import me.cuiyijie.joyea.pojo.request.TransNextPlusUserRequest;
-import me.cuiyijie.joyea.service.INextPlusService;
-import me.cuiyijie.joyea.service.IUserService;
+import me.cuiyijie.joyea.service.NextPlusService;
 import me.cuiyijie.joyea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -25,22 +33,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("nextplus")
 @Api(tags = "系统用户模块-NextPlus用户体系")
 public class NextPlusUserController {
 
     @Autowired
-    IUserService iUserService;
+    UserService iUserService;
 
     @Autowired
-    private INextPlusService nextPlusService;
+    private NextPlusService nextPlusService;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private NextPlusUserProfileDao nextPlusUserProfileDao;
+    private EasPersonDao easPersonDao;
 
     @Autowired
     RestTemplate restTemplate;
@@ -104,22 +113,40 @@ public class NextPlusUserController {
 
         TransBaseResponse response = new TransBaseResponse();
 
-        ResponseEntity<NextPlusUserProfile> profileResp = restTemplate.getForEntity(
+        //测试环境专用
+        if("test".equals(request.getAuthCode())) {
+
+            NextPlusUserProfileResp nextPlusUserProfileResp = new NextPlusUserProfileResp();
+            nextPlusUserProfileResp.setEasUserId("NMUAAAAABWKA733t");
+            nextPlusUserProfileResp.setName("测试用户（郑志超）");
+
+            response.setCode("0");
+            response.setObj(nextPlusUserProfileResp);
+            return response;
+        }
+
+        ResponseEntity<NextPlusUserProfileResp> profileResp = restTemplate.getForEntity(
                 String.format("%s%s", Constants.NEXT_PLUS_PROFILE_URL, request.getAuthCode()),
-                NextPlusUserProfile.class
+                NextPlusUserProfileResp.class
         );
 
-        NextPlusUserProfile profile = profileResp.getBody();
-
-        NextPlusUserProfile existProfile = nextPlusUserProfileDao.selectById(profile.getId());
-        if(existProfile == null) {
-            nextPlusUserProfileDao.insert(profile);
-        }else{
-            nextPlusUserProfileDao.update(profile);
+        NextPlusUserProfileResp nextPlusUserProfileResp = profileResp.getBody();
+        if (nextPlusUserProfileResp != null) {
+            EasPerson easPerson = easPersonDao.selectById(nextPlusUserProfileResp.getEasUserId());
+            if (easPerson != null && StringUtils.hasLength(easPerson.getFPersonId())) {
+                nextPlusUserProfileResp.setEasUserId(easPerson.getFPersonId());
+                response.setCode("0");
+                response.setObj(nextPlusUserProfileResp);
+            } else {
+                log.error("next+登录失败，T_PM_USER表中数据缺失：" + easPerson);
+                response.setObj("1");
+                response.setMsg("next+登录失败！");
+            }
+        } else {
+            log.error("next+登录失败，获取profile失败：" + profileResp);
+            response.setObj("1");
+            response.setMsg("next+登录失败!");
         }
-        response.setCode("0");
-        response.setObj(profile);
-
         return response;
     }
 

@@ -6,7 +6,7 @@ import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.model.CheckItemAnswer;
 
 /**
- * @Author: yjcui3
+ * @Author: cuiyijie
  * @Date: 2021/12/24 15:38
  */
 @EqualsAndHashCode(callSuper = true)

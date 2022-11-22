@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>仅一质量管理平台</title>
+  <script type="text/javascript" src="/static/js/EsenYunJSBridge.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- built files will be auto injected -->
+<script>
+  function callNextPlusPreview(fileName, fileUri) {
+    EsenYunJSBridge.call('filePreview', {
+      name: fileName,
+      url: fileUri,
+    }, function (result) {
+      console.log(result)
+    })
+  }
+
+  function callNextPlusLogin(ticket, callback) {
+    try {
+      EsenYunJSBridge.call('oauthConfirm', {'ticket': ticket}, function (result) {
+        let authCode = result.data.authCode;
+        callback(true, authCode)
+      })
+    } catch (e) {
+      callback(false, "")
+    }
+  }
+</script>
+</body>
+</html>

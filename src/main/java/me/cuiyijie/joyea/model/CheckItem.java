@@ -1,90 +1,77 @@
 package me.cuiyijie.joyea.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import me.cuiyijie.joyea.enums.CheckCategoryType;
-import me.cuiyijie.joyea.enums.CheckModuleType;
-import me.cuiyijie.joyea.enums.CheckStageType;
-import me.cuiyijie.joyea.enums.CheckVerifyType;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@TableName("VW_SYX_ZLGL_DJX")
+@ApiModel(value = "点检项信息")
 public class CheckItem {
 
-    private Integer id;
+    @TableId("FID")
+    private String fid;
 
-    @ApiModelProperty(value = "验证模块，传数组")
-    private List<CheckModuleType> checkModuleTypes;   //验证模块
+    @TableField("CFTASKID")
+    private String taskId;
 
-    @ApiModelProperty(value = "验证类别，传数组")
-    private List<CheckCategoryType> checkCategoryTypes; //验证类别
+    @TableField("CFCHECKMODELID")
+    private String checkModeId;
 
-    @ApiModelProperty(value = "验证阶段，传数组")
-    private List<CheckStageType> checkStageTypes; //验证阶段
+    @TableField("CFTYPEID")
+    private String typeId;
 
-    private String checkName;  //验证项目
-    private Boolean checkNameVisible;  //验证项目是否可见
-    private String checkStandard; //验证标准
-    private Boolean checkStandardVisible; //验证标准是否可见
-    private String checkMethod; //验证方法
-    private Boolean checkMethodVisible; //验证方法是否可见
-    private String checkTool; //验证工具
-    private Boolean checkToolVisible; //验证工具是否可见
-    private String checkStandardFrom; //验证标准来源
-    private Boolean checkStandardFromVisible; //验证标准来源是否可见
+    @TableField("CFSEQ")
+    private Long seq;
 
-    //产品标签/工序标签
-    private List<CheckItemTag> tags;
+    @TableField("CFKEYITEM")
+    private Long keyItem;
 
-    //自检人
-    private CheckVerifyType firstCheckVerifyType;
-    private String firstCheckVerifySheetId;
-    private String firstCheckPersonId;
+    @TableField("CFCHECKSTANDARD")
+    private String checkStandard;
 
-    //互检人
-    private CheckVerifyType secondCheckVerifyType;
-    private String secondCheckVerifySheetId;
-    private String secondCheckPersonId;
+    @TableField("CFNEEDTEXT")
+    private Boolean needText;
 
-    //第三方检验人
-    private CheckVerifyType thirdCheckVerifyType;
-    private String thirdCheckVerifySheetId;
-    private String thirdCheckPersonId;
+    @TableField("CFNEEDATTACHMENT")
+    private Boolean needAttachment;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean enabled;
+    @TableField("CFNEEDPICTURE")
+    private Boolean needPicture;
 
-    private String fileExplanation;
-    private SysFileUpload fileExplanationFile;
-    private Boolean checked;
-    private Boolean isGood;
+    @TableField("CFNEEDVIDEO")
+    private Boolean needVideo;
 
-    private List<CheckItemRecord> records;
-//    public String getCheckModuleTypeValue(){
-//        return checkModuleType == null ? "" :checkModuleType.getValue();
-//    }
-//
-//    public String getCheckCategoryTypeValue(){
-//        return checkCategoryType == null ? "" :checkCategoryType.getValue();
-//    }
-//
-//    public String getCheckStageTypeValue(){
-//        return checkStageType == null ? "" :checkStageType.getValue();
-//    }
+    @TableField("CFTYPENAME")
+    private String typeName;
 
-    public String getFirstCheckVerifyTypeValue() {
-        return firstCheckVerifyType == null ? "" : firstCheckVerifyType.getValue();
-    }
+    @TableField("ZYFFID")
+    private String checkMethodId;
 
-    public String getSecondCheckVerifyTypeValue() {
-        return secondCheckVerifyType == null ? "" : secondCheckVerifyType.getValue();
-    }
+    @TableField("ZYFF")
+    private String checkMethod;
 
-    public String getThirdCheckVerifyTypeValue() {
-        return thirdCheckVerifyType == null ? "" : thirdCheckVerifyType.getValue();
-    }
+    @TableField(exist = false)
+    private List<CheckItemAttachment> attachmentList;
 
+    @ApiModelProperty("是否合格")
+    @TableField(exist = false)
+    private Boolean qualified;
+
+    @ApiModelProperty("是否完成")
+    @TableField(exist = false)
+    private boolean finished;
+
+    @ApiModelProperty("点检类型")
+    @TableField(exist = false)
+    private String cfCheckType = "1";
+
+    @ApiModelProperty("最新的点检结果")
+    @TableField(exist = false)
+    private String cfCheckResult;
 }

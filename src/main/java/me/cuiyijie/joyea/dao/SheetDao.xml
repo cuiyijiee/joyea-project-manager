@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.SheetDao">
+
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Sheet">
+
+        <id property="id" column="id"/>
+        <id property="name" column="name"/>
+        <id property="category" column="category"/>
+        <id property="remark" column="remark"/>
+
+        <id property="createdAt" column="created_at"/>
+        <id property="updatedAt" column="updated_at"/>
+
+    </resultMap>
+
+
+    <insert id="insert">
+        INSERT INTO t_sheet (name, category, remark,created_at)
+        VALUES (#{item.name},
+                #{item.category},
+                #{item.remark},NOW())
+    </insert>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_sheet
+        WHERE 1=1
+        <if test="item.id != null">
+            AND id = #{item.id}
+        </if>
+        <if test="item.name != null and item.name != ''">
+            AND name = #{item.name}
+        </if>
+        <if test="item.category != null and item.category != ''">
+            AND category = #{item.category}
+        </if>
+    </select>
+
+    <select id="listAllCategory" resultType="java.lang.String">
+        SELECT category
+        FROM t_sheet
+        GROUP BY category
+    </select>
+
+    <update id="update">
+        UPDATE t_sheet
+        <set>
+            <if test="item.id != null">
+                name = #{item.name},
+            </if>
+            <if test="item.name != null and item.name != ''">
+                category = #{item.category},
+            </if>
+            <if test="item.category != null and item.category != ''">
+                remark = #{item.remark},
+            </if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{item.id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM t_sheet
+        WHERE id = #{item.id}
+    </delete>
+
+</mapper>

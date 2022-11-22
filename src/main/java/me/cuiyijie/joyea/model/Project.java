@@ -1,50 +1,56 @@
 package me.cuiyijie.joyea.model;
 
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
+/**
+ * @Author: yjcui3
+ * @Date: 2022/9/28 11:23
+ */
 @Data
+@TableName("VW_SYX_ZLGL_XMLB")
+@ApiModel(value = "项目信息")
 public class Project {
 
+    @ApiModelProperty(value = "项目ID")
+    @TableId(type = IdType.ASSIGN_UUID, value = "FID")
+    private String fid;
 
-    private Integer id;
+    @ApiModelProperty(value = "项目编号")
+    @TableField("FNUMBER")
+    private String fNumber;
+
+    @ApiModelProperty(value = "项目名称")
+    @TableField("PROJECTNAME")
     private String projectName;
-    private String projectNumber;
 
-    private String productionNumber;
+    @ApiModelProperty(value = "项目负责人")
+    @TableField("XMFZR")
+    private String xmFzr;
 
-    /**
-     * 项目经理
-     */
-    private String projectManager;
+    @ApiModelProperty(value = "项目所属部门")
+    @TableField("DEPART")
+    private String depart;
 
-    /**
-     * 项目专员
-     */
-    private String projectCommissioner;
+//    @ApiModelProperty(value = "客户专员")
+//    @TableField("KHZY")
+//    private String proejctKhzy;
 
-    /**
-     * 项目负责人
-     */
-    private String projectPrincipal;
+    @ApiModelProperty(value = "装调部门")
+    @TableField("ZDDEPT")
+    private String zdDept;
 
-    /**
-     * 项目所属部门
-     */
-    private String department;
+    @ApiModelProperty(value = "装调负责人")
+    @TableField("ZDDEPTMANS")
+    private String zdDeptMans;
 
-    private Integer stageCount;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createdAt;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updatedAt;
+    @ApiModelProperty(value = "是否被收藏")
+    @TableField(exist = false)
+    private boolean isCollect;
 
 }

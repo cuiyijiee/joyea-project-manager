@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.CheckItemDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.CheckItem">
+
+        <id property="fid" column="FID"/>
+        <id property="taskId" column="CFTASKID"/>
+        <id property="checkModeId" column="CFCHECKMODELID"/>
+        <id property="typeId" column="CFTYPEID"/>
+        <id property="seq" column="CFSEQ"/>
+        <id property="keyItem" column="CFKEYITEM"/>
+        <id property="checkStandard" column="CFCHECKSTANDARD"/>
+        <id property="needText" column="CFNEEDTEXT"/>
+        <id property="needAttachment" column="CFNEEDATTACHMENT"/>
+        <id property="needPicture" column="CFNEEDPICTURE"/>
+        <id property="needVideo" column="CFNEEDVIDEO"/>
+        <id property="typeName" column="CFTYPENAME"/>
+        <id property="checkMethodId" column="ZYFFID"/>
+        <id property="checkMethod" column="ZYFF"/>
+
+    </resultMap>
+
+    <select id="selectWithPage" resultMap="BaseResultMap">
+        SELECT t.FID,
+        t.CFTASKID,
+        t.CFCHECKMODELID,
+        t.CFTYPEID,
+        t.CFSEQ,
+        t.CFKEYITEM,
+        t.CFCHECKSTANDARD,
+        t.CFNEEDTEXT,
+        t.CFNEEDATTACHMENT,
+        t.CFNEEDPICTURE,
+        t.CFNEEDVIDEO,
+        t.CFTYPENAME,
+        t.ZYFFID,
+        t.ZYFF
+        FROM VW_SYX_ZLGL_DJX t
+        WHERE (t.CFTASKID = #{item.taskId})
+        <if test="!item.finished">
+            AND t.FID NOT IN
+            (SELECT a.fid
+            FROM VW_SYX_ZLGL_DJX a,
+            (SELECT fid,
+            CFCheckEntryID,
+            CFCheckType,
+            CFCheckResult,
+            TO_CHAR(row_number() over(PARTITION BY CFCheckEntryID ORDER BY CFCheckDate DESC)) lev
+            FROM CT_PRE_QualityCheckResult WHERE CFCheckType = #{item.cfCheckType} ) re
+            WHERE re.lev = 1
+            AND re.CFCheckEntryID = a.fid
+            AND re.CFCheckResult IN (1,3)
+            AND a.cftaskid = #{item.taskId})
+        </if>
+        <if test="item.checkStandard != null and item.checkStandard != ''">
+            AND t.CFCHECKSTANDARD LIKE CONCAT(CONCAT('%',#{item.checkStandard}),'%')
+        </if>
+        <if test="item.cfCheckType == 2">
+            AND t.CFKEYITEM = 1
+        </if>
+        ORDER BY t.CFSEQ ASC
+    </select>
+
+</mapper>

@@ -6,8 +6,8 @@ import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.model.SysFileUpload;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
-import me.cuiyijie.joyea.service.ISysFileUploadService;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
+import me.cuiyijie.joyea.service.SysFileUploadService;
 import me.cuiyijie.joyea.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class FileUploadController {
     private String baseUploadPath;
 
     @Autowired
-    private ISysFileUploadService iSysFileUploadService;
+    private SysFileUploadService sysFileUploadService;
 
     @PostMapping(value = "/upload")
     public TransBaseResponse upload(@RequestParam("file") MultipartFile multipartFile, @CurrentUser CurrentUserInfo currentUserInfo) {
@@ -54,9 +54,9 @@ public class FileUploadController {
             SysFileUpload sysFileUpload = new SysFileUpload();
             sysFileUpload.setId(fileSaveId);
             sysFileUpload.setFileSuffix(fileSuffix);
-            sysFileUpload.setCreatedBy(currentUserInfo.getId());
+            sysFileUpload.setCreatedBy(currentUserInfo.getEasUserId());
             sysFileUpload.setOriginFileName(multipartFile.getOriginalFilename());
-            iSysFileUploadService.insert(sysFileUpload);
+            sysFileUploadService.insert(sysFileUpload);
 
             transBaseResponse.setCode(Constants.SUCCESS_CODE);
             transBaseResponse.setObj(fileSaveId);

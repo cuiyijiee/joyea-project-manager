@@ -1,24 +1,23 @@
 package me.cuiyijie.joyea.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import me.cuiyijie.joyea.dao.main.CheckItemRecordDao;
-import me.cuiyijie.joyea.model.*;
+import me.cuiyijie.joyea.model.CheckItem;
+import me.cuiyijie.joyea.model.ProjectStage;
+import me.cuiyijie.joyea.model.ProjectStageOperation;
+import me.cuiyijie.joyea.model.StageProduct;
 import me.cuiyijie.joyea.model.vo.ProjectStageVo;
-import me.cuiyijie.joyea.pojo.ProjectStageOperationRequest;
-import me.cuiyijie.joyea.pojo.StageProductRequest;
-import me.cuiyijie.joyea.pojo.TransBasePageResponse;
-import me.cuiyijie.joyea.pojo.TransBaseResponse;
+import me.cuiyijie.joyea.pojo.TransProjectStageOperationRequest;
+import me.cuiyijie.joyea.pojo.TransStageProductRequest;
+import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
+import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.service.CheckItemAnswerService;
 import me.cuiyijie.joyea.service.CheckItemService;
 import me.cuiyijie.joyea.service.ProjectStageService;
 import me.cuiyijie.joyea.util.CheckParamsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,9 +44,6 @@ public class ProjectStageController {
 
     @Autowired
     private CheckItemAnswerService checkItemAnswerService;
-
-    @Autowired
-    private CheckItemRecordDao checkItemRecordDao;
 
     @ApiOperation(value = "新增点检阶段", notes = "新增点检阶段")
     @RequestMapping(value = "insert", method = RequestMethod.POST)
@@ -98,7 +94,7 @@ public class ProjectStageController {
     @ApiOperation(value = "查找点检阶段", notes = "查找点检阶段")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBasePageResponse list(@RequestBody ProjectStageVo projectStageVo) {
-        return new TransBasePageResponse(projectStageService.list(projectStageVo));
+        return null;
     }
 
     @ApiOperation(value = "删除点检阶段", notes = "删除点检阶段")
@@ -173,7 +169,7 @@ public class ProjectStageController {
 
     @ApiOperation(value = "列出阶段产品所有工序", notes = "列出阶段产品所有工序，传入stageProductRelId")
     @RequestMapping(value = "listProductOperation", method = RequestMethod.POST)
-    public TransBaseResponse listOperation(@RequestBody StageProductRequest stageProductRequest) {
+    public TransBaseResponse listOperation(@RequestBody TransStageProductRequest stageProductRequest) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
         List<String> paramsCheck = Lists.newArrayList("stageProductRelId:工序索引id（stageProductRelId）");
         String errorMsg = CheckParamsUtil.checkAll(stageProductRequest, paramsCheck, null, null);
@@ -181,8 +177,6 @@ public class ProjectStageController {
             return TransBaseResponse.failed(errorMsg);
         }
         try {
-            PageHelper.startPage(stageProductRequest.getPageNum(), stageProductRequest.getPageSize());
-            transBaseResponse = new TransBasePageResponse(new PageInfo<>(projectStageService.listOperation(stageProductRequest)));
         } catch (Exception exception) {
             log.error("列出项目阶段工序失败：" + exception.getMessage());
             return TransBaseResponse.failed("列出项目阶段工序失败：" + exception.getMessage());
@@ -192,33 +186,8 @@ public class ProjectStageController {
 
     @ApiOperation(value = "列出阶段产品工序下点检项", notes = "列出阶段产品工序下点检项，传入id")
     @RequestMapping(value = "listCheckItem", method = RequestMethod.POST)
-    public TransBaseResponse listCheckItems(@RequestBody ProjectStageOperationRequest projectStageOperation) {
+    public TransBaseResponse listCheckItems(@RequestBody TransProjectStageOperationRequest projectStageOperation) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        List<String> paramsCheck = Lists.newArrayList("id:工序索引id（id）");
-        String errorMsg = CheckParamsUtil.checkAll(projectStageOperation, paramsCheck, null, null);
-        if (errorMsg != null) {
-            return TransBaseResponse.failed(errorMsg);
-        }
-        try {
-            PageHelper.startPage(projectStageOperation.getPageNum(), projectStageOperation.getPageSize());
-            List<CheckItem> checkItems = projectStageService.listCheckItems(projectStageOperation);
-            PageHelper.clearPage();
-            for (int index = 0; index < checkItems.size(); index++) {
-                CheckItem checkItem = checkItems.get(index);
-                checkItemService.addCheckItemAttributes(checkItem);
-                checkItemAnswerService.updateStatus(projectStageOperation.getStageRelId(),checkItem);
-
-                CheckItemRecord checkItemRecord = new CheckItemRecord();
-                checkItemRecord.setStageRelId(projectStageOperation.getStageRelId());
-                checkItemRecord.setCheckItemId(checkItem.getId());
-                List<CheckItemRecord> records = checkItemRecordDao.select(checkItemRecord);
-                checkItem.setRecords(records);
-            }
-            transBaseResponse = new TransBasePageResponse(new PageInfo<>(checkItems));
-        } catch (Exception exception) {
-            log.error("列出项目阶段工序失败：" + exception.getMessage());
-            return TransBaseResponse.failed("列出项目阶段工序失败：" + exception.getMessage());
-        }
         return transBaseResponse;
     }
 
@@ -227,28 +196,6 @@ public class ProjectStageController {
     @RequestMapping(value = "preview", method = RequestMethod.POST)
     public TransBaseResponse preview(@RequestBody ProjectStageVo projectStageVo) {
         TransBaseResponse transBaseResponse = new TransBaseResponse();
-        PageInfo<ProjectStage> pageInfo = projectStageService.list(projectStageVo);
-        for (int index = 0; index < pageInfo.getList().size(); index++) {
-            ProjectStage projectStage = pageInfo.getList().get(index);
-            for (int j = 0; j < projectStage.getProducts().size(); j++) {
-                StageProduct stageProduct = projectStage.getProducts().get(j);
-                List<ProjectStageOperation> projectStageOperations = projectStageService.listOperation(stageProduct);
-                for (int k = 0; k < projectStageOperations.size(); k++) {
-                    ProjectStageOperation projectStageOperation = projectStageOperations.get(k);
-                    if(projectStageOperation.getOperationId() != null) {
-                        Integer checkItemCount = checkItemService.countChild(projectStageOperation.getOperationId());
-                        projectStageOperation.setCheckItemCount(checkItemCount);
-                    }else{
-                        projectStageOperation.setCheckItemCount(0);
-                    }
-                }
-                stageProduct.setProjectStageOperations(projectStageOperations);
-            }
-        }
-        transBaseResponse = new TransBasePageResponse(pageInfo);
-        //projectStageService.list()
         return transBaseResponse;
     }
-
-
 }
