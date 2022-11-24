@@ -18,7 +18,10 @@
         <van-radio name="1">展示所有点检项</van-radio>
       </van-radio-group>
     </div>
-    <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>
+    <!--    <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>-->
+    <my-search-input placeholder="搜索点检项关键字"
+                     cache-key="CACHE_CHECKITEM_SEARCH_HISTORY"
+                     @onSearch="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
       ref="checkItemList"
@@ -37,11 +40,12 @@
 
 import {listCheckItem, findCheckItemCount} from "../api";
 import CheckItemCard from "./CheckItemCard";
+import MySearchInput from "./MySearchInput";
 
 export default {
   name: "CheckItem",
   components: {
-    CheckItemCard
+    CheckItemCard, MySearchInput
   },
   data() {
     return {
@@ -67,7 +71,8 @@ export default {
     handleTagChange(name, title) {
       this.onSearch();
     },
-    onSearch() {
+    onSearch(searchKey) {
+      this.searchKey = searchKey;
       this.current = 0;
       this.searchHasMore = true;
       this.checkItemList = [];
@@ -88,6 +93,10 @@ export default {
       })
     },
     handleClickCheckItem(fid) {
+      localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
+      localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
+      localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
+
       this.$router.push({
         path: "/checkItemResult",
         query: {
@@ -111,6 +120,19 @@ export default {
     this.projectId = this.$route.query.projectId;
     this.orderId = this.$route.query.orderId;
     this.taskId = this.$route.query.taskId;
+
+    let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
+    if (searchKey !== undefined) {
+      this.searchKey = searchKey;
+    }
+    let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")
+    if (showAll !== undefined) {
+      this.showAll = showAll;
+    }
+    let checkType = localStorage.getItem("CACHE_CHECKITEM_CHECKTYPE")
+    if (checkType !== undefined) {
+      this.cfCheckType = parseInt(checkType);
+    }
     this.listCount();
   }
 }

@@ -7,12 +7,16 @@
       </template>
     </van-nav-bar>
     <van-tabs v-model="typeActive" color="#1989fa" @click="onTabChanged">
-      <van-tab :title="'全部(' + (tabStatus === 0 && !searchLoading ? searchResultCount : count[0]).toString() +')' "></van-tab>
+      <van-tab
+        :title="'全部(' + (tabStatus === 0 && !searchLoading ? searchResultCount : count[0]).toString() +')' "></van-tab>
       <van-tab :title="'未开始(' + count[1]+')' "></van-tab>
       <van-tab :title="'验证中(' + count[2]+')' "></van-tab>
       <van-tab :title="'已完成(' + count[3]+')' "></van-tab>
     </van-tabs>
-    <van-search v-model="searchKey" placeholder="搜索产品关键字" @search="onSearch"/>
+    <my-search-input placeholder="搜索产品关键字"
+                     cache-key="CACHE_PRODUCT_SEARCH_HISTORY"
+                     @onSearch="onSearch"/>
+    <!--    <van-search v-model="searchKey" placeholder="搜索产品关键字" @search="onSearch"/>-->
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
       ref="productList"
@@ -30,11 +34,12 @@
 
 import {listProduct, listProductCount} from "../api";
 import ProductCard from "./ProductCard";
+import MySearchInput from "./MySearchInput";
 
 export default {
   name: "Product",
   components: {
-    ProductCard
+    ProductCard, MySearchInput
   },
   data() {
     return {
@@ -56,7 +61,8 @@ export default {
       this.tabStatus = name;
       this.onSearch();
     },
-    onSearch() {
+    onSearch(searchKey) {
+      this.searchKey = searchKey;
       this.current = 0;
       this.searchHasMore = true;
       this.productList = [];

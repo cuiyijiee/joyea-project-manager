@@ -1,8 +1,9 @@
 <template>
   <div class="hello">
     <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
-    <van-search v-model="searchKey" placeholder="搜索项目关键字" @search="onSearch"/>
-
+    <my-search-input placeholder="搜索项目关键字"
+                     cache-key="CACHE_PROJECT_SEARCH_HISTORY"
+                     @onSearch="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
       ref="projectList"
@@ -19,13 +20,14 @@
 
 <script>
 import ProjectCard from "./ProjectCard";
+import MySearchInput from "./MySearchInput";
 
 import {listProject} from "../api";
 
 export default {
   name: 'Project',
   components: {
-    ProjectCard
+    ProjectCard, MySearchInput
   },
   data() {
     return {
@@ -39,7 +41,8 @@ export default {
     }
   },
   methods: {
-    onSearch() {
+    onSearch(searchKey) {
+      this.searchKey = searchKey;
       this.current = 0;
       this.searchHasMore = true;
       this.projectList = [];

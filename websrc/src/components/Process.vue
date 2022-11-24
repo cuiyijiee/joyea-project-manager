@@ -14,7 +14,10 @@
       <van-tab :title="'验证中(' + count[2]+')' "></van-tab>
       <van-tab :title="'已完成(' + count[3]+')' "></van-tab>
     </van-tabs>
-    <van-search v-model="searchKey" placeholder="搜索工序关键字" @search="onSearch"/>
+    <!--    <van-search v-model="searchKey" placeholder="搜索工序关键字" @search="onSearch"/>-->
+    <my-search-input placeholder="搜索工序关键字"
+                     cache-key="CACHE_PROCESS_SEARCH_HISTORY"
+                     @onSearch="onSearch"/>
     <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
     <van-list
       ref="processList"
@@ -33,11 +36,12 @@
 
 import {listProcess, listProcessCount} from "../api";
 import ProcessCard from "./ProcessCard";
+import MySearchInput from "./MySearchInput";
 
 export default {
   name: "Process",
   components: {
-    ProcessCard
+    ProcessCard, MySearchInput
   },
   data() {
     return {
@@ -60,7 +64,8 @@ export default {
       this.status = name;
       this.onSearch();
     },
-    onSearch() {
+    onSearch(searchKey) {
+      this.searchKey = searchKey;
       this.current = 0;
       this.searchHasMore = true;
       this.processList = [];
