@@ -38,7 +38,7 @@
         <van-col span="24" v-if="item.cfCheckResult !== null">
           <van-image v-if="item.cfCheckResult === '1'" :src="qualifiedImg" width="100" height="100"/>
           <van-image v-if="item.cfCheckResult === '2'" :src="unQualifiedImg" width="100" height="100"/>
-          <van-image v-if="item.cfCheckResult === '3'" :src="unknownImg" width="100" height="100"/>
+          <van-image v-if="item.cfCheckResult === '3'" :src="unKnownImg" width="100" height="100"/>
         </van-col>
       </van-row>
     </div>
@@ -62,7 +62,7 @@ export default {
       defaultImg: require("@/assets/unknown.png"),
       qualifiedImg: require("@/assets/qualified.png"),
       unQualifiedImg: require("@/assets/unqualified.png"),
-      unknownImg: require("@/assets/unknown.png"),
+      unKnownImg: require("@/assets/unknown.png"),
       isOpen: false,
     }
   },
