@@ -27,14 +27,6 @@ public class ProjectService {
     public Page<Project> list(String easUserId, Project project, Integer pageNum, Integer pageSize) {
         Page<Project> projectPage = new Page<>(pageNum, pageSize);
 
-//        IPage<Project> projectIPage = projectDao.selectJoinPage(projectPage, Project.class,
-//                MPJWrappers.lambdaJoin()
-//                        .selectAll(Project.class)
-//                        .leftJoin(ProjectCollect.class, ProjectCollect::getProjectId, Project::getFid)
-//                        .eq(Project::getFid, project.getFid())
-//                        .orderByDesc(CheckItemResult::getCfCheckDate)
-//        );
-
         QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
         if (project.getProjectName() != null && project.getProjectName().length() > 0) {
             queryWrapper = queryWrapper.like("PROJECTNAME", project.getProjectName())

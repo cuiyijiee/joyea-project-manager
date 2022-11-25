@@ -4,10 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
-import me.cuiyijie.joyea.dao.EasPersonDao;
+import me.cuiyijie.joyea.dao.EasUserDao;
 import me.cuiyijie.joyea.model.Department;
-import me.cuiyijie.joyea.model.EasPerson;
-import me.cuiyijie.joyea.model.User;
+import me.cuiyijie.joyea.model.EasUser;
 import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
 import me.cuiyijie.joyea.pojo.NextPlusTicketResp;
 import me.cuiyijie.joyea.pojo.NextPlusUserProfileResp;
@@ -15,7 +14,6 @@ import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransJoyeaPersonRequest;
 import me.cuiyijie.joyea.pojo.request.TransNextPlusUserRequest;
 import me.cuiyijie.joyea.service.NextPlusService;
-import me.cuiyijie.joyea.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +40,7 @@ public class NextPlusUserController {
     private NextPlusService nextPlusService;
 
     @Autowired
-    private EasPersonDao easPersonDao;
+    private EasUserDao easUserDao;
 
     @Autowired
     RestTemplate restTemplate;
@@ -125,13 +123,13 @@ public class NextPlusUserController {
 
         NextPlusUserProfileResp nextPlusUserProfileResp = profileResp.getBody();
         if (nextPlusUserProfileResp != null) {
-            EasPerson easPerson = easPersonDao.selectById(nextPlusUserProfileResp.getEasUserId());
-            if (easPerson != null && StringUtils.hasLength(easPerson.getFPersonId())) {
-                nextPlusUserProfileResp.setEasUserId(easPerson.getFPersonId());
+            EasUser easUser = easUserDao.selectById(nextPlusUserProfileResp.getEasUserId());
+            if (easUser != null && StringUtils.hasLength(easUser.getFPersonId())) {
+//                nextPlusUserProfileResp.setEasUserId(easPerson.getFPersonId());
                 response.setCode("0");
                 response.setObj(nextPlusUserProfileResp);
             } else {
-                log.error("next+登录失败，T_PM_USER表中数据缺失：" + easPerson);
+                log.error("next+登录失败，T_PM_USER表中数据缺失：" + easUser);
                 response.setObj("1");
                 response.setMsg("next+登录失败！");
             }

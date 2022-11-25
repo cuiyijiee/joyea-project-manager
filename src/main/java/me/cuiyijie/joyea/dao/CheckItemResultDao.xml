@@ -41,4 +41,35 @@
                 #{item.cfCheckRecords})
     </insert>
 
+
+    <select id="selectWithPage" resultType="me.cuiyijie.joyea.model.CheckItemResult">
+        SELECT t.FID,
+               t.FNUMBER,
+               t.FSIMPLENAME,
+               t.FCREATORID,
+               t.FCREATETIME,
+               t.FLASTUPDATEUSERID,
+               t.FLASTUPDATETIME,
+               t.FCONTROLUNITID,
+               t.CFCHECKENTRYID,
+               t.CFCHECKTYPE,
+               t.CFCHECKRESULT,
+               t.CFREMARK,
+               t.CFCHECKPERSONID,
+               t.CFCHECKDATE,
+               t.CFCHECKRECORDS,
+               t.FNAME_L1,
+               t.FNAME_L2,
+               t.FNAME_L3,
+               t.FDESCRIPTION_L1,
+               t.FDESCRIPTION_L2,
+               t.FDESCRIPTION_L3,
+               t.CFFIELDTYPE,
+               t1.FNAME_L2 AS cfCheckPersonName
+        FROM CT_PRE_QUALITYCHECKRESULT t
+                 LEFT JOIN T_PM_USER t1 ON (t1.FID = t.FCREATORID)
+        WHERE (t.CFCHECKENTRYID = #{item.cfCheckEntryId})
+        ORDER BY t.CFCHECKDATE DESC
+    </select>
+
 </mapper>

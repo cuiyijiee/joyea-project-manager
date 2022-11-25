@@ -1,27 +1,26 @@
 package me.cuiyijie.joyea.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * @author cyj976655@gmail.com
- * @date 2022/10/12 21:14
+ * @date 2022/10/8 21:02
  */
 @Data
-@TableName("T_PM_USER")
-@ApiModel(value = "EAS人员信息")
+@TableName("T_BD_PERSON")
 public class EasPerson {
 
-    @TableId("FID")
+    @TableId(value = "FID", type = IdType.ASSIGN_UUID)
     private String fid;
 
     @TableField("FNAME_L2")
-    private String fNameL2;
+    private String fName;
 
-    @TableField("FPERSONID")
-    private String fPersonId;
+    @TableField("FNUMBER")
+    private String fNumber;
 
 }

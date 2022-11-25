@@ -14,8 +14,8 @@
     </van-tabs>
     <div style="margin: 10px 5px 0 15px;align-content: center">
       <van-radio-group v-model="showAll" direction="horizontal" @change="handleShowAll">
-        <van-radio name="0">未完成</van-radio>
-        <van-radio name="1">展示所有点检项</van-radio>
+        <van-radio name="1">未完成</van-radio>
+        <van-radio name="2">展示所有点检项</van-radio>
       </van-radio-group>
     </div>
     <!--    <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>-->
@@ -54,7 +54,7 @@ export default {
       taskId: "",
       cfCheckType: 0,
       searchKey: "",
-      showAll: '0',
+      showAll: "1",
       current: 0,
       pageSize: 5,
       checkItemList: [],
@@ -82,7 +82,10 @@ export default {
       this.listCheckItem();
     },
     listCheckItem() {
-      listCheckItem(this.taskId, this.searchKey, this.cfCheckType + 1, this.showAll === '1',
+      listCheckItem(this.taskId,
+        (this.searchKey === 'undefined' ? '' : this.searchKey),
+        this.cfCheckType + 1,
+        this.showAll === '2',
         this.current + 1, this.pageSize).then(data => {
         this.checkItemList = this.checkItemList.concat(data.list);
         this.searchResultCount = data.total;
@@ -90,13 +93,14 @@ export default {
         this.current = data.pageNum;
       }).finally(() => {
         this.searchLoading = false;
+
+        localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
+        localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
+        localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
+
       })
     },
     handleClickCheckItem(fid) {
-      localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
-      localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
-      localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
-
       this.$router.push({
         path: "/checkItemResult",
         query: {
@@ -122,7 +126,7 @@ export default {
     this.taskId = this.$route.query.taskId;
 
     let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
-    if (searchKey !== undefined) {
+    if (searchKey !== undefined || searchKey !== 'undefined') {
       this.searchKey = searchKey;
     }
     let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")

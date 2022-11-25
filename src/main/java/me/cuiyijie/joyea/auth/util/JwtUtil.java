@@ -6,6 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java.util.Date;
+
 public class JwtUtil {
 
 
@@ -18,6 +20,7 @@ public class JwtUtil {
         return JWT.create()
                 .withJWTId(id)
                 .withIssuer(ISSUER)
+                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .sign(algorithm);
     }
 
@@ -36,8 +39,7 @@ public class JwtUtil {
 
     public static String parseToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
-        String id = jwt.getId();
-        return id;
+        return jwt.getId();
     }
 
 }

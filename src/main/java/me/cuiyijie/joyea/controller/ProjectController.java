@@ -35,7 +35,8 @@ public class ProjectController {
                                   @CurrentUser CurrentUserInfo currentUser) {
         Project project = new Project();
         project.setProjectName(request.getProjectName());
-        Page<Project> projectPage = projectService.list(currentUser.getEasUserId(), project, request.getPageNum(), request.getPageSize());
+        Page<Project> projectPage = projectService.list(currentUser.getEasUserId(), project,
+                request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(projectPage);
     }
 

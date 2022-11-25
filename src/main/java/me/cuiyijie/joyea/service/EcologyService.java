@@ -1,9 +1,11 @@
 package me.cuiyijie.joyea.service;
 
 import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.joyea.exception.SysRuntimeException;
+import me.cuiyijie.joyea.model.EasUser;
 import me.cuiyijie.joyea.model.EcologyAccessToken;
 import me.cuiyijie.joyea.model.EcologyUserProfileResp;
-import me.cuiyijie.joyea.model.Person;
+import me.cuiyijie.joyea.model.EasPerson;
 import me.cuiyijie.joyea.pojo.NextPlusUserProfileResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +51,7 @@ public class EcologyService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private PersonService personService;
+    private EasUserService easUserService;
 
     public String generateLoginUrl() {
         return String.format("%s?client_id=%s&response_type=code&redirect_uri=%s", authorizeUrl, clientId, redirectUrl);
@@ -62,9 +64,13 @@ public class EcologyService {
         NextPlusUserProfileResp nextPlusUserProfileResp = new NextPlusUserProfileResp();
         nextPlusUserProfileResp.setName(profileResp.getAttributes().getLastName());
         String workCode = profileResp.getAttributes().getWorkCode();
-        Person person = personService.findByNumber(workCode);
-        nextPlusUserProfileResp.setEasUserId(person.getFid());
-        nextPlusUserProfileResp.setName(person.getFName());
+        EasUser easUser = easUserService.findByNumber(workCode);
+        if(easUser == null) {
+            log.error("next+登录失败，T_PM_USER表中数据缺失：" + easUser);
+            throw new SysRuntimeException("泛微登录失败!");
+        }
+        nextPlusUserProfileResp.setEasUserId(easUser.getFid());
+        nextPlusUserProfileResp.setName(easUser.getFNameL2());
         return nextPlusUserProfileResp;
     }
 

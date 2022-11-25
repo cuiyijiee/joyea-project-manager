@@ -1,8 +1,8 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import me.cuiyijie.joyea.dao.PersonDao;
-import me.cuiyijie.joyea.model.Person;
+import me.cuiyijie.joyea.dao.EasPersonDao;
+import me.cuiyijie.joyea.model.EasPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class PersonService {
+public class EasPersonService {
 
 
     @Autowired
-    private PersonDao personDao;
+    private EasPersonDao easPersonDao;
 
-    public Person findByNumber(String fNumber) {
-        return personDao.selectOne(new QueryWrapper<Person>().eq("FNUMBER", fNumber));
+    public EasPerson findByNumber(String fNumber) {
+        return easPersonDao.selectOne(new QueryWrapper<EasPerson>().eq("FNUMBER", fNumber));
     }
 
 }
