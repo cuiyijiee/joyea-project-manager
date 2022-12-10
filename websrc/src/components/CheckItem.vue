@@ -126,15 +126,15 @@ export default {
     this.taskId = this.$route.query.taskId;
 
     let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
-    if (searchKey !== undefined || searchKey !== 'undefined') {
+    if (searchKey !== undefined && searchKey !== 'undefined' && searchKey !== 'null') {
       this.searchKey = searchKey;
     }
     let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")
-    if (showAll !== undefined) {
+    if (showAll !== undefined && showAll !== 'undefined' && showAll !== 'null') {
       this.showAll = showAll;
     }
     let checkType = localStorage.getItem("CACHE_CHECKITEM_CHECKTYPE")
-    if (checkType !== undefined) {
+    if (checkType !== undefined && checkType !== 'undefined' && checkType !== 'null') {
       this.cfCheckType = parseInt(checkType);
     }
     this.listCount();
