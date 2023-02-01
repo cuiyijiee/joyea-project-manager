@@ -34,6 +34,24 @@
           </van-row>
         </van-col>
       </van-row>
+      <van-row v-else>
+        <van-col span="24"><span class="desc">检验方法：
+        </span>
+          <van-row>
+            <van-col span="20">
+              <div :class="isOpen ? 'new_detail' : 'default'">
+                {{ item.checkMethod || '' }}
+              </div>
+            </van-col>
+            <van-col span="4">
+              <van-button @click.stop="isOpen=!isOpen"  v-if="item.checkMethod"
+                          type="info" size="mini" plain>{{ word }}
+                <!--            <i :class="isOpen?'arrow-up':'arrow-down'"></i>-->
+              </van-button>
+            </van-col>
+          </van-row>
+        </van-col>
+      </van-row>
       <van-row>
         <van-col span="24" v-if="item.cfCheckResult !== null">
           <van-image v-if="item.cfCheckResult === '1'" :src="qualifiedImg" width="100" height="100"/>
