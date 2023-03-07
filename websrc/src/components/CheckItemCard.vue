@@ -9,21 +9,14 @@
           检验标准：</span>{{ item.checkStandard || '' }}
         </van-col>
       </van-row>
-      <van-row v-if="item.checkMethod && item.attachmentList.length > 0">
+      <van-row>
         <van-col span="24"><span class="desc">检验方法：
         </span>
           <van-row>
             <van-col span="20">
               <div :class="isOpen ? 'new_detail' : 'default'">
-                {{ item.checkMethod || '' }}
+                {{ item.checkMethod || '无' }}
               </div>
-              <van-grid :border="false" :column-num="3" v-if="isOpen">
-                <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
-                  <van-image v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
-                             :src="'/api/checkItemAttachment/download?attachId=' + attach.fid"/>
-                  <van-image v-else :src="defaultImg"/>
-                </van-grid-item>
-              </van-grid>
             </van-col>
             <van-col span="4">
               <van-button @click.stop="isOpen=!isOpen"
@@ -34,24 +27,13 @@
           </van-row>
         </van-col>
       </van-row>
-      <van-row v-else>
-        <van-col span="24"><span class="desc">检验方法：
-        </span>
-          <van-row>
-            <van-col span="20">
-              <div :class="isOpen ? 'new_detail' : 'default'">
-                {{ item.checkMethod || '' }}
-              </div>
-            </van-col>
-            <van-col span="4">
-              <van-button @click.stop="isOpen=!isOpen"  v-if="item.checkMethod"
-                          type="info" size="mini" plain>{{ word }}
-                <!--            <i :class="isOpen?'arrow-up':'arrow-down'"></i>-->
-              </van-button>
-            </van-col>
-          </van-row>
-        </van-col>
-      </van-row>
+      <van-grid :border="false" :column-num="3">
+        <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
+          <van-image v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
+                     :src="'/api/checkItemAttachment/download?attachId=' + attach.fid"/>
+          <van-image v-else :src="defaultImg"/>
+        </van-grid-item>
+      </van-grid>
       <van-row>
         <van-col span="24" v-if="item.cfCheckResult !== null">
           <van-image v-if="item.cfCheckResult === '1'" :src="qualifiedImg" width="100" height="100"/>
@@ -81,7 +63,7 @@ export default {
       qualifiedImg: require("@/assets/qualified.png"),
       unQualifiedImg: require("@/assets/unqualified.png"),
       unKnownImg: require("@/assets/unknown.png"),
-      isOpen: false,
+      isOpen: true,
     }
   },
   computed: {
