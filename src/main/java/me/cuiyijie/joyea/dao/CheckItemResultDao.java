@@ -3,7 +3,6 @@ package me.cuiyijie.joyea.dao;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.yulichang.base.MPJBaseMapper;
 import me.cuiyijie.joyea.model.CheckItemResult;
-import me.cuiyijie.joyea.model.Product;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

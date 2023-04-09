@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.SearchHistoryDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.SearchHistory">
+
+        <id property="fid" column="FID"/>
+        <id property="easUserId" column="EAS_USER_ID"/>
+        <id property="searchType" column="SEARCH_TYPE"/>
+        <id property="searchKey" column="SEARCH_KEY"/>
+        <id property="updateTime" column="UPDATE_TIME"/>
+
+    </resultMap>
+
+
+    <select id="selectHistory" resultMap="BaseResultMap">
+        SELECT *
+        FROM SYX_ZLGL_SEARCH_HISTORY
+        WHERE
+        <if test="easUserId != null and easUserId != ''">
+            EAS_USER_ID = #{easUserId}
+        </if>
+        <if test="searchType != null and searchType != ''">
+            SEARCH_TYPE = #{searchType}
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+            SEARCH_KEY = #{searchKey}
+        </if>
+    </select>
+
+</mapper>
