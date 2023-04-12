@@ -7,9 +7,11 @@ import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.ProjectDao;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
 import me.cuiyijie.joyea.model.Project;
+import me.cuiyijie.joyea.model.SearchHistory;
 import me.cuiyijie.joyea.pojo.FilezUploadFileRegionResp;
 import me.cuiyijie.joyea.service.CheckItemAttachmentService;
 import me.cuiyijie.joyea.service.FilezService;
+import me.cuiyijie.joyea.service.SearchHistoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +35,9 @@ class JoyeaProjectManagerApplicationTests {
     @Autowired
     private FilezService filezService;
 
+    @Autowired
+    private SearchHistoryService searchHistoryService;
+
     @Test
     void contextLoads() {
 //        List<Project> projectList = newProjectDao.selectList(new QueryWrapper<>());
@@ -45,8 +50,14 @@ class JoyeaProjectManagerApplicationTests {
 //        log.info("attachment page: " + attachmentPage);
 
 //        log.info("real file name: " + checkItemAttachmentService.getFileName("/mnt/sdb1/eas/EAS/2AA228EC/20160215/20160217140719953_20160217140603106.xlsx"));
-        FilezUploadFileRegionResp region = filezService.getUploadFileRegion("测试文件");
-        log.info("get upload file region: " + region);
+//        FilezUploadFileRegionResp region = filezService.getUploadFileRegion("测试文件");
+//        log.info("get upload file region: " + region);
+//        for (int index = 0; index <10; index++) {
+//            searchHistoryService.addSearchHistory("ceshi", "Test", "search-key-" + index);
+//        }
+
+        List<SearchHistory> searchHistories = searchHistoryService.getLastHistory("ceshi","Test",10);
+        System.out.println(searchHistories);
     }
 
 }

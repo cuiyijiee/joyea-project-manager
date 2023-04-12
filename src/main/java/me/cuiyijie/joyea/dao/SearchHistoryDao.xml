@@ -15,16 +15,29 @@
     <select id="selectHistory" resultMap="BaseResultMap">
         SELECT *
         FROM SYX_ZLGL_SEARCH_HISTORY
-        WHERE
+        WHERE 1=1
         <if test="easUserId != null and easUserId != ''">
-            EAS_USER_ID = #{easUserId}
+            AND EAS_USER_ID = #{easUserId}
         </if>
         <if test="searchType != null and searchType != ''">
-            SEARCH_TYPE = #{searchType}
+            AND SEARCH_TYPE = #{searchType}
         </if>
         <if test="searchKey != null and searchKey != ''">
-            SEARCH_KEY = #{searchKey}
+            AND SEARCH_KEY = #{searchKey}
         </if>
+    </select>
+
+    <select id="selectLatestHistory" resultMap="BaseResultMap">
+        SELECT *
+        FROM SYX_ZLGL_SEARCH_HISTORY
+        WHERE 1=1
+        <if test="easUserId != null and easUserId != ''">
+            AND EAS_USER_ID = #{easUserId}
+        </if>
+        <if test="searchType != null and searchType != ''">
+            AND SEARCH_TYPE = #{searchType}
+        </if>
+        ORDER BY UPDATE_TIME DESC
     </select>
 
 </mapper>

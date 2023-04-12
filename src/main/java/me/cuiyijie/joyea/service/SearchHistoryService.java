@@ -1,6 +1,8 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.joyea.dao.SearchHistoryDao;
 import me.cuiyijie.joyea.model.SearchHistory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ public class SearchHistoryService {
     private SearchHistoryDao searchHistoryDao;
 
 
-    private void addSearchHistory(String easUserId, String searchType, String searchKey) {
+    public void addSearchHistory(String easUserId, String searchType, String searchKey) {
         SearchHistory exiatedSearchHistory = searchHistoryDao.selectHistory(easUserId, searchType, searchKey);
         if (exiatedSearchHistory == null) {
             SearchHistory searchHistory = new SearchHistory();
@@ -32,10 +34,15 @@ public class SearchHistoryService {
         }
     }
 
-    private List<SearchHistory> getLastHistory(String easUserId, String searchType, Integer count) {
+    public List<SearchHistory> getLastHistory(String easUserId, String searchType, Integer count) {
+        Page<SearchHistory> page = new Page<>();
+        page.setCurrent(0);
+        page.setSize(count);
+
         QueryWrapper<SearchHistory> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("EAS_USER_ID", easUserId);
         queryWrapper.eq("SEARCH_TYPE", searchType);
-        return new ArrayList<>();
+        queryWrapper.orderByDesc("UPDATE_TIME");
+        return searchHistoryDao.selectPage(page,queryWrapper).getRecords();
     }
 }
