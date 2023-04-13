@@ -14,7 +14,7 @@
         <div class="search-history" v-if="searchHistoryVisible">
           <van-cell v-for="(item,index) in cachedSearchHistory"
                     @click="onClickHistory(item)"
-                    :title="item" :key="index"/>
+                    :title="item.searchKey" :key="index"/>
         </div>
       </div>
     </van-overlay>
@@ -22,6 +22,9 @@
 </template>
 
 <script>
+
+import {getLatestSearchHistory} from "../api";
+
 export default {
   name: "MySearchInput",
   props: {
@@ -43,19 +46,6 @@ export default {
   },
   methods: {
     onSearch() {
-      if (this.searchKey) {
-        let cachedSearchHistoryStr = localStorage.getItem(this.cacheKey)
-        let cachedSearchHistory = []
-        if (cachedSearchHistoryStr) {
-          cachedSearchHistory = JSON.parse(cachedSearchHistoryStr)
-        }
-        let index = cachedSearchHistory.indexOf(this.searchKey)
-        if (index !== -1) {
-          cachedSearchHistory.splice(index, 1)
-        }
-        cachedSearchHistory.unshift(this.searchKey)
-        localStorage.setItem(this.cacheKey, JSON.stringify(cachedSearchHistory))
-      }
       this.$emit("onSearch", this.searchKey);
       this.searchHistoryVisible = false;
     },
@@ -71,12 +61,15 @@ export default {
       })
     },
     onClickHistory(historyKey) {
-      this.searchKey = historyKey;
+      this.searchKey = historyKey.searchKey;
       this.onSearch();
     }
   },
   mounted() {
     this.searchKey = "";
+    getLatestSearchHistory(this.cacheKey).then(resp => {
+      this.cachedSearchHistory = resp.list;
+    })
   }
 }
 </script>

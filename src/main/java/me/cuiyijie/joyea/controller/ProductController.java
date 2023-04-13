@@ -1,8 +1,6 @@
 package me.cuiyijie.joyea.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -10,22 +8,16 @@ import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.ProductSchedule;
-import me.cuiyijie.joyea.model.ProjectSchedule;
 import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransProductRequest;
-import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProductScheduleService;
 import me.cuiyijie.joyea.service.ProductService;
-import me.cuiyijie.joyea.util.CheckParamsUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @Author: cuiyijie

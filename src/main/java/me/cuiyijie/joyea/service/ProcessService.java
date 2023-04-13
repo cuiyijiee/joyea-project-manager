@@ -21,7 +21,7 @@ public class ProcessService {
     public IPage<Process> select(String easUserId,TransProcessRequest request, Integer pageNum, Integer pageSize) {
         IPage<Process> processPage = new Page<>(pageNum, pageSize);
         if(StringUtils.hasLength(request.getProcessName())) {
-            searchHistoryService.addSearchHistory(easUserId,"PROCESS",request.getProcessName());
+            searchHistoryService.addSearchHistory(easUserId,"CACHE_PROCESS_SEARCH_HISTORY",request.getProcessName());
         }
         return processDao.selectWithPage(processPage, request);
     }

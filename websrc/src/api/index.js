@@ -150,6 +150,12 @@ export function previewFile(neid) {
     })
 }
 
+export function getLatestSearchHistory(searchType) {
+  return service.post("api/searchHistory/latest", {
+    searchType: searchType
+  }).then(resp => resp.data);
+}
+
 /******************filez start******************/
 
 export function getUploadFileRegion(filename) {

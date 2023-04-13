@@ -35,7 +35,7 @@ public class ProjectService {
 
             //记录查询的关键字
             if(StringUtils.hasLength(project.getProjectName())) {
-                searchHistoryService.addSearchHistory(easUserId,"PROJECT",project.getProjectName());
+                searchHistoryService.addSearchHistory(easUserId,"CACHE_PROJECT_SEARCH_HISTORY",project.getProjectName());
             }
 
             queryWrapper = queryWrapper.like("PROJECTNAME", project.getProjectName())

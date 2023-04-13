@@ -8,6 +8,7 @@ import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
 import me.cuiyijie.joyea.model.CheckItemResult;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,7 +27,14 @@ public class CheckItemService {
     @Autowired
     private CheckItemResultService checkItemResultService;
 
-    public IPage<CheckItem> list(CheckItem checkItem, Integer pageNum, Integer pageSize) {
+    @Autowired
+    private SearchHistoryService searchHistoryService;
+
+    public IPage<CheckItem> list(String easUserId, CheckItem checkItem, Integer pageNum, Integer pageSize) {
+
+        if(StringUtils.hasLength(checkItem.getCheckStandard())) {
+            searchHistoryService.addSearchHistory(easUserId, "CACHE_CHECKITEM_SEARCH_HISTORY" , checkItem.getCheckStandard());
+        }
 
         IPage<CheckItem> checkItemPageResult = checkItemDao.selectWithPage(new Page<>(pageNum, pageSize), checkItem);
 

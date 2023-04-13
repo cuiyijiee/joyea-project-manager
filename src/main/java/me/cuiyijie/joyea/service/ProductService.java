@@ -29,7 +29,7 @@ public class ProductService {
         if(StringUtils.hasLength(product.getProductName())) {
             //记录查询的关键字
             if(StringUtils.hasLength(product.getProductName())) {
-                searchHistoryService.addSearchHistory(easUserId,"PRODUCT",product.getProductName());
+                searchHistoryService.addSearchHistory(easUserId,"CACHE_PRODUCT_SEARCH_HISTORY",product.getProductName());
             }
         }
         return productDao.selectWithPage(productPage, product);

@@ -4,10 +4,8 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.ProjectStage;
 import me.cuiyijie.joyea.model.ProjectStageOperation;
-import me.cuiyijie.joyea.model.StageProduct;
 import me.cuiyijie.joyea.model.vo.ProjectStageVo;
 import me.cuiyijie.joyea.pojo.TransProjectStageOperationRequest;
 import me.cuiyijie.joyea.pojo.TransStageProductRequest;
@@ -38,12 +36,6 @@ public class ProjectStageController {
 
     @Autowired
     private ProjectStageService projectStageService;
-
-    @Autowired
-    private CheckItemService checkItemService;
-
-    @Autowired
-    private CheckItemAnswerService checkItemAnswerService;
 
     @ApiOperation(value = "新增点检阶段", notes = "新增点检阶段")
     @RequestMapping(value = "insert", method = RequestMethod.POST)
