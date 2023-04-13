@@ -24,11 +24,20 @@ public class ProjectService {
     @Autowired
     private ProjectCollectDao projectCollectDao;
 
+    @Autowired
+    private SearchHistoryService searchHistoryService;
+
     public Page<Project> list(String easUserId, Project project, Integer pageNum, Integer pageSize) {
         Page<Project> projectPage = new Page<>(pageNum, pageSize);
 
         QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
         if (project.getProjectName() != null && project.getProjectName().length() > 0) {
+
+            //记录查询的关键字
+            if(StringUtils.hasLength(project.getProjectName())) {
+                searchHistoryService.addSearchHistory(easUserId,"PROJECT",project.getProjectName());
+            }
+
             queryWrapper = queryWrapper.like("PROJECTNAME", project.getProjectName())
                     .or()
                     .like("FNUMBER", project.getProjectName());

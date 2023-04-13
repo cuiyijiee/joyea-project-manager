@@ -7,6 +7,7 @@ import me.cuiyijie.joyea.model.Process;
 import me.cuiyijie.joyea.pojo.request.TransProcessRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ProcessService {
@@ -14,8 +15,14 @@ public class ProcessService {
     @Autowired
     private ProcessDao processDao;
 
-    public IPage<Process> select(TransProcessRequest request, Integer pageNum, Integer pageSize) {
+    @Autowired
+    private SearchHistoryService searchHistoryService;
+
+    public IPage<Process> select(String easUserId,TransProcessRequest request, Integer pageNum, Integer pageSize) {
         IPage<Process> processPage = new Page<>(pageNum, pageSize);
+        if(StringUtils.hasLength(request.getProcessName())) {
+            searchHistoryService.addSearchHistory(easUserId,"PROCESS",request.getProcessName());
+        }
         return processDao.selectWithPage(processPage, request);
     }
 

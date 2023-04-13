@@ -8,6 +8,7 @@ import me.cuiyijie.joyea.dao.CheckItemResultDao;
 import me.cuiyijie.joyea.model.CheckItemResult;
 import me.cuiyijie.joyea.model.CheckItemResultAttachment;
 import me.cuiyijie.joyea.model.EasUser;
+import me.cuiyijie.joyea.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

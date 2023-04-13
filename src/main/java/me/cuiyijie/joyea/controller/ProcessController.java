@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.joyea.auth.CurrentUser;
+import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.model.Process;
 import me.cuiyijie.joyea.model.ProductSchedule;
 import me.cuiyijie.joyea.pojo.request.TransBasePageResponse;
@@ -27,8 +29,9 @@ public class ProcessController {
     private ProcessService processService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public TransBaseResponse list(@RequestBody TransProcessRequest request) {
-        IPage<Process> projectPage = processService.select(request, request.getPageNum(), request.getPageSize());
+    public TransBaseResponse list(@RequestBody TransProcessRequest request, @CurrentUser CurrentUserInfo currentUser) {
+        IPage<Process> projectPage = processService.select(currentUser.getEasUserId(), request,
+                request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(projectPage);
     }
 

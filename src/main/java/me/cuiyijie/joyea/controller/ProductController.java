@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import me.cuiyijie.joyea.auth.CurrentUser;
+import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.model.ProductSchedule;
 import me.cuiyijie.joyea.model.ProjectSchedule;
@@ -43,9 +45,9 @@ public class ProductController {
 
     @ApiOperation(value = "根据projectId查询所有的项目产品", notes = "传入projectId")
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public TransBaseResponse list(@RequestBody TransProductRequest request) {
-        Product product = new Product();
-        IPage<Product> productPage = productService.list(request, request.getPageNum(), request.getPageSize());
+    public TransBaseResponse list(@RequestBody TransProductRequest request,@CurrentUser CurrentUserInfo currentUser) {
+        IPage<Product> productPage = productService.list(currentUser.getEasUserId(),request,
+                request.getPageNum(), request.getPageSize());
         return new TransBasePageResponse(productPage);
     }
 

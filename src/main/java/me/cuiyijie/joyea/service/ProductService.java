@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.cuiyijie.joyea.dao.ProductDao;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.pojo.request.TransProductRequest;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,8 +21,17 @@ public class ProductService {
     @Autowired
     private ProductDao productDao;
 
-    public IPage<Product> list(TransProductRequest product, Integer pageNum, Integer pageSize) {
+    @Autowired
+    private SearchHistoryService searchHistoryService;
+
+    public IPage<Product> list(String easUserId, TransProductRequest product, Integer pageNum, Integer pageSize) {
         Page<Product> productPage = new Page<>(pageNum, pageSize);
+        if(StringUtils.hasLength(product.getProductName())) {
+            //记录查询的关键字
+            if(StringUtils.hasLength(product.getProductName())) {
+                searchHistoryService.addSearchHistory(easUserId,"PRODUCT",product.getProductName());
+            }
+        }
         return productDao.selectWithPage(productPage, product);
     }
 
