@@ -1,8 +1,8 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.ProjectCollectDao;
 import me.cuiyijie.joyea.dao.ProjectDao;
@@ -56,16 +56,8 @@ public class ProjectService {
     }
 
     public Page<Project> listCollect(String easUserId, Project project, Integer pageNum, Integer pageSize) {
-        Page<Project> projectPage = new Page<>(pageNum, pageSize);
-        MPJLambdaWrapper<Project> wrapper = new MPJLambdaWrapper<Project>()
-                .selectAll(Project.class)
-                .leftJoin(ProjectCollect.class, ProjectCollect::getProjectId, Project::getFid)
-                .eq(ProjectCollect::getEasUserId, easUserId)
-                .and(StringUtils.hasLength(project.getProjectName()), objectMPJLambdaWrapper -> objectMPJLambdaWrapper.like(Project::getProjectName, project.getProjectName())
-                        .or()
-                        .like(Project::getFNumber, project.getProjectName()));
-
-        Page<Project> resultProjectPage = projectDao.selectPage(projectPage, wrapper);
+        IPage<Project> projectPage = new Page<>(pageNum, pageSize);
+        Page<Project> resultProjectPage = projectDao.listCollect(projectPage,easUserId);
         for (Project record : resultProjectPage.getRecords()) {
             record.setCollect(true);
         }

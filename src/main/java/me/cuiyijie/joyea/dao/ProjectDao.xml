@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.cuiyijie.joyea.dao.ProjectDao">
+    <resultMap id="BaseResultMap" type="me.cuiyijie.joyea.model.Project">
+
+        <id property="fid" column="FID"/>
+        <id property="fNumber" column="FNUMBER"/>
+        <id property="projectName" column="PROJECTNAME"/>
+        <id property="xmFzr" column="XMFZR"/>
+        <id property="depart" column="DEPART"/>
+        <id property="zdDept" column="ZDDEPT"/>
+        <id property="zdDeptMans" column="ZDDEPTMANS"/>
+        <id property="zdDeptMans" column="ZDDEPTMANS"/>
+
+    </resultMap>
+
+
+    <select id="listCollect" resultMap="BaseResultMap">
+        SELECT t.*
+        FROM VW_SYX_ZLGL_XMLB t
+                 LEFT JOIN SYX_ZLGL_FAV t1
+                           ON (t1.PROJECTID = t.FID)
+        WHERE (t1.EASUSERID = #{easUserId})
+    </select>
+</mapper>

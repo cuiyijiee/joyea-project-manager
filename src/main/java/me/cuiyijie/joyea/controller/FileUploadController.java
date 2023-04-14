@@ -5,13 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
 import me.cuiyijie.joyea.config.Constants;
-import me.cuiyijie.joyea.model.SysFileUpload;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
-import me.cuiyijie.joyea.service.SysFileUploadService;
 import me.cuiyijie.joyea.util.FileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -26,9 +26,6 @@ public class FileUploadController {
 
     @Value("${file.upload.base-path}")
     private String baseUploadPath;
-
-    @Autowired
-    private SysFileUploadService sysFileUploadService;
 
     @PostMapping(value = "/upload")
     public TransBaseResponse upload(@RequestParam("file") MultipartFile multipartFile, @CurrentUser CurrentUserInfo currentUserInfo) {
@@ -49,15 +46,6 @@ public class FileUploadController {
         String serverSavePath = String.format("%s/%s.%s", baseUploadPath, fileSaveId, fileSuffix);
         try {
             multipartFile.transferTo(new File(serverSavePath));
-            transBaseResponse.setCode(Constants.SUCCESS_CODE);
-
-            SysFileUpload sysFileUpload = new SysFileUpload();
-            sysFileUpload.setId(fileSaveId);
-            sysFileUpload.setFileSuffix(fileSuffix);
-            sysFileUpload.setCreatedBy(currentUserInfo.getEasUserId());
-            sysFileUpload.setOriginFileName(multipartFile.getOriginalFilename());
-            sysFileUploadService.insert(sysFileUpload);
-
             transBaseResponse.setCode(Constants.SUCCESS_CODE);
             transBaseResponse.setObj(fileSaveId);
 

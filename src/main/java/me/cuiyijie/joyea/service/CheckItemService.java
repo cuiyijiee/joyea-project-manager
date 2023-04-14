@@ -8,7 +8,6 @@ import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
 import me.cuiyijie.joyea.model.CheckItemResult;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

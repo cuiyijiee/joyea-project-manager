@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.github.yulichang.base.MPJBaseMapper;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.pojo.request.TransProductRequest;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @Date: 2021/10/18 11:04
  */
 @Repository
-public interface ProductDao extends MPJBaseMapper<Product> {
+public interface ProductDao extends BaseMapper<Product> {
 
     IPage<Product> selectWithPage(IPage<Product> page, @Param("item") TransProductRequest product);
 
