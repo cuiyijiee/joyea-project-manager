@@ -79,6 +79,13 @@ export default {
     }
   },
   mounted() {
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(to);
+    if (to.path === '/product' || to.path === '/projectCollect') {
+      to.meta.keepAlive = false;
+    }
+    next();
   }
 }
 </script>

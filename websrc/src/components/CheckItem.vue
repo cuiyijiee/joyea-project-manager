@@ -140,8 +140,16 @@ export default {
       this.cfCheckType = parseInt(checkType);
     }
     this.listCount();
+    this.listCheckItem();
+  },
+  activated() {
+    console.log("query id:" + this.$route.query.taskId + ",history id: " + this.taskId);
+    if (this.$route.query.taskId !== this.taskId) {
+      this.listCount();
+    }
   },
   beforeRouteLeave(to, from, next) {
+    console.log(to);
     if (to.path === '/checkItemResult') {
       to.meta.keepAlive = false;
     }

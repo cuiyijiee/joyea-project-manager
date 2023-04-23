@@ -103,6 +103,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$route.meta.keepAlive);
     this.projectId = this.$route.query.projectId;
     this.listCount();
   },

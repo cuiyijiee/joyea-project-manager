@@ -299,6 +299,15 @@ export default {
         this.currentCheckItem = resp.obj;
       }
     })
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(to);
+    if (to.path === '/checkItemResult') {
+      to.meta.keepAlive = false;
+    } else {
+      to.meta.keepAlive = true;
+    }
+    next();
   }
 }
 </script>

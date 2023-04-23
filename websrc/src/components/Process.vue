@@ -110,8 +110,11 @@ export default {
     this.listCount();
   },
   beforeRouteLeave(to, from, next) {
+    console.log(to);
     if (to.path === '/checkItem') {
-      to.meta.keepAlive = false;
+      to.meta.keepAlive = true;
+    } else {
+      to.meta.keepAlive = true;
     }
     next();
   }
