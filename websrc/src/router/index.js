@@ -16,17 +16,29 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes: [{
-    path: '/project', name: '项目信息', component: Project
+    path: '/project', name: '项目信息', component: Project, meta: {
+      keepAlive: true
+    }
   }, {
-    path: '/projectCollect', name: '我的收藏项目', component: ProjectCollect
+    path: '/projectCollect', name: '我的收藏项目', component: ProjectCollect, meta: {
+      keepAlive: true
+    }
   }, {
-    path: '/product', name: '产品信息', component: Product
+    path: '/product', name: '产品信息', component: Product, meta: {
+      keepAlive: true
+    }
   }, {
-    path: '/process', name: '工序信息', component: Process
+    path: '/process', name: '工序信息', component: Process, meta: {
+      keepAlive: true
+    }
   }, {
-    path: '/checkItem', name: '点检项信息', component: CheckItem
+    path: '/checkItem', name: '点检项信息', component: CheckItem, meta: {
+      keepAlive: true
+    }
   }, {
-    path: '/checkItemResult', name: '点检项记录', component: CheckItemResult
+    path: '/checkItemResult', name: '点检项记录', component: CheckItemResult, meta: {
+      keepAlive: true
+    }
   }, {
     path: '/error', name: '错误页面', component: Error
   }, {

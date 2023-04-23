@@ -50,10 +50,6 @@ export default {
       this.searchHistoryVisible = false;
     },
     onShowHistory() {
-      let cachedSearchHistoryStr = localStorage.getItem(this.cacheKey)
-      if (cachedSearchHistoryStr) {
-        this.cachedSearchHistory = JSON.parse(cachedSearchHistoryStr)
-      }
       this.searchHistoryVisible = true;
       this.$nextTick(() => {
         const input = document.getElementsByClassName("van-field__control")[1];

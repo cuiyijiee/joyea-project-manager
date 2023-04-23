@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"/>
     <van-image-preview v-model="showImagePreview" :startPosition="imagePreviewStartIndex"
                        :images="imagePreviewImages.map(item => item.url)" @change="onChange"/>
   </div>

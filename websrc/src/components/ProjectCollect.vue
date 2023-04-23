@@ -1,9 +1,15 @@
 <template>
   <div class="hello">
-    <van-nav-bar title="我的收藏项目"
-                 left-arrow left-text="返回" @click-left="() => {this.$router.push('/project')}"/>
+    <van-nav-bar title="我的收藏项目"/>
     <van-search v-model="searchKey" placeholder="搜索项目关键字" @search="onSearch"/>
-    <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
+    <div style="background-color: #ffffff;">
+        <span @click="() => {this.$router.back()}"
+              style="color: #1989fa;display: flex;align-items: center;width: 80px">
+          <van-icon name="arrow-left" size="25px"/>
+          <span style="font-size: 16px;color: #1989fa">返回</span>
+        </span>
+      <van-divider style="margin: 0;">共 {{ searchResultCount }} 个结果</van-divider>
+    </div>
     <van-list
       ref="projectList"
       v-model="searchLoading"
@@ -48,6 +54,9 @@ export default {
       this.listProject();
     },
     listProject() {
+      if (this.current === 0) {
+        this.projectList = [];
+      }
       listProjectCollect(this.searchKey, this.current + 1, this.pageSize).then(data => {
         this.projectList = this.projectList.concat(data.list);
         this.searchResultCount = data.total;

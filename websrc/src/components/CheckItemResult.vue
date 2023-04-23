@@ -1,14 +1,18 @@
 <template>
   <div>
-    <van-nav-bar title="点检项操作"
-                 @click-left="() => {this.$router.push({path:'/checkItem',query:{projectId:projectId,orderId:orderId,taskId:taskId}})}">
-      <template #left>
-        <van-icon name="arrow-left" size="25px"/>
-        <span style="font-size: 16px;color: #1989fa">返回</span>
-      </template>
-    </van-nav-bar>
-    <van-divider>共 {{ searchResultCount }} 条点检记录</van-divider>
-    <van-button style="width: 100%" type="info" @click="onClickAddResult">新增点检记录</van-button>
+    <van-sticky>
+      <van-nav-bar title="点检项操作"/>
+      <div style="background-color: #ffffff;">
+        <span
+          @click="() => {this.$router.back()}"
+          style="color: #1989fa;display: flex;align-items: center;width: 80px">
+          <van-icon name="arrow-left" size="25px"/>
+          <span style="font-size: 16px;color: #1989fa">返回</span>
+        </span>
+        <van-divider style="margin: 0;">共 {{ searchResultCount }} 条点检记录</van-divider>
+      </div>
+      <van-button style="width: 100%" type="info" @click="onClickAddResult">新增点检记录</van-button>
+    </van-sticky>
     <van-list
       ref="checkItemResultList" v-model="searchLoading" :finished="!searchHasMore"
       finished-text="没有更多了" @load="onLoad">

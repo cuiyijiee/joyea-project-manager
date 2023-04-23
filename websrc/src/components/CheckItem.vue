@@ -1,28 +1,30 @@
 <template>
   <div>
-    <van-nav-bar title="点检项信息"
-                 @click-left="() => {this.$router.push({path:'/process',query:{projectId:projectId,orderId:orderId}})}">
-      <template #left>
-        <van-icon name="arrow-left" size="25px"/>
-        <span style="font-size: 16px;color: #1989fa">返回</span>
-      </template>
-    </van-nav-bar>
-    <van-tabs v-model="cfCheckType" color="#1989fa" @change="handleTagChange">
-      <van-tab :title="'自检(' + (parseInt(count[0]) + parseInt(count[1]))+')'"></van-tab>
-      <van-tab :title="'互检(' + count[1]+')'"></van-tab>
-      <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
-    </van-tabs>
-    <div style="margin: 10px 5px 0 15px;align-content: center">
-      <van-radio-group v-model="showAll" direction="horizontal" @change="handleShowAll">
-        <van-radio name="1">未完成</van-radio>
-        <van-radio name="2">展示所有点检项</van-radio>
-      </van-radio-group>
-    </div>
-    <!--    <van-search v-model="searchKey" placeholder="搜索点检项关键字" @search="onSearch"/>-->
-    <my-search-input placeholder="搜索点检项关键字"
-                     cache-key="CACHE_CHECKITEM_SEARCH_HISTORY"
-                     @onSearch="onSearch"/>
-    <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
+    <van-sticky>
+      <van-nav-bar title="点检项信息"/>
+      <van-tabs v-model="cfCheckType" color="#1989fa" @change="handleTagChange">
+        <van-tab :title="'自检(' + (parseInt(count[0]) + parseInt(count[1]))+')'"></van-tab>
+        <van-tab :title="'互检(' + count[1]+')'"></van-tab>
+        <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
+      </van-tabs>
+      <div style="padding: 10px 5px 0 15px;align-content: center;background-color: #ffffff">
+        <van-radio-group v-model="showAll" direction="horizontal" @change="handleShowAll">
+          <van-radio name="1">未完成</van-radio>
+          <van-radio name="2">展示所有点检项</van-radio>
+        </van-radio-group>
+      </div>
+      <my-search-input placeholder="搜索点检项关键字"
+                       cache-key="CACHE_CHECKITEM_SEARCH_HISTORY"
+                       @onSearch="onSearch"/>
+      <div style="background-color: #ffffff;">
+        <span @click="() => {this.$router.back()}"
+              style="color: #1989fa;display: flex;align-items: center;width: 80px">
+          <van-icon name="arrow-left" size="25px"/>
+          <span style="font-size: 16px;color: #1989fa">返回</span>
+        </span>
+        <van-divider style="margin: 0;">共 {{ searchResultCount }} 个结果</van-divider>
+      </div>
+    </van-sticky>
     <van-list
       ref="checkItemList"
       v-model="searchLoading"
@@ -138,6 +140,12 @@ export default {
       this.cfCheckType = parseInt(checkType);
     }
     this.listCount();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.path === '/checkItemResult') {
+      to.meta.keepAlive = false;
+    }
+    next();
   }
 }
 </script>

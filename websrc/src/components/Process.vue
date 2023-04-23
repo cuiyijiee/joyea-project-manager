@@ -1,24 +1,26 @@
 <template>
   <div>
-    <van-nav-bar title="工序信息" @click-left="() => {this.$router.push({
-    path:'/product',query:{projectId:projectId}
-    })}">
-      <template #left>
-        <van-icon name="arrow-left" size="25px"/>
-        <span style="font-size: 16px;color: #1989fa">返回</span>
-      </template>
-    </van-nav-bar>
-    <van-tabs v-model="typeActive" color="#1989fa" @click="onTabChanged">
-      <van-tab :title="'全部(' + count[0]+')' "></van-tab>
-      <van-tab :title="'未开始(' + count[1]+')' "></van-tab>
-      <van-tab :title="'验证中(' + count[2]+')' "></van-tab>
-      <van-tab :title="'已完成(' + count[3]+')' "></van-tab>
-    </van-tabs>
-    <!--    <van-search v-model="searchKey" placeholder="搜索工序关键字" @search="onSearch"/>-->
-    <my-search-input placeholder="搜索工序关键字"
-                     cache-key="CACHE_PROCESS_SEARCH_HISTORY"
-                     @onSearch="onSearch"/>
-    <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
+    <van-sticky>
+      <van-nav-bar title="工序信息"/>
+      <van-tabs v-model="typeActive" color="#1989fa" @click="onTabChanged">
+        <van-tab :title="'全部(' + count[0]+')' "></van-tab>
+        <van-tab :title="'未开始(' + count[1]+')' "></van-tab>
+        <van-tab :title="'验证中(' + count[2]+')' "></van-tab>
+        <van-tab :title="'已完成(' + count[3]+')' "></van-tab>
+      </van-tabs>
+      <!--    <van-search v-model="searchKey" placeholder="搜索工序关键字" @search="onSearch"/>-->
+      <my-search-input placeholder="搜索工序关键字"
+                       cache-key="CACHE_PROCESS_SEARCH_HISTORY"
+                       @onSearch="onSearch"/>
+      <div style="background-color: #ffffff;">
+        <span @click="() => {this.$router.back()}"
+              style="color: #1989fa;display: flex;align-items: center;width: 80px">
+          <van-icon name="arrow-left" size="25px"/>
+          <span style="font-size: 16px;color: #1989fa">返回</span>
+        </span>
+        <van-divider style="margin: 0;">共 {{ searchResultCount }} 个结果</van-divider>
+      </div>
+    </van-sticky>
     <van-list
       ref="processList"
       v-model="searchLoading"
@@ -106,6 +108,12 @@ export default {
     this.orderId = this.$route.query.orderId;
     this.projectId = this.$route.query.projectId;
     this.listCount();
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to.path === '/checkItem') {
+      to.meta.keepAlive = false;
+    }
+    next();
   }
 }
 </script>

@@ -1,10 +1,12 @@
 <template>
   <div class="hello">
-    <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
-    <my-search-input placeholder="搜索项目关键字"
-                     cache-key="CACHE_PROJECT_SEARCH_HISTORY"
-                     @onSearch="onSearch"/>
-    <van-divider>共 {{ searchResultCount }} 个结果</van-divider>
+    <van-sticky>
+      <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
+      <my-search-input placeholder="搜索项目关键字"
+                       cache-key="CACHE_PROJECT_SEARCH_HISTORY"
+                       @onSearch="onSearch"/>
+      <van-divider style="background-color: #ffffff;margin: 0">共 {{ searchResultCount }} 个结果</van-divider>
+    </van-sticky>
     <van-list
       ref="projectList"
       v-model="searchLoading"
@@ -70,10 +72,17 @@ export default {
       })
     },
     handleClickMyFav() {
-      this.$router.replace("/projectCollect")
+      this.$router.push("/projectCollect")
     }
   },
   mounted() {
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(to);
+    if (to.path === '/product' || to.path === '/projectCollect') {
+      to.meta.keepAlive = false;
+    }
+    next();
   }
 }
 </script>
