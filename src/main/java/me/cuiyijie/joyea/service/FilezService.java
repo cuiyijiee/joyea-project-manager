@@ -46,6 +46,7 @@ public class FilezService {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("path", fileUploadDir);
         map.add("path_type", "ent");
+        map.add("nsid", "745477");
         map.add("file_name", fileName);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, Object>> param = new HttpEntity<>(map, headers);

@@ -28,6 +28,11 @@
     </resultMap>
 
     <insert id="customInsert">
+        <selectKey resultType="String" keyProperty="item.fId" order="AFTER">
+            SELECT FID FROM CT_PRE_QUALITYCHECKRESULT WHERE CFCHECKENTRYID = #{item.cfCheckEntryId}
+            AND CFCHECKPERSONID = #{item.cfCheckPersonId} AND ROWNUM &lt;= 1 ORDER BY CFCHECKDATE DESC
+        </selectKey>
+
         INSERT INTO CT_PRE_QUALITYCHECKRESULT (FID, CFCHECKENTRYID, CFCHECKTYPE, CFCHECKRESULT,
                                                CFCHECKPERSONID, FCREATORID,
                                                CFCHECKDATE, CFCHECKRECORDS)

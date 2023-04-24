@@ -51,6 +51,8 @@ public class CheckItemResultService {
         EasUser easUser = userService.findById(easUserId);
         if (easUser != null) {
             checkItemResult.setCfCheckPersonId(easUser.getFPersonId());
+        }else {
+            checkItemResult.setCfCheckPersonId("test");
         }
         checkItemResultDao.customInsert(checkItemResult);
         String fid = checkItemResult.getFId();
