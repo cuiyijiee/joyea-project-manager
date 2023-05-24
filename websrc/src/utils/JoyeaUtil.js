@@ -3,6 +3,8 @@ import {Dialog} from 'vant';
 import {genImageListView} from "./ImageViewUtil";
 import loadGif from "../assets/loading.gif"
 
+import store from "../store";
+
 export function genSrcOriginSrc(neid) {
   return "/apiv2/imagePreview?neid=" + neid + "&thumbtail=false"
 }
@@ -17,7 +19,10 @@ export function handleGoToPreview(context, clickItem, itemList) {
     const {promise, abort} = getVideoPreviewUrl(clickItem.lenovoId, 30)
     promise.then(resp => {
       if (videoLoading) {
-        callNextPlusPreview(fileName, resp);
+        //callNextPlusPreview(fileName, resp);
+        store.state.videoDialogTitle = fileName;
+        store.state.videoDialogUrl = resp;
+        store.state.videoDialogShow = true;
       }
       Dialog.close();
     });

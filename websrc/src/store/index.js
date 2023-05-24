@@ -8,7 +8,10 @@ const store = new Vuex.Store({
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
     imagePreviewShow: false,
     imagePreviewImages: [],
-    imagePreviewStartIndex: 0
+    imagePreviewStartIndex: 0,
+    videoDialogShow: false,
+    videoDialogTitle: "",
+    videoDialogUrl: ""
   }, getters: {
     getToken(state) {
       return state.token;
@@ -18,6 +21,12 @@ const store = new Vuex.Store({
       return state.imagePreviewImages;
     }, imagePreviewStartIndex: function (state) {
       return state.imagePreviewStartIndex;
+    }, videoDialogShow: function (state) {
+      return state.videoDialogShow;
+    }, videoDialogTitle: function (state) {
+      return state.videoDialogTitle;
+    }, videoDialogUrl: function (state) {
+      return state.videoDialogUrl;
     },
   }, mutations: {
     setToken(state, token) {

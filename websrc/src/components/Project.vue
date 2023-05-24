@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <van-button @click="handleTest">Test</van-button>
     <van-sticky>
       <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
       <my-search-input placeholder="搜索项目关键字"
@@ -43,6 +44,11 @@ export default {
     }
   },
   methods: {
+    handleTest(){
+      this.$store.state.videoDialogTitle = "测试视频";
+      this.$store.state.videoDialogUrl = "https://s3.meituan.net/v1/mss_80d691367d3045158769d28878d5cfd6/merchant-video/7d01905a16f4a6e0db4b4ac2894b743a.mp4";
+      this.$store.state.videoDialogShow = true;
+    },
     onSearch(searchKey) {
       this.searchKey = searchKey;
       this.current = 0;

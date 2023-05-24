@@ -6,14 +6,20 @@
     <router-view v-if="!$route.meta.keepAlive"/>
     <van-image-preview v-model="showImagePreview" :startPosition="imagePreviewStartIndex"
                        :images="imagePreviewImages.map(item => item.url)" @change="onChange"/>
+    <video-dialog ref="videoDialog"/>
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
 
+import VideoDialog from "./components/VideoDialog.vue";
+
 export default {
   name: 'App',
+  components:{
+    VideoDialog
+  },
   data() {
     return {
       fileName: ""
