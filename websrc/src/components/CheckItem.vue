@@ -81,6 +81,7 @@ export default {
       this.$refs.checkItemList.check();
     },
     onLoad() {
+      console.log("on load");
       this.listCheckItem();
     },
     listCheckItem() {
@@ -145,11 +146,16 @@ export default {
   activated() {
     console.log("query id:" + this.$route.query.taskId + ",history id: " + this.taskId);
     if (this.$route.query.taskId !== this.taskId) {
+      this.taskId = this.$route.query.taskId;
+      console.log("do reload!");
       this.listCount();
+      this.checkItemList = [];
+      this.searchHasMore = true;
+      this.current = 1;
+      this.$refs.checkItemList.check();
     }
   },
   beforeRouteLeave(to, from, next) {
-    console.log(to);
     if (to.path === '/checkItemResult') {
       to.meta.keepAlive = false;
     }

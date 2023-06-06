@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <van-button @click="handleTest">Test</van-button>
+<!--    <van-button @click="handleTest">Test</van-button>-->
     <van-sticky>
       <van-nav-bar title="项目信息" right-text="我的收藏" @click-right="handleClickMyFav"/>
       <my-search-input placeholder="搜索项目关键字"
