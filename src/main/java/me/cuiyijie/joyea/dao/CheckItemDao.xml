@@ -46,7 +46,11 @@
             CFCheckType,
             CFCheckResult,
             TO_CHAR(row_number() over(PARTITION BY CFCheckEntryID ORDER BY CFCheckDate DESC)) lev
-            FROM CT_PRE_QualityCheckResult WHERE CFCheckType = #{item.cfCheckType} ) re
+            FROM CT_PRE_QualityCheckResult
+            <if test="item.cfCheckType != null and item.cfCheckType == 2">
+                WHERE CFCheckType = #{item.cfCheckType}
+            </if>
+            ) re
             WHERE re.lev = 1
             AND re.CFCheckEntryID = a.fid
             AND re.CFCheckResult IN (1,3)
@@ -55,7 +59,7 @@
         <if test="item.checkStandard != null and item.checkStandard != ''">
             AND t.CFCHECKSTANDARD LIKE CONCAT(CONCAT('%',#{item.checkStandard}),'%')
         </if>
-        <if test="item.cfCheckType == 2">
+        <if test="item.cfCheckType != null and item.cfCheckType == 2">
             AND t.CFKEYITEM = 1
         </if>
         ORDER BY t.CFSEQ ASC

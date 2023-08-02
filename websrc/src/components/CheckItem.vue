@@ -131,14 +131,20 @@ export default {
     let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
     if (searchKey !== undefined && searchKey !== 'undefined' && searchKey !== 'null') {
       this.searchKey = searchKey;
+    }else{
+      this.searchKey = "";
     }
     let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")
     if (showAll !== undefined && showAll !== 'undefined' && showAll !== 'null') {
       this.showAll = showAll;
+    }else{
+      this.showAll = '1';
     }
     let checkType = localStorage.getItem("CACHE_CHECKITEM_CHECKTYPE")
     if (checkType !== undefined && checkType !== 'undefined' && checkType !== 'null') {
       this.cfCheckType = parseInt(checkType);
+    }else{
+      this.cfCheckType = 0;
     }
     this.listCount();
     this.listCheckItem();
