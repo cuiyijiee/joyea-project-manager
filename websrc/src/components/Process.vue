@@ -8,7 +8,6 @@
         <van-tab :title="'验证中(' + count[2]+')' "></van-tab>
         <van-tab :title="'已完成(' + count[3]+')' "></van-tab>
       </van-tabs>
-      <!--    <van-search v-model="searchKey" placeholder="搜索工序关键字" @search="onSearch"/>-->
       <my-search-input placeholder="搜索工序关键字"
                        cache-key="CACHE_PROCESS_SEARCH_HISTORY"
                        @onSearch="onSearch"/>
@@ -27,7 +26,9 @@
       :finished="!searchHasMore"
       finished-text="没有更多了"
       @load="onLoad">
-      <ProcessCard v-for="item in processList" :key="item.taskId" :item="item"
+      <ProcessCard
+        :id="'process_' + item.taskId"
+        v-for="item in processList" :key="item.taskId" :item="item"
                    @click.native="handleClickProcessItem(item.taskId)">
       </ProcessCard>
     </van-list>
@@ -58,7 +59,8 @@ export default {
       searchLoading: false,
       searchHasMore: true,
       processList: [],
-      count: [0, 0, 0, 0]
+      count: [0, 0, 0, 0],
+      isLoadCached: false
     }
   },
   methods: {
@@ -74,7 +76,20 @@ export default {
       this.$refs.processList.check();
     },
     onLoad() {
-      this.listProcess();
+      let cachedOrderId = localStorage.getItem("process.orderId");
+      if (!this.isLoadCached && cachedOrderId === this.orderId) {
+        this.current = localStorage.getItem("process.current");
+        this.searchResultCount = localStorage.getItem("process.total");
+        this.processList = JSON.parse(localStorage.getItem("process.list"));
+        let toLocalIndex = localStorage.getItem("process.index");
+        this.$nextTick(() => {
+          document.getElementById("process_" + toLocalIndex).scrollIntoView();
+          this.isLoadCached = true;
+        });
+        this.searchLoading = false;
+      } else {
+        this.listProcess();
+      }
     },
     listProcess() {
       listProcess(this.orderId, this.searchKey, this.status, this.current + 1, this.pageSize).then(data => {
@@ -110,11 +125,14 @@ export default {
     this.listCount();
   },
   beforeRouteLeave(to, from, next) {
-    console.log(to);
     if (to.path === '/checkItem') {
-      to.meta.keepAlive = true;
-    } else {
-      to.meta.keepAlive = true;
+
+      localStorage.setItem("process.current", this.current);
+      localStorage.setItem("process.total", this.searchResultCount);
+      localStorage.setItem("process.list", JSON.stringify(this.processList));
+      localStorage.setItem("process.index", to.query.taskId);
+      localStorage.setItem("process.orderId", this.orderId);
+
     }
     next();
   }

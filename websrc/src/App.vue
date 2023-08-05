@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"/>
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"/>
+    <router-view/>
     <van-image-preview v-model="showImagePreview" :startPosition="imagePreviewStartIndex"
                        :images="imagePreviewImages.map(item => item.url)" @change="onChange"/>
     <video-dialog ref="videoDialog"/>

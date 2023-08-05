@@ -31,8 +31,10 @@
       :finished="!searchHasMore"
       finished-text="没有更多了"
       @load="onLoad">
-      <CheckItemCard v-for="(item,index) in checkItemList" :key="item.fid" :item="item" :index="index"
-                     @click.native="handleClickCheckItem(item.fid)">
+      <CheckItemCard
+        :id="'checkItem_' + item.fid"
+        v-for="(item,index) in checkItemList" :key="item.fid" :item="item" :index="index"
+        @click.native="handleClickCheckItem(item.fid)">
       </CheckItemCard>
     </van-list>
   </div>
@@ -63,12 +65,11 @@ export default {
       searchResultCount: 0,
       searchLoading: false,
       searchHasMore: true,
-      count: [0, 0]
+      count: [0, 0],
+      isLoadCached: false
     }
   },
   methods: {
-    handleChangeAll(){
-    },
     handleShowAll(event) {
       this.onSearch("");
     },
@@ -81,18 +82,26 @@ export default {
       this.searchHasMore = true;
       this.checkItemList = [];
       this.$refs.checkItemList.check();
-
-      localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
-      localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
-      localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
-
     },
     onLoad() {
-      this.listCheckItem();
+      let cachedTaskId = localStorage.getItem("checkItem.taskId");
+      if (!this.isLoadCached && cachedTaskId === this.taskId) {
+        this.current = localStorage.getItem("checkItem.current");
+        this.searchResultCount = localStorage.getItem("checkItem.total");
+        this.checkItemList = JSON.parse(localStorage.getItem("checkItem.list"));
+        let toLocalIndex = localStorage.getItem("checkItem.index");
+        this.$nextTick(() => {
+          document.getElementById("checkItem_" + toLocalIndex).scrollIntoView();
+          this.isLoadCached = true;
+        });
+        this.searchLoading = false;
+      } else {
+        this.listCheckItem();
+      }
     },
     listCheckItem() {
       listCheckItem(this.taskId,
-        (this.searchKey === 'undefined' ? '' : this.searchKey),
+        (this.searchKey),
         this.cfCheckType + 1,
         this.showAll === '2',
         this.current + 1, this.pageSize).then(data => {
@@ -101,6 +110,11 @@ export default {
         this.searchHasMore = data.hasMore;
         this.current = data.pageNum;
       }).finally(() => {
+
+        localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
+        localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
+        localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
+
         this.searchLoading = false;
       })
     },
@@ -124,47 +138,38 @@ export default {
       })
     }
   },
-  created() {
-    let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
-    if (searchKey !== undefined && searchKey !== null && searchKey !== 'undefined' && searchKey !== 'null') {
-      this.searchKey = searchKey;
-    }else{
-      this.searchKey = "";
-    }
-    let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")
-    if (showAll !== undefined && showAll !== null && showAll !== 'undefined' && showAll !== 'null') {
-      this.showAll = showAll;
-    }else{
-      this.showAll = '1';
-    }
-    let checkType = localStorage.getItem("CACHE_CHECKITEM_CHECKTYPE")
-    if (checkType !== undefined && checkType !== null && checkType !== 'undefined' && checkType !== 'null') {
-      this.cfCheckType = parseInt(checkType);
-    }else{
-      this.cfCheckType = 0;
-    }
-  },
   mounted() {
     this.projectId = this.$route.query.projectId;
     this.orderId = this.$route.query.orderId;
     this.taskId = this.$route.query.taskId;
 
-    this.listCount();
-    this.listCheckItem();
-  },
-  activated() {
-    if (this.$route.query.taskId !== this.taskId) {
-      this.taskId = this.$route.query.taskId;
-      this.listCount();
-      this.checkItemList = [];
-      this.searchHasMore = true;
-      this.current = 1;
-      this.$refs.checkItemList.check();
+    let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
+    if (searchKey !== undefined && searchKey !== null && searchKey !== 'undefined' && searchKey !== 'null') {
+      this.searchKey = searchKey;
+    } else {
+      this.searchKey = "";
     }
+    let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")
+    if (showAll !== undefined && showAll !== null && showAll !== 'undefined' && showAll !== 'null') {
+      this.showAll = showAll;
+    } else {
+      this.showAll = '1';
+    }
+    let checkType = localStorage.getItem("CACHE_CHECKITEM_CHECKTYPE")
+    if (checkType !== undefined && checkType !== null && checkType !== 'undefined' && checkType !== 'null') {
+      this.cfCheckType = parseInt(checkType);
+    } else {
+      this.cfCheckType = 0;
+    }
+    this.listCount();
   },
   beforeRouteLeave(to, from, next) {
     if (to.path === '/checkItemResult') {
-      to.meta.keepAlive = false;
+      localStorage.setItem("checkItem.current", this.current);
+      localStorage.setItem("checkItem.total", this.searchResultCount);
+      localStorage.setItem("checkItem.list", JSON.stringify(this.checkItemList));
+      localStorage.setItem("checkItem.index", to.query.checkItemId);
+      localStorage.setItem("checkItem.taskId", this.taskId);
     }
     next();
   }

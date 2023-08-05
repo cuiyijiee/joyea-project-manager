@@ -34,3 +34,4 @@ target/
 .vscode/
 dist.zip
 *.lock
+.DS_Store
