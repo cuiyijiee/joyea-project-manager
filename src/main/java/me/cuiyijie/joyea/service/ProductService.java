@@ -32,7 +32,7 @@ public class ProductService {
                 searchHistoryService.addSearchHistory(easUserId,"CACHE_PRODUCT_SEARCH_HISTORY",product.getProductName());
             }
         }
-        return productDao.selectWithPage(productPage, product);
+        return product.getStatus() == 0 ? productDao.selectWithPage(productPage, product) : productDao.selectWithStatusPage(productPage, product);
     }
 
     public String selectCount(TransProductRequest product) {

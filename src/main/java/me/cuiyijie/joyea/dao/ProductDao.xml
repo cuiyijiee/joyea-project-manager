@@ -23,10 +23,22 @@
     <select id="selectWithPage" resultMap="BaseResultMap">
         SELECT t.ORDERID, t.XMID, t.ORDERNUMBER, t.PRODUCTNUMBER, t.PRODUCTNAME
         FROM VW_SYX_ZLGL_CP t
-        <if test="item.status != 0">
-            LEFT JOIN VW_SYX_ZLGL_CPWCL t1 ON t.ORDERID = t1.ORDERID
-        </if>
         WHERE t.XMID = #{item.fid}
+        <if test="item.productName != null and item.productName != ''">
+            AND (
+            t.ORDERNUMBER LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
+            OR
+            t.PRODUCTNUMBER LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
+            OR
+            t.PRODUCTNAME LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
+            )
+        </if>
+    </select>
+
+    <select id="selectWithStatusPage" resultMap="BaseResultMap">
+        SELECT t.ORDERID, t.FID, t.ORDERNUMBER, t.PRODUCTNUMBER, t.PRODUCTNAME
+        FROM VW_SYX_ZLGL_CPWCL t
+        WHERE t.FID = #{item.fid}
         <if test="item.productName != null and item.productName != ''">
             AND (
             t.ORDERNUMBER LIKE CONCAT(CONCAT('%',#{item.productName}),'%')
@@ -38,18 +50,18 @@
         </if>
         <if test="item.status == 1">
             AND(
-            t1.EACHFINISH = 0 AND t1.SELFFINISH = 0
+            t.EACHFINISH = 0 AND t.SELFFINISH = 0
             )
         </if>
         <if test="item.status == 2">
             AND (
-            (t1.EACHFINISH &gt; 0 and (t1.EACHFINISH &lt; t1.EACH))
-            OR (t1.SELFFINISH > 0 and t1.SELFFINISH &lt; t1.SELF)
+            (t.EACHFINISH &gt; 0 and (t.EACHFINISH &lt; t.EACH))
+            OR (t.SELFFINISH > 0 and t.SELFFINISH &lt; t.SELF)
             )
         </if>
         <if test="item.status == 3">
             AND(
-            t1.EACHFINISH= t1.EACH AND t1.SELFFINISH = t1.SELF
+            t.EACHFINISH= t.EACH AND t.SELFFINISH = t.SELF
             )
         </if>
     </select>

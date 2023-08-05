@@ -2,7 +2,7 @@
   <div class="check-item-card">
     <div class="container">
       <van-row>
-        <van-col span="24"><span class="desc">序号：</span>{{ index + 1 }}</van-col>
+        <van-col span="24"><span class="desc">序号：</span>{{ item.seq }}</van-col>
         <van-col span="24"><span class="desc">检验类型：</span>{{ item.typeName || '' }}</van-col>
         <van-col span="24"><span class="desc">
           <van-icon v-if="item.keyItem === 1" name="star" color="red" size="20"/>

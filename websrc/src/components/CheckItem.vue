@@ -67,11 +67,13 @@ export default {
     }
   },
   methods: {
+    handleChangeAll(){
+    },
     handleShowAll(event) {
-      this.onSearch();
+      this.onSearch("");
     },
     handleTagChange(name, title) {
-      this.onSearch();
+      this.onSearch("");
     },
     onSearch(searchKey) {
       this.searchKey = searchKey;
@@ -79,9 +81,13 @@ export default {
       this.searchHasMore = true;
       this.checkItemList = [];
       this.$refs.checkItemList.check();
+
+      localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
+      localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
+      localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
+
     },
     onLoad() {
-      console.log("on load");
       this.listCheckItem();
     },
     listCheckItem() {
@@ -96,11 +102,6 @@ export default {
         this.current = data.pageNum;
       }).finally(() => {
         this.searchLoading = false;
-
-        localStorage.setItem("CACHE_CHECKITEM_SEARCHKEY", this.searchKey)
-        localStorage.setItem("CACHE_CHECKITEM_SHOWALL", this.showAll)
-        localStorage.setItem("CACHE_CHECKITEM_CHECKTYPE", this.cfCheckType)
-
       })
     },
     handleClickCheckItem(fid) {
@@ -123,37 +124,37 @@ export default {
       })
     }
   },
-  mounted() {
-    this.projectId = this.$route.query.projectId;
-    this.orderId = this.$route.query.orderId;
-    this.taskId = this.$route.query.taskId;
-
+  created() {
     let searchKey = localStorage.getItem("CACHE_CHECKITEM_SEARCHKEY")
-    if (searchKey !== undefined && searchKey !== 'undefined' && searchKey !== 'null') {
+    if (searchKey !== undefined && searchKey !== null && searchKey !== 'undefined' && searchKey !== 'null') {
       this.searchKey = searchKey;
     }else{
       this.searchKey = "";
     }
     let showAll = localStorage.getItem("CACHE_CHECKITEM_SHOWALL")
-    if (showAll !== undefined && showAll !== 'undefined' && showAll !== 'null') {
+    if (showAll !== undefined && showAll !== null && showAll !== 'undefined' && showAll !== 'null') {
       this.showAll = showAll;
     }else{
       this.showAll = '1';
     }
     let checkType = localStorage.getItem("CACHE_CHECKITEM_CHECKTYPE")
-    if (checkType !== undefined && checkType !== 'undefined' && checkType !== 'null') {
+    if (checkType !== undefined && checkType !== null && checkType !== 'undefined' && checkType !== 'null') {
       this.cfCheckType = parseInt(checkType);
     }else{
       this.cfCheckType = 0;
     }
+  },
+  mounted() {
+    this.projectId = this.$route.query.projectId;
+    this.orderId = this.$route.query.orderId;
+    this.taskId = this.$route.query.taskId;
+
     this.listCount();
     this.listCheckItem();
   },
   activated() {
-    console.log("query id:" + this.$route.query.taskId + ",history id: " + this.taskId);
     if (this.$route.query.taskId !== this.taskId) {
       this.taskId = this.$route.query.taskId;
-      console.log("do reload!");
       this.listCount();
       this.checkItemList = [];
       this.searchHasMore = true;

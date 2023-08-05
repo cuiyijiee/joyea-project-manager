@@ -16,6 +16,8 @@ public interface ProductDao extends BaseMapper<Product> {
 
     IPage<Product> selectWithPage(IPage<Product> page, @Param("item") TransProductRequest product);
 
+    IPage<Product> selectWithStatusPage(IPage<Product> page, @Param("item") TransProductRequest product);
+
     Integer selectAllCount(@Param("fid") String fid);
 
     Integer selectNotStartCount(@Param("fid") String fid);
