@@ -13,10 +13,10 @@ import lombok.Data;
 @TableName("VW_SYX_ZLGL_ZYFFATTACH")
 public class CheckItemAttachment {
 
-    @TableField(value = "FID")
+    @TableId(value = "FID")
     private String fid;
 
-    @TableId("ATTACH_FID")
+    @TableField("ATTACH_FID")
     private String attachFid;
 
     @TableField("ATTACH_NAME")

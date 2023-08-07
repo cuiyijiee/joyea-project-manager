@@ -1,8 +1,10 @@
 package me.cuiyijie.joyea.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
+import org.apache.logging.log4j.util.Base64Util;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -42,7 +44,9 @@ public class CheckItemAttachmentService {
     private long lastLoginTimestamp = 0L;
 
     public File getPreviewFilePath(String attachId) {
-        CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+        CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectOne(
+                new QueryWrapper<CheckItemAttachment>().eq("ATTACH_FID",new String(Base64.getDecoder().decode(attachId)))
+        );
         if(checkItemAttachment != null) {
             return downloadFile(checkItemAttachment);
         }

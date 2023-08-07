@@ -40,19 +40,19 @@ public class CheckItemService {
         for (int index = 0; index < checkItemPageResult.getRecords().size(); index++) {
             //查找附件
             CheckItem checkItem1 = checkItemPageResult.getRecords().get(index);
-            String ffid = checkItem1.getCheckMethodId();
-            List<CheckItemAttachment> attachmentList = new ArrayList<>();
-            if (StringUtils.hasLength(ffid)) {
-                String[] ffids = ffid.split(",");
-                for (int i = 0; i < ffids.length; i++) {
-                    String attachId = ffids[i];
-                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
-                    if (checkItemAttachment != null) {
-                        attachmentList.add(checkItemAttachment);
-                    }
-                }
+            String checkModeId = checkItem1.getCheckModeId();
+            if (StringUtils.hasLength(checkModeId)) {
+//                String[] ffids = ffid.split(",");
+//                for (int i = 0; i < ffids.length; i++) {
+//                    String attachId = ffids[i];
+//                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+//                    if (checkItemAttachment != null) {
+//                        attachmentList.add(checkItemAttachment);
+//                    }
+//                }
+                checkItem1.setAttachmentList(checkItemAttachmentDao.selectList(new QueryWrapper<CheckItemAttachment>().eq("FID", checkModeId)));
             }
-            checkItem1.setAttachmentList(attachmentList);
+
 
             //设置是否合格
             List<CheckItemResult> checkItemResults = checkItemResultService.findRecentResult(checkItem1.getFid());
@@ -73,19 +73,18 @@ public class CheckItemService {
     public CheckItem find(CheckItem checkItem) {
         CheckItem checkItem1 = checkItemDao.selectById(checkItem.getFid());
         if (checkItem1 != null) {
-            String ffid = checkItem1.getCheckMethodId();
-            List<CheckItemAttachment> attachmentList = new ArrayList<>();
-            if (StringUtils.hasLength(ffid)) {
-                String[] ffids = ffid.split(",");
-                for (int i = 0; i < ffids.length; i++) {
-                    String attachId = ffids[i];
-                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
-                    if (checkItemAttachment != null) {
-                        attachmentList.add(checkItemAttachment);
-                    }
-                }
+            String checkModeId = checkItem1.getCheckModeId();
+            if (StringUtils.hasLength(checkModeId)) {
+//                String[] ffids = ffid.split(",");
+//                for (int i = 0; i < ffids.length; i++) {
+//                    String attachId = ffids[i];
+//                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
+//                    if (checkItemAttachment != null) {
+//                        attachmentList.add(checkItemAttachment);
+//                    }
+//                }
+                checkItem1.setAttachmentList(checkItemAttachmentDao.selectList(new QueryWrapper<CheckItemAttachment>().eq("FID", checkModeId)));
             }
-            checkItem1.setAttachmentList(attachmentList);
         }
         return checkItem1;
     }
