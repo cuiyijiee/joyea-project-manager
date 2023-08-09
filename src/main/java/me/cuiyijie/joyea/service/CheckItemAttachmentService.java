@@ -47,6 +47,7 @@ public class CheckItemAttachmentService {
         CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectOne(
                 new QueryWrapper<CheckItemAttachment>().eq("ATTACH_FID",new String(Base64.getDecoder().decode(attachId)))
         );
+
         if(checkItemAttachment != null) {
             return downloadFile(checkItemAttachment);
         }
@@ -61,8 +62,8 @@ public class CheckItemAttachmentService {
                 "         <userName xsi:type=\"xsd:string\">user</userName>\n" +
                 "         <password xsi:type=\"xsd:string\">joyea@789</password>\n" +
                 "         <slnName xsi:type=\"xsd:string\">eas</slnName>\n" +
-                "         <dcName xsi:type=\"xsd:string\">jy20220128</dcName>\n" +
-                "         <language xsi:type=\"xsd:string\">l1</language>\n" +
+                "         <dcName xsi:type=\"xsd:string\">EAS</dcName>\n" +
+                "         <language xsi:type=\"xsd:string\">L2</language>\n" +
                 "         <dbType xsi:type=\"xsd:int\">1</dbType>\n" +
                 "      </log:login>\n" +
                 "   </soapenv:Body>\n" +

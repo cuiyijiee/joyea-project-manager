@@ -29,8 +29,11 @@
       </van-row>
       <van-grid :border="false" :column-num="3">
         <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
-          <van-image v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
-                     :src="'/api/checkItemAttachment/download?attachId=' + base64(attach.attachFid)"/>
+          <div v-if="attach.attacheType.indexOf('图像') > -1" width="100" height="100"
+               @click.stop="handleClickAttachment(attach,item.attachmentList)">
+            <van-image
+              :src="'/api/checkItemAttachment/download?attachId=' + base64(attach.attachFid)"/>
+          </div>
           <van-image v-else :src="defaultImg"/>
         </van-grid-item>
       </van-grid>
@@ -46,6 +49,8 @@
 </template>
 
 <script>
+import {genAttachmentImageListView} from "../utils/ImageViewUtil";
+
 export default {
   name: "CheckItemCard",
   props: {
@@ -79,6 +84,9 @@ export default {
     },
   },
   methods: {
+    handleClickAttachment(attachment, attachmentList) {
+      genAttachmentImageListView(this, attachmentList, attachment)
+    },
     base64(origin){
      return  window.btoa(origin);
     },
