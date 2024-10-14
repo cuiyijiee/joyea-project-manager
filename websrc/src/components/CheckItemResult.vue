@@ -55,6 +55,9 @@
                       <van-image v-else-if="attach.mimeType && attach.mimeType.startsWith('video')" width="100"
                                  height="100"
                                  :src="defaultVideoImg"/>
+                      <van-image v-else-if="attach.mimeType && attach.mimeType.startsWith('edoc2')" width="100"
+                                 height="100"
+                                 :src="'/Thumbnails/default/' + attach.lenovoId + '.jpg'"/>
                       <van-image v-else width="100" height="100" :src="defaultImg"/>
                     </div>
                   </van-grid-item>
@@ -71,6 +74,9 @@
                       <van-image v-else-if="attach.mimeType && attach.mimeType.startsWith('video')" width="100"
                                  height="100"
                                  :src="defaultVideoImg"/>
+                      <van-image v-else-if="attach.mimeType && attach.mimeType.startsWith('edoc2')" width="100"
+                                 height="100"
+                                 :src="'/Thumbnails/default/' + attach.lenovoId + '.jpg'"/>
                       <van-image v-else width="100" height="100" :src="defaultImg"/>
                     </div>
                   </van-grid-item>
@@ -123,7 +129,7 @@
 
 <script>
 import {listCheckItemResult, findCheckItem, insertCheckItemResult} from "../api";
-import {upload} from "../api/fileUpload";
+import {edoc2Upload} from "../api/";
 import {handleGoToPreview} from "../utils/JoyeaUtil";
 
 export default {
@@ -254,14 +260,13 @@ export default {
     afterRead(file, fileType) {
       file.status = 'uploading';
       file.message = '上传中...';
-      upload(file).then(uploadResult => {
+      edoc2Upload(file).then(uploadResult => {
 
         file.status = 'done';
         file.message = '上传成功';
 
-        file.neid = uploadResult.neid;
-        file.mimeType = uploadResult.mime_type;
-
+        file.neid = uploadResult.obj.fileId;
+        file.mimeType = "edoc2";
       }).finally(() => {
         console.log("upload success");
       })

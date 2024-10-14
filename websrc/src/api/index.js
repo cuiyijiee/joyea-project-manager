@@ -163,3 +163,22 @@ export function getUploadFileRegion(filename) {
 }
 
 /******************filez end******************/
+
+/******************edoc2 start******************/
+export function edoc2Upload(file) {
+  let formData = new FormData();
+  formData.append('file', file.file)
+
+  return axios.post('api/edoc2/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'X-TOKEN': store.state.token
+    },
+    onUploadProgress: progressEvent => {
+      let completed = (progressEvent.loaded / progressEvent.total * 100 | 0) + "%";
+    }
+  }).then(res => {
+    return res.data;
+  })
+}
+/******************edoc2 end******************/
