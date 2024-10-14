@@ -3,10 +3,10 @@ package me.cuiyijie.joyea.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.dao.ProductDao;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.pojo.request.TransProductRequest;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,22 +15,18 @@ import org.springframework.util.StringUtils;
  * @Author: cuiyijie
  * @Date: 2021/10/18 11:10
  */
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductDao productDao;
-
-    @Autowired
-    private SearchHistoryService searchHistoryService;
+    private final ProductDao productDao;
+    private final SearchHistoryService searchHistoryService;
 
     public IPage<Product> list(String easUserId, TransProductRequest product, Integer pageNum, Integer pageSize) {
         Page<Product> productPage = new Page<>(pageNum, pageSize);
-        if(StringUtils.hasLength(product.getProductName())) {
+        if (StringUtils.hasLength(product.getProductName())) {
             //记录查询的关键字
-            if(StringUtils.hasLength(product.getProductName())) {
-                searchHistoryService.addSearchHistory(easUserId,"CACHE_PRODUCT_SEARCH_HISTORY",product.getProductName());
-            }
+            searchHistoryService.addSearchHistory(easUserId, "CACHE_PRODUCT_SEARCH_HISTORY", product.getProductName());
         }
         return product.getStatus() == 0 ? productDao.selectWithPage(productPage, product) : productDao.selectWithStatusPage(productPage, product);
     }

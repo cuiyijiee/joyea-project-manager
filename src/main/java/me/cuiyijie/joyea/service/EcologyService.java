@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.exception.SysRuntimeException;
 import me.cuiyijie.joyea.model.EasUser;
@@ -27,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EcologyService {
 
     @Value("${joyea.ecology.authorize.url}")
@@ -47,11 +49,8 @@ public class EcologyService {
     @Value("${joyea.ecology.clientSecret}")
     private String clientSecret;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private EasUserService easUserService;
+    private final RestTemplate restTemplate;
+    private final EasUserService easUserService;
 
     public String generateLoginUrl() {
         return String.format("%s?client_id=%s&response_type=code&redirect_uri=%s", authorizeUrl, clientId, redirectUrl);

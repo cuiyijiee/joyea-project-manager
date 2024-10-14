@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
@@ -30,6 +31,7 @@ import java.util.Base64;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CheckItemAttachmentService {
 
     @Value("${eas.login.url}")
@@ -38,8 +40,8 @@ public class CheckItemAttachmentService {
     private String getAttachmentUrl = "http://47.99.45.18:7998/ormrpc/services/WSAttachmentFacade";
     @Value("${eas.attachment.tmp.dir}")
     private String attachmentTempDir;
-    @Autowired
-    private CheckItemAttachmentDao checkItemAttachmentDao;
+
+    private final CheckItemAttachmentDao checkItemAttachmentDao;
 
     private long lastLoginTimestamp = 0L;
 

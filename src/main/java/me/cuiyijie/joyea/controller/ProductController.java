@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
@@ -13,7 +14,6 @@ import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransProductRequest;
 import me.cuiyijie.joyea.service.ProductScheduleService;
 import me.cuiyijie.joyea.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,13 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("product")
 @Api(tags = "项目产品模块")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private ProductScheduleService productScheduleService;
+    private final ProductService productService;
+    private final ProductScheduleService productScheduleService;
 
     @ApiOperation(value = "根据projectId查询所有的项目产品", notes = "传入projectId")
     @RequestMapping(value = "list", method = RequestMethod.POST)

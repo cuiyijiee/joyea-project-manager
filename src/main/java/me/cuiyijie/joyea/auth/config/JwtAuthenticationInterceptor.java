@@ -21,8 +21,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     @Value("${server.allow-user}")
     private List<String> allowUsers;
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationInterceptor.class);
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //springboot跨域拦截，放行OPTIONS请求

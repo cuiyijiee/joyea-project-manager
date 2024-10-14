@@ -3,6 +3,8 @@ package me.cuiyijie.joyea.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
 import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
@@ -16,18 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class CheckItemService {
 
-    @Autowired
-    private CheckItemDao checkItemDao;
-    @Autowired
-    private CheckItemAttachmentDao checkItemAttachmentDao;
-    @Autowired
-    private CheckItemResultService checkItemResultService;
-
-    @Autowired
-    private SearchHistoryService searchHistoryService;
+    private final CheckItemDao checkItemDao;
+    private final CheckItemAttachmentDao checkItemAttachmentDao;
+    private final CheckItemResultService checkItemResultService;
+    private final SearchHistoryService searchHistoryService;
 
     public IPage<CheckItem> list(String easUserId, CheckItem checkItem, Integer pageNum, Integer pageSize) {
 

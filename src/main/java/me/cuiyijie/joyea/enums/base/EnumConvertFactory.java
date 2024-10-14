@@ -1,6 +1,6 @@
 package me.cuiyijie.joyea.enums.base;
 
-import com.alibaba.druid.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Component;

@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.ProjectCollectDao;
 import me.cuiyijie.joyea.dao.ProjectDao;
@@ -16,16 +17,12 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProjectService {
 
-    @Autowired
-    private ProjectDao projectDao;
-
-    @Autowired
-    private ProjectCollectDao projectCollectDao;
-
-    @Autowired
-    private SearchHistoryService searchHistoryService;
+    private final ProjectDao projectDao;
+    private final ProjectCollectDao projectCollectDao;
+    private final SearchHistoryService searchHistoryService;
 
     public Page<Project> list(String easUserId, Project project, Integer pageNum, Integer pageSize) {
         Page<Project> projectPage = new Page<>(pageNum, pageSize);

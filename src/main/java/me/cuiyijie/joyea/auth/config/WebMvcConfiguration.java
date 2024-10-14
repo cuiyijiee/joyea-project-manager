@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.auth.config;
 
+import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.enums.base.EnumConvertFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    @Autowired
-    private EnumConvertFactory enumConvertFactory;
+    private final EnumConvertFactory enumConvertFactory;
 
     @Bean
     public JwtAuthenticationInterceptor setBean() {

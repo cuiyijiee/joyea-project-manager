@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.exception.SysRuntimeException;
 import me.cuiyijie.joyea.pojo.FilezUploadFileRegionResp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ import java.util.Map;
  * @date 2022/10/15 13:01
  */
 @Service
+@RequiredArgsConstructor
 public class FilezService {
 
     @Value("${filez.access_token.url}")
     private String filezTokenUrl;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     private String fileUploadDir = "/Eas点检记录附件";
 

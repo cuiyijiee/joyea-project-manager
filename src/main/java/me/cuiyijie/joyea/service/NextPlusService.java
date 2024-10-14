@@ -1,5 +1,6 @@
 package me.cuiyijie.joyea.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.model.Department;
@@ -18,10 +19,10 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class NextPlusService {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public String getAccessToken() {
         Map<String, String> getAccessTokenParams = new HashMap<>();

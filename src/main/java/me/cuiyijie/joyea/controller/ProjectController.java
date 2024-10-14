@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
@@ -12,7 +13,6 @@ import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransProjectRequest;
 import me.cuiyijie.joyea.service.ProjectScheduleService;
 import me.cuiyijie.joyea.service.ProjectService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,13 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("project")
 @Api(tags = "项目模块")
+@RequiredArgsConstructor
 public class ProjectController {
 
-    @Autowired
-    private ProjectService projectService;
-
-    @Autowired
-    private ProjectScheduleService projectScheduleService;
+    private final ProjectService projectService;
+    private final ProjectScheduleService projectScheduleService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public TransBaseResponse list(@RequestBody TransProjectRequest request,

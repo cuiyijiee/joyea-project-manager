@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.dao.SearchHistoryDao;
 import me.cuiyijie.joyea.model.SearchHistory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,10 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SearchHistoryService {
 
-    @Autowired
-    private SearchHistoryDao searchHistoryDao;
-
+    private final SearchHistoryDao searchHistoryDao;
 
     public void addSearchHistory(String easUserId, String searchType, String searchKey) {
         SearchHistory exiatedSearchHistory = searchHistoryDao.selectHistory(easUserId, searchType, searchKey);

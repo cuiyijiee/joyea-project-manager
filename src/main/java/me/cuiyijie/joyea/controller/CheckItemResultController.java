@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.auth.CurrentUser;
 import me.cuiyijie.joyea.auth.CurrentUserInfo;
@@ -21,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("checkItemResult")
 @Api(tags = "点检项点检记录信息模块")
+@RequiredArgsConstructor
 public class CheckItemResultController {
 
-    @Autowired
-    private CheckItemResultService checkItemResultService;
+    private final CheckItemResultService checkItemResultService;
 
     @ApiOperation(value = "获取点检项记录", notes = "获取点检项记录")
     @RequestMapping(value = "list", method = RequestMethod.POST)

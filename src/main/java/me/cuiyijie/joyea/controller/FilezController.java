@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.pojo.FilezUploadFileRegionResp;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("filez")
 @Api(tags = "联想网盘相关接口调用")
+@RequiredArgsConstructor
 public class FilezController {
 
-    @Autowired
-    private FilezService filezService;
+    private final FilezService filezService;
 
     @ApiOperation(value = "获取上传文件", notes = "获取点检项")
     @RequestMapping(value = "upload/region/{filename}", method = RequestMethod.GET)

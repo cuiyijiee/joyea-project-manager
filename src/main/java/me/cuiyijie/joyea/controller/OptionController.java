@@ -1,7 +1,7 @@
 package me.cuiyijie.joyea.controller;
 
-
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.enums.*;
 import me.cuiyijie.joyea.enums.base.BaseEnum;
 import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
@@ -17,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("option")
 @Api(tags = "各个选项框的选项")
+@RequiredArgsConstructor
 public class OptionController {
 
     @PostMapping("checkModule")

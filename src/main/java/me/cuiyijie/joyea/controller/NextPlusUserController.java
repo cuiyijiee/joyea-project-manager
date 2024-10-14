@@ -2,6 +2,7 @@ package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.config.Constants;
 import me.cuiyijie.joyea.dao.EasUserDao;
@@ -14,7 +15,6 @@ import me.cuiyijie.joyea.pojo.request.TransBaseResponse;
 import me.cuiyijie.joyea.pojo.request.TransJoyeaPersonRequest;
 import me.cuiyijie.joyea.pojo.request.TransNextPlusUserRequest;
 import me.cuiyijie.joyea.service.NextPlusService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,15 +35,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("nextplus")
 @Api(tags = "系统用户模块-NextPlus用户体系")
+@RequiredArgsConstructor
 public class NextPlusUserController {
-    @Autowired
-    private NextPlusService nextPlusService;
 
-    @Autowired
-    private EasUserDao easUserDao;
-
-    @Autowired
-    RestTemplate restTemplate;
+    private final NextPlusService nextPlusService;
+    private final EasUserDao easUserDao;
+    private final RestTemplate restTemplate;
 
 //    @ApiOperation(value = "获取用户信息", notes = "通过泛微返回ticket获取用户信息")
 //    @RequestMapping(value = "authorize", method = RequestMethod.POST)

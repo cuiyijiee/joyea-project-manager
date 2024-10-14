@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.dao.CheckItemResultAttachmentDao;
 import me.cuiyijie.joyea.dao.CheckItemResultDao;
 import me.cuiyijie.joyea.model.CheckItemResult;
@@ -16,16 +17,12 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CheckItemResultService {
 
-    @Autowired
-    private CheckItemResultDao checkItemResultDao;
-
-    @Autowired
-    private CheckItemResultAttachmentDao checkItemResultAttachmentDao;
-
-    @Autowired
-    private EasUserService userService;
+    private final CheckItemResultDao checkItemResultDao;
+    private final CheckItemResultAttachmentDao checkItemResultAttachmentDao;
+    private final EasUserService userService;
 
     public IPage<CheckItemResult> list(CheckItemResult checkItemResult, Integer pageNum, Integer pageSize) {
         Page<CheckItemResult> checkItemResultPage = new Page<>(pageNum, pageSize);

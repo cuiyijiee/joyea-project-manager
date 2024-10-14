@@ -1,9 +1,9 @@
 package me.cuiyijie.joyea.controller;
 
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.service.CheckItemAttachmentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +20,10 @@ import java.net.URLEncoder;
 @RestController
 @RequestMapping("checkItemAttachment")
 @Api(tags = "点检项附件模块")
+@RequiredArgsConstructor
 public class CheckItemAttachmentController {
 
-    @Autowired
-    private CheckItemAttachmentService checkItemAttachmentService;
+    private final CheckItemAttachmentService checkItemAttachmentService;
 
     @RequestMapping("/download")
     public void download(@RequestParam("attachId") String attachId, HttpServletResponse httpServletResponse) {
