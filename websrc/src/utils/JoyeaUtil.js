@@ -1,94 +1,39 @@
-import {previewFile} from "../api"
 import {Dialog} from 'vant';
 import {genImageListView} from "./ImageViewUtil";
 import loadGif from "../assets/loading.gif"
 
 import store from "../store";
 
-export function genSrcOriginSrc(neid) {
-  return "/apiv2/imagePreview?neid=" + neid + "&thumbtail=false"
-}
 
-let videoLoading = false;
-
-export function handleGoToPreview(context, clickItem, itemList) {
-  let fileName = clickItem.fileName
-  let url = genSrcOriginSrc(clickItem.lenovoId)
-  if (clickItem.mimeType.startsWith("video")) {
-    videoLoading = true;
-    const {promise, abort} = getVideoPreviewUrl(clickItem.lenovoId, 30)
-    promise.then(resp => {
-      if (videoLoading) {
-        //callNextPlusPreview(fileName, resp);
-        store.state.videoDialogTitle = fileName;
-        store.state.videoDialogUrl = resp;
-        store.state.videoDialogShow = true;
-      }
-      Dialog.close();
-    });
+export function handleGoToPreview(context, title, previewUrl) {
+  if(!previewUrl) {
     Dialog.alert({
-      title: "转码中，成功后将自动播放，请耐心等待。。。",
+      title: "附件正在处理中请稍后查看！", message: "", allowHtml: true, showConfirmButton: true, confirmButtonText: '知道了'
+    }).then(() => {
+    })
+    return;
+  }
+  if(previewUrl) {
+    previewUrl = previewUrl.replaceAll("GetConversionFile","GetOriginFile")
+  }
+  let fileType = getFileType(title);
+  if (fileType === 'video') {
+    store.state.videoDialogTitle = title;
+    store.state.videoDialogUrl = previewUrl;
+    store.state.videoDialogShow = true;
+  } else if (fileType === 'doc') {
+    window.open(previewUrl)
+  } else if (fileType === 'image') {
+    genImageListView(context, title, previewUrl);
+  } else {
+    Dialog.alert({
+      title: "该文件类型暂不支持预览！",
       message: "<img src='" + loadGif + "' style='width: 50px;height: 50px'></img>",
       allowHtml: true,
       showConfirmButton: true,
-      confirmButtonText: '取消'
+      confirmButtonText: '知道了'
     }).then(() => {
-      abort();
     })
-    //callNextPlusPreview(fileName, url)
-  } else if (clickItem.mimeType.startsWith("doc") && !clickItem.mimeType.endsWith("pdf")) {
-    if (clickItem.mimeType.endsWith("pdf")) {
-    } else {
-      window.open(url)
-    }
-  } else if (clickItem.mimeType.startsWith("image")) {
-    genImageListView(context, itemList, clickItem);
-  } else if (clickItem.mimeType.startsWith("word")) {
-    window.location.href = 'esen://word?wordId=' + clickItem.lenovoId;
-  }
-}
-
-export function getVideoPreviewUrl(neid, times) {
-  console.log("start check preview:" + neid)
-  let _res, _rej;
-  const promise = new Promise(function (resolve, reject) {
-    _res = resolve;
-    _rej = reject;
-
-    function attempt() {
-      previewFile(neid).then(function (previewUrl) {
-        console.log(previewUrl)
-        if (previewUrl.code) {
-          if (0 === times) {
-            reject(err)
-          } else {
-            times--;
-            setTimeout(attempt, 1000)
-          }
-        } else {
-          resolve(previewUrl)
-        }
-      }).catch(function (err) {
-        console.log("第" + times + "次尝试获取视频预览地址")
-        if (0 === times) {
-          reject(err)
-        } else {
-          times--;
-          setTimeout(attempt, 1000)
-        }
-      })
-    }
-
-    attempt()
-  });
-
-  return {
-    promise, abort: (opt = {}) => {
-      times = 0;
-      _rej({
-        name: "abort", message: "the promise is aborted", aborted: true,
-      })
-    }
   }
 }
 
@@ -109,4 +54,31 @@ export function getQueryParam(key) {
     });
   }
   return value;
+}
+
+
+/* 根据后缀判断文件类型 */
+export function getFileType(fileName) {
+  let suffix = ''; // 后缀获取
+  let result = ''; // 获取类型结果
+  if (fileName) {
+    const fileArr = fileName.split('.'); // 根据.分割数组
+    suffix = fileArr[fileArr.length - 1]; // 取最后一个
+  }
+  if (!suffix) return false; // fileName无后缀返回false
+  suffix = suffix.toLocaleLowerCase(); // 将后缀所有字母改为小写方便操作
+  // 匹配图片
+  const imgList = ['png', 'jpg', 'jpeg', 'bmp', 'gif']; // 图片格式
+  result = imgList.find(item => item === suffix);
+  if (result) return 'image';
+  // 匹配文档
+  const excelList = ['xls', 'xlsx', 'txt', 'doc', 'docx', 'pdf', 'ppt', 'pptx',];
+  result = excelList.find(item => item === suffix);
+  if (result) return 'doc';
+  // 匹配视频
+  const videoList = ['mp4', 'm2v', 'mkv', 'rmvb', 'wmv', 'avi', 'flv', 'mov', 'm4v'];
+  result = videoList.find(item => item === suffix);
+  if (result) return 'video';
+  // 其他文件类型
+  return 'other';
 }

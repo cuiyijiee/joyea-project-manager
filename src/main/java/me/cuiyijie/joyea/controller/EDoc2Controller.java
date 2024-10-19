@@ -22,4 +22,9 @@ public class EDoc2Controller {
     public TransBaseResponse uploadFile(@RequestParam("file") MultipartFile file) {
         return TransBaseResponse.success(eDoc2Service.uploadFile(file));
     }
+
+    @GetMapping("preview")
+    public TransBaseResponse preview(@RequestParam String fileId) {
+        return TransBaseResponse.success(eDoc2Service.getFilePreviewInfo(fileId));
+    }
 }

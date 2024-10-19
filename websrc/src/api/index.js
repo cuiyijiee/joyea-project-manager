@@ -181,4 +181,8 @@ export function edoc2Upload(file) {
     return res.data;
   })
 }
+
+export function edoc2PreviewData(fileId) {
+  return service.get("api/edoc2/preview?fileId=" + fileId, {}).then(resp => resp.data);
+}
 /******************edoc2 end******************/

@@ -26,6 +26,12 @@ module.exports = {
           '^/api': ''
         }
       },
+      '/Thumbnails/':{
+        target: "http://aidoc.joyea.cn:8086/Thumbnails/",
+        changeOrigin: true,
+        pathRewrite: {
+        }
+      }
     },
 
     // Various Dev Server settings

@@ -2,7 +2,7 @@
   <div id="app">
     <router-view/>
     <van-image-preview v-model="showImagePreview" :startPosition="imagePreviewStartIndex"
-                       :images="imagePreviewImages.map(item => item.url)" @change="onChange"/>
+                       :images="imagePreviewImages.map(item => item.previewUrl)" @change="onChange"/>
     <video-dialog ref="videoDialog"/>
   </div>
 </template>
@@ -19,13 +19,13 @@ export default {
   },
   data() {
     return {
-      fileName: ""
+      title: ""
     }
   },
   methods: {
     onChange(index) {
       this.index = index;
-      this.fileName = this.imagePreviewImages[parseInt(index)].fileName;
+      this.title = this.imagePreviewImages[parseInt(index)].title;
     },
   },
   created() {

@@ -65,16 +65,12 @@ export default {
       this.toPlayVideo.url = this.$store.state.videoDialogUrl;
 
       this.checkInitRobot = setInterval(() => {
-        console.log("start check init!")
         if (this.initStatus === 0) {
-          console.log("start init!")
           this.init();
         } else if (this.initStatus === 2) {
-          console.log("inited")
           if (this.checkInitRobot) {
             clearInterval(this.checkInitRobot);
           }
-          console.log("play")
           this.startPlayVideo(this.$store.state.videoDialogUrl);
         }
       }, 1000)
