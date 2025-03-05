@@ -1,13 +1,12 @@
 package me.cuiyijie.joyea.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.dao.ProductDao;
 import me.cuiyijie.joyea.model.Product;
 import me.cuiyijie.joyea.pojo.request.TransProductRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,9 +16,8 @@ import org.springframework.util.StringUtils;
  */
 @RequiredArgsConstructor
 @Service
-public class ProductService {
+public class ProductService  extends ServiceImpl<ProductDao, Product> {
 
-    private final ProductDao productDao;
     private final SearchHistoryService searchHistoryService;
 
     public IPage<Product> list(String easUserId, TransProductRequest product, Integer pageNum, Integer pageSize) {
@@ -28,14 +26,14 @@ public class ProductService {
             //记录查询的关键字
             searchHistoryService.addSearchHistory(easUserId, "CACHE_PRODUCT_SEARCH_HISTORY", product.getProductName());
         }
-        return product.getStatus() == 0 ? productDao.selectWithPage(productPage, product) : productDao.selectWithStatusPage(productPage, product);
+        return product.getStatus() == 0 ? baseMapper.selectWithPage(productPage, product) : baseMapper.selectWithStatusPage(productPage, product);
     }
 
     public String selectCount(TransProductRequest product) {
-        Integer allCount = productDao.selectAllCount(product.getFid());
-        Integer notStartCount = productDao.selectNotStartCount(product.getFid());
-        Integer startCount = productDao.selectStartCount(product.getFid());
-        Integer finishCount = productDao.selectFinishCount(product.getFid());
+        Integer allCount = baseMapper.selectAllCount(product.getFid());
+        Integer notStartCount = baseMapper.selectNotStartCount(product.getFid());
+        Integer startCount = baseMapper.selectStartCount(product.getFid());
+        Integer finishCount = baseMapper.selectFinishCount(product.getFid());
 
         return String.format("%s_%s_%s_%s", allCount, notStartCount, startCount, finishCount);
     }

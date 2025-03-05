@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.EasPersonDao;
@@ -15,12 +16,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class EasPersonService {
-
-    private final EasPersonDao easPersonDao;
+public class EasPersonService extends ServiceImpl<EasPersonDao, EasPerson> {
 
     public EasPerson findByNumber(String fNumber) {
-        return easPersonDao.selectOne(new QueryWrapper<EasPerson>().eq("FNUMBER", fNumber));
+        return baseMapper.selectOne(new QueryWrapper<EasPerson>().eq("FNUMBER", fNumber));
     }
 
 }

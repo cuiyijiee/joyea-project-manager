@@ -7,7 +7,6 @@ import me.cuiyijie.joyea.model.Department;
 import me.cuiyijie.joyea.pojo.NextPlusAccessTokenResp;
 import me.cuiyijie.joyea.pojo.NextPlusNotificationRequest;
 import me.cuiyijie.joyea.pojo.NextPlusTenant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

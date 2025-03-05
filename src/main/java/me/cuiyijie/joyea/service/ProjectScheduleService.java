@@ -1,10 +1,9 @@
 package me.cuiyijie.joyea.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import me.cuiyijie.joyea.dao.ProjectScheduleDao;
 import me.cuiyijie.joyea.model.ProjectSchedule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,12 +12,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class ProjectScheduleService {
+public class ProjectScheduleService extends ServiceImpl<ProjectScheduleDao, ProjectSchedule> {
 
-    private final ProjectScheduleDao scheduleDao;
 
     public ProjectSchedule select(ProjectSchedule projectSchedule) {
-        return scheduleDao.selectById(projectSchedule.getFid());
+        return baseMapper.selectById(projectSchedule.getFid());
     }
 
 }

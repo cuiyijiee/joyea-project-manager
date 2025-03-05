@@ -3,6 +3,7 @@ package me.cuiyijie.joyea.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
@@ -10,20 +11,17 @@ import me.cuiyijie.joyea.dao.CheckItemDao;
 import me.cuiyijie.joyea.model.CheckItem;
 import me.cuiyijie.joyea.model.CheckItemAttachment;
 import me.cuiyijie.joyea.model.CheckItemResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class CheckItemService {
+public class CheckItemService  extends ServiceImpl<CheckItemDao, CheckItem> {
 
-    private final CheckItemDao checkItemDao;
     private final CheckItemAttachmentDao checkItemAttachmentDao;
     private final CheckItemResultService checkItemResultService;
     private final SearchHistoryService searchHistoryService;
@@ -34,21 +32,13 @@ public class CheckItemService {
             searchHistoryService.addSearchHistory(easUserId, "CACHE_CHECKITEM_SEARCH_HISTORY" , checkItem.getCheckStandard());
         }
 
-        IPage<CheckItem> checkItemPageResult = checkItemDao.selectWithPage(new Page<>(pageNum, pageSize), checkItem);
+        IPage<CheckItem> checkItemPageResult = baseMapper.selectWithPage(new Page<>(pageNum, pageSize), checkItem);
 
         for (int index = 0; index < checkItemPageResult.getRecords().size(); index++) {
             //查找附件
             CheckItem checkItem1 = checkItemPageResult.getRecords().get(index);
             String checkModeId = checkItem1.getCheckModeId();
             if (StringUtils.hasLength(checkModeId)) {
-//                String[] ffids = ffid.split(",");
-//                for (int i = 0; i < ffids.length; i++) {
-//                    String attachId = ffids[i];
-//                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
-//                    if (checkItemAttachment != null) {
-//                        attachmentList.add(checkItemAttachment);
-//                    }
-//                }
                 checkItem1.setAttachmentList(checkItemAttachmentDao.selectList(new QueryWrapper<CheckItemAttachment>().eq("FID", checkModeId)));
             }
 
@@ -70,18 +60,10 @@ public class CheckItemService {
     }
 
     public CheckItem find(CheckItem checkItem) {
-        CheckItem checkItem1 = checkItemDao.selectById(checkItem.getFid());
+        CheckItem checkItem1 = baseMapper.selectById(checkItem.getFid());
         if (checkItem1 != null) {
             String checkModeId = checkItem1.getCheckModeId();
             if (StringUtils.hasLength(checkModeId)) {
-//                String[] ffids = ffid.split(",");
-//                for (int i = 0; i < ffids.length; i++) {
-//                    String attachId = ffids[i];
-//                    CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectById(attachId);
-//                    if (checkItemAttachment != null) {
-//                        attachmentList.add(checkItemAttachment);
-//                    }
-//                }
                 checkItem1.setAttachmentList(checkItemAttachmentDao.selectList(new QueryWrapper<CheckItemAttachment>().eq("FID", checkModeId)));
             }
         }
@@ -95,14 +77,14 @@ public class CheckItemService {
             queryWrapper1.eq("CFTASKID", checkItem.getTaskId());
         }
         queryWrapper1.eq("CFKEYITEM", 0);
-        Long count1 = checkItemDao.selectCount(queryWrapper1);
+        Long count1 = baseMapper.selectCount(queryWrapper1);
 
         QueryWrapper<CheckItem> queryWrapper2 = new QueryWrapper<>();
         if (StringUtils.hasLength(checkItem.getTaskId())) {
             queryWrapper2.eq("CFTASKID", checkItem.getTaskId());
         }
         queryWrapper2.eq("CFKEYITEM", 1);
-        Long count2 = checkItemDao.selectCount(queryWrapper2);
+        Long count2 = baseMapper.selectCount(queryWrapper2);
 
         return String.format("%s_%s", count1, count2);
     }

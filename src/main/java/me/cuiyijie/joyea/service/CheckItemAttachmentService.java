@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.CheckItemAttachmentDao;
@@ -32,7 +33,7 @@ import java.util.Base64;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CheckItemAttachmentService {
+public class CheckItemAttachmentService extends ServiceImpl<CheckItemAttachmentDao, CheckItemAttachment> {
 
     @Value("${eas.login.url}")
     private String loginUrl = "http://47.99.45.18:7998/ormrpc/services/EASLogin";
@@ -41,12 +42,11 @@ public class CheckItemAttachmentService {
     @Value("${eas.attachment.tmp.dir}")
     private String attachmentTempDir;
 
-    private final CheckItemAttachmentDao checkItemAttachmentDao;
 
     private long lastLoginTimestamp = 0L;
 
     public File getPreviewFilePath(String attachId) {
-        CheckItemAttachment checkItemAttachment = checkItemAttachmentDao.selectOne(
+        CheckItemAttachment checkItemAttachment = baseMapper.selectOne(
                 new QueryWrapper<CheckItemAttachment>().eq("ATTACH_FID",new String(Base64.getDecoder().decode(attachId)))
         );
 
@@ -129,8 +129,8 @@ public class CheckItemAttachmentService {
             log.error("fetch attachment exist error", exception);
         } finally {
             long endTimestamp = System.currentTimeMillis();
-            log.info("end time: " + endTimestamp);
-            log.info("total time: " + (endTimestamp - startTimestamp) / 1000 + "s");
+            log.info("end time: {}", endTimestamp);
+            log.info("total time: {}s", (endTimestamp - startTimestamp) / 1000);
         }
         return localFile;
     }

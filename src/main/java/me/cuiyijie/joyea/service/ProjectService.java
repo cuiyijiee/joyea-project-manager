@@ -3,13 +3,13 @@ package me.cuiyijie.joyea.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.cuiyijie.joyea.dao.ProjectCollectDao;
 import me.cuiyijie.joyea.dao.ProjectDao;
 import me.cuiyijie.joyea.model.Project;
 import me.cuiyijie.joyea.model.ProjectCollect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,9 +18,8 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProjectService {
+public class ProjectService extends ServiceImpl<ProjectDao, Project> {
 
-    private final ProjectDao projectDao;
     private final ProjectCollectDao projectCollectDao;
     private final SearchHistoryService searchHistoryService;
 
@@ -40,7 +39,7 @@ public class ProjectService {
                     .like("FNUMBER", project.getProjectName());
         }
 
-        Page<Project> resultProjectPage = projectDao.selectPage(projectPage, queryWrapper);
+        Page<Project> resultProjectPage = baseMapper.selectPage(projectPage, queryWrapper);
 
         for (Project record : resultProjectPage.getRecords()) {
             ProjectCollect existProjectCollect = projectCollectDao.selectOne(new QueryWrapper<ProjectCollect>()
@@ -54,7 +53,7 @@ public class ProjectService {
 
     public Page<Project> listCollect(String easUserId, Project project, Integer pageNum, Integer pageSize) {
         IPage<Project> projectPage = new Page<>(pageNum, pageSize);
-        Page<Project> resultProjectPage = projectDao.listCollect(projectPage,easUserId);
+        Page<Project> resultProjectPage = baseMapper.listCollect(projectPage,easUserId);
         for (Project record : resultProjectPage.getRecords()) {
             record.setCollect(true);
         }

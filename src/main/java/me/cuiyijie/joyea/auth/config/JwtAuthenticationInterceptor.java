@@ -29,14 +29,20 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 //        }
         //获取请求头中的Token
         String token = request.getHeader("X-Token");
+        String requestPath = request.getRequestURI();
+        log.info("requestPath:{}", requestPath);
+        if (requestPath.startsWith("/external")) {
+            request.setAttribute("currentUserInfo", new CurrentUserInfo("external"));
+            return true;
+        }
 
-        if(token == null) {
+        if (token == null) {
             throw new UserException("token verify failed");
-        }else if (allowUsers.contains(token)){
+        } else if (allowUsers.contains(token)) {
             request.setAttribute("currentUserInfo", new CurrentUserInfo(token));
-        }else if (!JwtUtil.verifyToken(token)) {
+        } else if (!JwtUtil.verifyToken(token)) {
             throw new UserException("token verify failed");
-        }else{
+        } else {
             String userId = JwtUtil.parseToken(token);
             request.setAttribute("currentUserInfo", new CurrentUserInfo(userId));
         }

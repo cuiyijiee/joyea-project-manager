@@ -23,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -87,6 +85,16 @@ public class EDoc2Service {
                 new ParameterizedTypeReference<ReturnValueResult<Edoc2FilePreviewParaResponse>>() {}
         ).getBody();
         return previewParaResponseReturnValueResult.getData();
+    }
+
+    public Edoc2FileInfoResponse getFileInfoByPath(String path) {
+        String getFileInfoUrl = String.format("%sapi/services/File/GetFileInfoByNamePath?token=%s&fileNamePath=%s", Constants.EDOC2_HOST, getAccessToken(), path);
+        log.info("edoc2 getFileInfoUrl: {}", getFileInfoUrl);
+        ReturnValueResult<Edoc2FileInfoResponse> fileInfoResponseReturnValueResult = restTemplate.exchange(getFileInfoUrl,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<ReturnValueResult<Edoc2FileInfoResponse>>() {}
+        ).getBody();
+        return fileInfoResponseReturnValueResult.getData();
     }
 
 }
