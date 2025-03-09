@@ -1,6 +1,7 @@
 package me.cuiyijie.joyea.service;
 
 import EDoc2.IAppService.IOrgAppService;
+import EDoc2.IAppService.Model.EDoc2FolderInfo;
 import EDoc2.IAppService.Model.ReturnValueResult;
 import EDoc2.IAppService.Model.UserLoginIntegrationByUserLoginNameDto;
 import com.edoc2.proxy.FacadeProxy;
@@ -36,7 +37,7 @@ public class EDoc2Service {
     private String token = null;
 
     public String getAccessToken() {
-        if(refreshTokenDate.isBefore(LocalDate.now()) || !StringUtils.hasText(token)) {
+        if (refreshTokenDate.isBefore(LocalDate.now()) || !StringUtils.hasText(token)) {
             IOrgAppService orgService = FacadeProxy.newProxyInstance(IOrgAppService.class);
             UserLoginIntegrationByUserLoginNameDto userLoginIntegrationByUserLoginNameDto = new UserLoginIntegrationByUserLoginNameDto();
             userLoginIntegrationByUserLoginNameDto.setIntegrationKey("50b6cd80-eb73-0d5b-7804-a1d6b7bfea5f");
@@ -74,16 +75,23 @@ public class EDoc2Service {
         String getFileInfoUrl = String.format("%sapi/services/File/GetFileInfoById?token=%s&fileId=%s", Constants.EDOC2_HOST, getAccessToken(), fileId);
         ReturnValueResult<Edoc2FileInfoResponse> fileInfoResponseReturnValueResult = restTemplate.exchange(getFileInfoUrl,
                 HttpMethod.GET, null,
-                new ParameterizedTypeReference<ReturnValueResult<Edoc2FileInfoResponse>>() {}
+                new ParameterizedTypeReference<ReturnValueResult<Edoc2FileInfoResponse>>() {
+                }
         ).getBody();
 
         String fileGuid = fileInfoResponseReturnValueResult.getData().getFileGuid();
-        String previewUrl = String.format("%sPreview/GetPreviewPara?t=17293047287531729304728753&clientkey=2&browsertype=app&t=%s&token=%s&fileId=%s&byid=true&fileVerId=0&clientTypeName=h5&deviceTypeName=iphone&browserPlatform=2",Constants.EDOC2_HOST, System.currentTimeMillis(), getAccessToken(), fileGuid);
+        String previewUrl = String.format("%sPreview/GetPreviewPara?t=17293047287531729304728753&clientkey=2&browsertype=app&t=%s&token=%s&fileId=%s&byid=true&fileVerId=0&clientTypeName=h5&deviceTypeName=iphone&browserPlatform=2", Constants.EDOC2_HOST, System.currentTimeMillis(), getAccessToken(), fileGuid);
         ReturnValueResult<Edoc2FilePreviewParaResponse> previewParaResponseReturnValueResult = restTemplate.exchange(previewUrl,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<ReturnValueResult<Edoc2FilePreviewParaResponse>>() {}
+                new ParameterizedTypeReference<ReturnValueResult<Edoc2FilePreviewParaResponse>>() {
+                }
         ).getBody();
+        if (previewParaResponseReturnValueResult.getData() != null) {
+            Edoc2FileInfoResponse fileInfoResponse = getFileInfoById(previewParaResponseReturnValueResult.getData().getFileId());
+            String previewUrl2 = String.format("http://aidoc.joyea.cn:8086/ecm#/preview?uid=MzE3&fileid=%s&moduleId=myvisit&t=15177&displayControl=32768", fileInfoResponse.getFileGuid());
+            previewParaResponseReturnValueResult.getData().setPreviewUrl(previewUrl2);
+        }
         return previewParaResponseReturnValueResult.getData();
     }
 
@@ -92,7 +100,19 @@ public class EDoc2Service {
         log.info("edoc2 getFileInfoUrl: {}", getFileInfoUrl);
         ReturnValueResult<Edoc2FileInfoResponse> fileInfoResponseReturnValueResult = restTemplate.exchange(getFileInfoUrl,
                 HttpMethod.GET, null,
-                new ParameterizedTypeReference<ReturnValueResult<Edoc2FileInfoResponse>>() {}
+                new ParameterizedTypeReference<ReturnValueResult<Edoc2FileInfoResponse>>() {
+                }
+        ).getBody();
+        return fileInfoResponseReturnValueResult.getData();
+    }
+
+    public Edoc2FileInfoResponse getFileInfoById(Integer fileId) {
+        String getFileInfoUrl = String.format("%sapi/services/File/GetFileInfoById?token=%s&fileId=%s", Constants.EDOC2_HOST, getAccessToken(), fileId);
+        log.info("edoc2 getFileInfoUrl: {}", getFileInfoUrl);
+        ReturnValueResult<Edoc2FileInfoResponse> fileInfoResponseReturnValueResult = restTemplate.exchange(getFileInfoUrl,
+                HttpMethod.GET, null,
+                new ParameterizedTypeReference<ReturnValueResult<Edoc2FileInfoResponse>>() {
+                }
         ).getBody();
         return fileInfoResponseReturnValueResult.getData();
     }

@@ -16,6 +16,8 @@ public class Edoc2FilePreviewParaResponse {
     private Object convType;
     @JsonProperty("fileUrl")
     private String fileUrl;
+    @JsonProperty("previewUrl")
+    private String previewUrl;
     @JsonProperty("baseUrl")
     private String baseUrl;
     @JsonProperty("controller")
