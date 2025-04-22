@@ -13,14 +13,14 @@ export function genAttachmentImageListView(context, itemList, clickItem) {
   let index = 0;
   let tmp = 0;
   let list = itemList.filter(attach => {
-    return attach.attacheType && attach.attacheType.indexOf('图像') > -1;
+    return attach.attacheType && (attach.attacheType.indexOf('图像') > -1 || attach.attacheType.indexOf('png') > -1 || attach.attacheType.indexOf('jpg') > -1);
   }).map(item => {
     if (item.attachFid === clickItem.attachFid) {
       index = tmp;
     }
     tmp++;
     return {
-      url: '/api/checkItemAttachment/download?attachId=' + window.btoa(item.attachFid),
+      previewUrl: '/api/checkItemAttachment/download?attachId=' + window.btoa(item.attachFid),
       fileName: item.attachName
     };
   });

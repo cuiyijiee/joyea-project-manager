@@ -25,7 +25,7 @@ export default {
   methods: {
     onChange(index) {
       this.index = index;
-      this.title = this.imagePreviewImages[parseInt(index)].title;
+      this.title = this.imagePreviewImages[parseInt(index)].fileName;
     },
   },
   created() {
