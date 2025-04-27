@@ -6,7 +6,7 @@
         <van-tab :title="'自检(' + (parseInt(count[0]) + parseInt(count[1]))+')'"></van-tab>
         <van-tab :title="'互检(' + count[1]+')'"></van-tab>
         <van-tab :title="'第三方(' + (parseInt(count[0]) + parseInt(count[1])) +')'"></van-tab>
-        <van-tab :title="'第三方专检(' + count[2] +')'"></van-tab>
+        <van-tab :title="'专检(' + count[2] +')'"></van-tab>
       </van-tabs>
       <div style="padding: 10px 5px 0 15px;align-content: center;background-color: #ffffff">
         <van-radio-group v-model="showAll" direction="horizontal" @change="handleShowAll">

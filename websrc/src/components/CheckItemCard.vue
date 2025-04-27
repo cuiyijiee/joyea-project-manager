@@ -31,7 +31,7 @@
       </van-row>
       <van-grid :border="false" :column-num="3">
         <van-grid-item v-for="attach in item.attachmentList" :key="attach.fid">
-          <div v-if="attach.attacheType.indexOf('图像') > -1 || attach.attacheType.indexOf('png') > -1 || attach.attacheType.indexOf('jpg') > -1" width="100" height="100"
+          <div v-if="attach.attacheType && (attach.attacheType.toLowerCase().indexOf('png') > -1 || attach.attacheType.toLowerCase().indexOf('jpg') > -1 || attach.attacheType.indexOf('图像') > -1)" width="100" height="100"
                @click.stop="handleClickAttachment(attach,item.attachmentList)">
             <van-image
               :src="'/api/checkItemAttachment/download?attachId=' + base64(attach.attachFid)"/>
@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       checkMethodVisible: false,
-      defaultImg: require("@/assets/unknown.png"),
+      defaultImg: require("@/assets/unpreview.png"),
       qualifiedImg: require("@/assets/qualified.png"),
       unQualifiedImg: require("@/assets/unqualified.png"),
       unKnownImg: require("@/assets/unknown.png"),
